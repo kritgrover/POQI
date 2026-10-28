@@ -1,3 +1,6 @@
 [submodule "quantum-network"]
 	path = quantum-network
 	url = .\\quantum-network\\
+[submodule "SeQUeNCe"]
+	path = SeQUeNCe
+	url = .\\SeQUeNCe\\
