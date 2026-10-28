@@ -1,6 +1,6 @@
 [submodule "quantum-network"]
 	path = quantum-network
-	url = .\\quantum-network\\
+	url = https://github.com/vlmutolo/quantum-network.git
 [submodule "SeQUeNCe"]
 	path = SeQUeNCe
-	url = .\\SeQUeNCe\\
+	url = https://github.com/kritgrover/SeQUeNCe.git
