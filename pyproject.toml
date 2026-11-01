@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "poqi"
+version = "0.1.0"
+description = "Finite-memory path-oblivious entanglement benchmarks and SeQUeNCe models"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["numpy>=2.0", "scipy>=1.14", "networkx>=3.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+# The local SeQUeNCe checkout is installed separately, without its notebook extras.
+simulation = ["qutip>=5", "qutip-qip>=0.4", "lazy-loader>=0.4", "gmpy2>=2.2", "stim>=1.15", "matplotlib>=3.9"]
+
+[project.scripts]
+poqi = "poqi.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --basetemp=tmp/pytest"
+

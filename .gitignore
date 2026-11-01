@@ -1,0 +1,12 @@
+# Local research plans
+/plans/
+/.venv/
+/tmp/
+/results/
+/.pytest_cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+/build/
+/dist/
+docs/
