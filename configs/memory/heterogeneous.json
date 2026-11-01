@@ -1,0 +1,83 @@
+{
+  "nodes": [
+    0,
+    1,
+    2
+  ],
+  "edges": [
+    {
+      "nodes": [
+        0,
+        1
+      ],
+      "generation_capacity": 1
+    },
+    {
+      "nodes": [
+        1,
+        2
+      ],
+      "generation_capacity": 1
+    }
+  ],
+  "demand_rate": [
+    {
+      "pair": [
+        0,
+        2
+      ],
+      "rate": 1
+    }
+  ],
+  "mean_residence_time": [
+    {
+      "pair": [
+        0,
+        1
+      ],
+      "value": 0.5
+    },
+    {
+      "pair": [
+        0,
+        2
+      ],
+      "value": 2
+    },
+    {
+      "pair": [
+        1,
+        2
+      ],
+      "value": 1
+    }
+  ],
+  "memory_slots": [
+    {
+      "node": 0,
+      "slots": 3
+    },
+    {
+      "node": 1,
+      "slots": 4
+    },
+    {
+      "node": 2,
+      "slots": 3
+    }
+  ],
+  "time_unit": "abstract",
+  "residence_time_source": "Prescribed heterogeneous buffer-episode means 0.5, 2, 1; sensitivity example, not measured.",
+  "demand_normalization": "One endpoint pair offered at 1 request per abstract time unit; generation capacity 1 per physical link.",
+  "distillation_pairs": 1,
+  "balance_mode": "stationary",
+  "simulation": {
+    "horizon": 100,
+    "seed": 271,
+    "ticks_per_time_unit": 1000000,
+    "cutoff_time": null,
+    "swap_policy": "balancing",
+    "admission_policy": "reserved",
+    "request_regime": "offered"
+  }
+}

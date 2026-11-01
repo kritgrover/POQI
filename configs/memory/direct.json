@@ -1,0 +1,40 @@
+{
+  "nodes": [
+    0,
+    1
+  ],
+  "edges": [
+    {
+      "nodes": [
+        0,
+        1
+      ],
+      "generation_capacity": 1
+    }
+  ],
+  "demand_rate": [
+    {
+      "pair": [
+        0,
+        1
+      ],
+      "rate": 0.2
+    }
+  ],
+  "mean_residence_time": 1,
+  "memory_slots": 2,
+  "time_unit": "abstract",
+  "residence_time_source": "Prescribed uniform sensitivity coefficient, not calibrated from simulated episodes.",
+  "demand_normalization": "Underloaded direct link: 0.2 requests per time unit against generation capacity 1.",
+  "distillation_pairs": 1,
+  "balance_mode": "stationary",
+  "simulation": {
+    "horizon": 100,
+    "seed": 271,
+    "ticks_per_time_unit": 1000000,
+    "cutoff_time": null,
+    "swap_policy": "balancing",
+    "admission_policy": "reserved",
+    "request_regime": "offered"
+  }
+}
