@@ -181,7 +181,7 @@ def parse_config(data: dict) -> Config:
     if sim.get("cutoff_time") is not None:
         sim["cutoff_time"] = _number(sim["cutoff_time"], "simulation.cutoff_time", positive=True)
     for key, choices in {
-        "swap_policy": ("balancing", "physical", "none"),
+        "swap_policy": ("balancing", "pressure_relaxed", "physical", "none"),
         "admission_policy": ("reserved", "tail_drop"),
         "request_regime": ("offered",),
     }.items():

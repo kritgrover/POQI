@@ -64,8 +64,8 @@ class _SequenceSimulation:
             raise ValueError("time_unit must be a nonempty label")
         if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
             raise ValueError("seed must be a nonnegative integer")
-        if swap_policy not in {"balancing", "physical", "none"}:
-            raise ValueError("swap_policy must be balancing, physical, or none")
+        if swap_policy not in {"balancing", "pressure_relaxed", "physical", "none"}:
+            raise ValueError("swap_policy must be balancing, pressure_relaxed, physical, or none")
         if request_regime != "offered":
             raise ValueError("request_regime must be offered (explicit unbounded request FIFO)")
         self.swap_policy, self.time_unit, self.seed = swap_policy, time_unit, seed
@@ -213,13 +213,34 @@ class _SequenceSimulation:
                                 "occupancy": [{"node": n, "slots": self.inventory.occupancy[n]} for n in self.inventory.nodes],
                                 "queue_length": len(self.queue), **details})
 
-    def _swap(self, pivot, pair):
+    def _under_pressure(self, pivot, pair):
+        """Would these inputs release a full pivot or a full positive origin quota?"""
+        inv = self.inventory
+        limit = inv.limits[pivot]
+        if limit is None:
+            return False
+        if inv.occupancy[pivot] >= limit:
+            return True
+        if self.admission_policy == "reserved":
+            for partner in pair:
+                inputs = inv.oldest(inv.pair(pivot, partner), inv.D)
+                for identifier in inputs:
+                    origin = inv.pairs[identifier].origins[pivot]
+                    quota = inv.quotas[pivot][origin]
+                    if quota > 0 and inv.origin_occupancy[pivot, origin] >= quota:
+                        return True
+        return False
+
+    def _swap(self, pivot, pair, *, pressure_relaxed=False):
         output, removed = self.inventory.swap(pivot, pair, self.timeline.now())
         if output is None:
             return False
         self.counters["swaps"] += 1
+        if pressure_relaxed:
+            self.counters["pressure_relaxed_swaps"] += 1
         self._schedule_expiry(output)
-        self._log("swap", pivot=pivot, removed=removed, created=[self._pair_record(output)])
+        details = {"pressure_relaxed": True} if pressure_relaxed else {}
+        self._log("swap", pivot=pivot, removed=removed, created=[self._pair_record(output)], **details)
         return True
 
     def _drain(self):
@@ -252,12 +273,16 @@ class _SequenceSimulation:
                         right = len(self.inventory.buffers[self.inventory.pair(y, pivot)])
                         output = len(self.inventory.buffers[pair])
                         preferred = output + 1 <= min(left - self.inventory.D, right - self.inventory.D)
-                        if self.swap_policy == "balancing" and not preferred:
+                        relaxed = (self.swap_policy == "pressure_relaxed" and not preferred
+                                   and output <= min(left - self.inventory.D, right - self.inventory.D)
+                                   and self._under_pressure(pivot, pair))
+                        if self.swap_policy in {"balancing", "pressure_relaxed"} and not (preferred or relaxed):
                             self.counters["heuristic_refusals"] += 1
                             continue
-                        candidates.append((output, self.inventory.order[x], self.inventory.order[y], pair))
+                        candidates.append((output, self.inventory.order[x], self.inventory.order[y], pair, relaxed))
                     if candidates:
-                        self._swap(pivot, min(candidates)[-1])
+                        selected = min(candidates)
+                        self._swap(pivot, selected[3], pressure_relaxed=selected[4])
                         changed = True
                 if not changed:
                     break
@@ -382,6 +407,8 @@ class _SequenceSimulation:
             "admission_rejections": sum(self.rejections.values()), "rejections_by_reason": dict(self.rejections),
             "expired_pairs": self.counters["expired_pairs"], "swaps": self.counters["swaps"],
             "heuristic_refusals": self.counters["heuristic_refusals"],
+            **({"pressure_relaxed_swaps": self.counters["pressure_relaxed_swaps"]}
+               if self.swap_policy == "pressure_relaxed" else {}),
             "infeasible_swap_attempts": self.counters["infeasible_swap_attempts"],
             "stale_expiry_events": self.counters["stale_expiry_events"],
             "offered_requests": offered, "completed_requests": completed, "unserved_requests": len(self.queue),
