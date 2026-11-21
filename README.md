@@ -66,6 +66,13 @@ The intended contribution is a resource-aware account of where each approach
 works well, supported by analytical bounds and comparable experiments, rather
 than a claim that one swapping heuristic is universally best.
 
+The [Q-CAST reference validation](QCAST_Validation_Results.md) pins and checks
+the authors' implementation. The [matched-opportunity pilot](QCAST_Pilot_Results.md)
+reports the first executed comparison, including storage benefits, operation
+costs, and a FIFO/service interaction. Its explicitly labelled timing wrappers
+are separate from the original continuous-time experiments; see the
+[comparison design](QCAST_Comparison_Plan.md) and [pilot protocol](QCAST_Pilot_Protocol.md).
+
 ## Root implementation
 
 The root-owned `poqi` package implements a prescribed-residence, finite-average-
