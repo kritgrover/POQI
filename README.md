@@ -66,6 +66,20 @@ The intended contribution is a resource-aware account of where each approach
 works well, supported by analytical bounds and comparable experiments, rather
 than a claim that one swapping heuristic is universally best.
 
+The [Q-CAST reference validation](QCAST_Validation_Results.md) pins and checks
+the authors' implementation. The [matched-opportunity pilot](QCAST_Pilot_Results.md)
+reports the first executed comparison, including storage benefits, operation
+costs, and a FIFO/service interaction. Its explicitly labelled timing wrappers
+are separate from the original continuous-time experiments; see the
+[comparison design](QCAST_Comparison_Plan.md) and [pilot protocol](QCAST_Pilot_Protocol.md).
+
+The [matched concurrent-service follow-up](QCAST_Concurrent_Results.md) applies
+the same request-service rule to every system. Its 560-run diamond comparison
+finds a Q-CAST advantage with four-qubit lossy links, an unresolved throughput
+difference from persistent pressure at four qubits with perfect links, and a
+two-qubit Q-CAST demand-coverage failure hidden by total throughput. See the
+[fixed follow-up protocol](QCAST_Concurrent_Protocol.md) for scope and controls.
+
 ## Root implementation
 
 The root-owned `poqi` package implements a prescribed-residence, finite-average-
