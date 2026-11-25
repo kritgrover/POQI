@@ -20,6 +20,8 @@ Deterministic trace: request (0,2), generate one (0,1) pair, then one (1,2) pair
 
 **A remaining deadlock:** at c=2 without expiry, generate 01,12 to create 02 before demand arrives; generate another 12, allowing a backward swap at node 2 to recreate 01. Another 01 generation leaves two 01 pairs, the center full, and no pivot with two partners. Demand 02 cannot drain this state, and every generation needs the full center. Relaxation removes the four-slot threshold but does not guarantee progress; this counterexample is also a deterministic regression test.
 
+A [subsequent theorem](Saturated_Chain_Theorem.md#offered-demand-at-two-slots) establishes when this lockup occurs eventually in the continuous-time two-slot chain from empty. At unit generation per link and Poisson demand at or below 2/3, the probability is one. Above 2/3, a busy period can keep consuming every output before it is swapped backward. At offered rate one the exact probability of eventually locking is approximately 0.4853.
+
 ## Experiment
 
 - **540 trajectories:** three scenarios, six capacities, three policies, ten seeds **4271-4280** per condition. H=2,000 abstract time units; rate and time-average queue measurements use [500,2,000). Final backlog includes all unfinished requests.

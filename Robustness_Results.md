@@ -53,6 +53,8 @@ Pressure-policy zero-service counts below are identical in the early and late wi
 
 Longer runs do not release those permanently trapped inventories. With cutoff 10, two-slot pressure serves requests in every measured window; at demand 0.5 its late throughput is **0.49872**, with mean queue **4.19**. Expiry releases the known trap in this model. These sample counts do not certify population stall probabilities. No pressure run at three or more tested slots has a zero-service window. Balancing at two or three slots remains structurally unable to swap.
 
+The later [two-slot offered-demand theorem](Saturated_Chain_Theorem.md#offered-demand-at-two-slots) gives eventual trap probabilities from empty of **1, 0.815271, and 0.485281** at the three respective demand rates in the continuous-time, no-expiry model. It explains why lighter demand can make permanent loss of service more likely. An idle period allows a cached pair to be swapped backward, while a waiting request immediately consumes that pair.
+
 **Blocking and storage:** at demand 0.5 without expiry, generation blocking is about **41.88%** for three-slot pressure versus **49.99%** for four-slot balancing, despite both serving about 0.499 requests/time unit. Generation rejection includes unused supply; it is not request loss. In the unlimited no-expiry controls at that demand, mean stored inventory grows from **1,526.4 pairs at time 2,000 to 6,021.5 at time 8,000**, despite a short request queue. These results do not establish stationary holding times for memory sizing.
 
 ![Late-window throughput, blocking and backlog growth with 95% intervals](results/memory/robustness-main/report/late.png)
@@ -70,6 +72,8 @@ A small continuous-time calculation explains the relevant load thresholds. With 
 | Pressure, c=4 | `(1,0),(2,0),(1,1),(0,1),(0,2)` | 4/5 = 0.8000 |
 
 In these reachable states, generating 02 leaves no qualifying backward swap, and FIFO consumes it. All **24 one-arrival transitions** were checked against the actual simulator, and the uniform probabilities satisfy each generator's balance equations ([calculation](results/memory/robustness-main/saturation_check.json)). These are saturated continuous-time benchmarks; the experiments use offered Poisson requests and rounded timeline ticks. Demand 0.75 provides no strict service margin for pressure at three slots. Positive finite-window queue growth there does not by itself establish an asymptotic drift or a different service limit.
+
+The [subsequent saturated-chain theorem](Saturated_Chain_Theorem.md) derives all three rates and extends them to arbitrary uniform integer budgets and unequal positive link rates. At equal link rate $\lambda$, pressure serves $\lambda M/(M+1)$ for $M\ge2$, and balancing serves $\lambda(M-2)/(M-1)$ for $M\ge4$. The values come from the stationary distribution of the difference between left and right inventories. The [transition checker](scripts/saturated_chain_check.py) reconstructs the joint inventory process from SeQUeNCe traces and computes its stationary service independently.
 
 ## Reproduction
 

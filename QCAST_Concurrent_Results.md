@@ -7,8 +7,11 @@ earlier global-FIFO restriction. In this targeted diamond experiment, concurrent
 Q-CAST has higher measured total service than every POQI arm at two qubits/node
 and at four qubits with link failures. At four qubits with perfect links, its
 throughput difference from persistent pressure relaxation is unresolved.
-This is not per-demand dominance: at two qubits with lossy links, Q-CAST leaves
-pair 12 without any measured-window service in all ten runs.
+At two qubits with lossy links, Q-CAST's deterministic demand ordering gave
+pair 12 zero measured service. Reversing that order restored service in every
+seed. In the same lossy condition, persistent pressure without expiry reached
+a permanently frozen inventory in all ten runs. The [subsequent diagnostics](#why-the-two-qubit-diamond-failed)
+explain these two observations.
 
 These results compare complete systems under the
 [fixed follow-up protocol](QCAST_Concurrent_Protocol.md), including their storage,
@@ -98,7 +101,7 @@ At **M2, p=.5**, Q-CAST's .5810 total exceeds reset pressure's .4550 by
 | 01 (.25) | .23933 | .19333 |
 | 12 (.15) | **0** | .14567 |
 
-Q-CAST pair 12 has zero window service in **10/10 runs**, with mean final
+With the original ordering, Q-CAST pair 12 has zero window service in **10/10 runs**, with mean final
 backlog **58.3** and restricted wait **202.21**. Reset pressure serves all
 three classes in every run. This is a demonstrated finite-window coverage
 failure, not a proof of indefinite starvation. At M4, p=.5, Q-CAST serves all
@@ -113,13 +116,85 @@ intervals exclude zero on the positive side in **27/28 system-condition cells**.
 This confirms that the earlier FIFO result was a service-interface interaction;
 the rerun applies the same service rule to POQI as well.
 
-The unchanged cell is **M2, p=.5, persistent pressure without expiry**:
-all ten concurrent runs still have zero late service and mean final backlog
-363.8. These trajectories are retained. The existing chain absorbing-state
-regression also remains tested; its certificate does not prove that a diamond
-state is absorbing. Pressure is not uniformly beneficial: at M4, p=.5,
+At **M2, p=.5, persistent pressure without expiry**, all ten concurrent runs
+have zero late service and mean final backlog 363.8. The original auditor's
+absorbing-state flag covers chains. The diamond-specific certificate below
+establishes why all ten trajectories stopped serving. At M4, p=.5,
 pressure-minus-balancing throughput is **-.07767 [-.09053,-.06480]** with
 reset, versus **+.10133 [.06781,.13485]** with persistence.
+
+## Why the two-qubit diamond failed
+
+These November 24 diagnostics revisit the November 20 experiment on its original
+seeds, 7271–7280. Both use concurrent service, $M=2$, $D=q=1$, and the original
+measurement window $(100,400]$. The demand-order test re-executes the native
+planner. The absorption test inspects reachable POQI inventories in the archived runs.
+
+### Q-CAST awards tied routes in input order
+
+The wrapper sorts the unique pending pairs by node label. Native P2 picks the
+first candidate attaining the maximum score. The two diagonals, 03 and 12,
+each score 0.25 at width one in a fresh slot with $p=0.5$. The direct demand
+01 scores 1 at width two. A post-hoc test reversed only the list sent to P2.
+Both orderings used the original arrival and physical-opportunity sequences.
+Every sorted trajectory reproduced its archived counterpart field for field.
+[Wrapper input order](scripts/qcast_concurrent.py) · [Native P2 at the pinned revision](https://github.com/sshi27/QuantumRouting/blob/0a0251dd5f38eb1669ff6abe18ab83436ddbba18/src/main/kotlin/quantum/algorithm/OnlineAlgorithm.kt#L26-L33)
+
+| Measured service | Original order | Reversed order |
+| --- | ---: | ---: |
+| 03 completions/slot | 0.34167 | 0.17833 |
+| 01 completions/slot | 0.23933 | 0.23933 |
+| 12 completions/slot | 0 | 0.14867 |
+| Total completions/slot | 0.58100 | 0.56633 |
+| Seeds serving pair 12 | 0/10 | 10/10 |
+
+Across the original 3,000 measured slots, both diagonals were pending throughout.
+In all 2,125 slots with only the two diagonals pending, 03 won the first
+allocation. In the other 875 slots, direct demand 01 took priority. Under the
+reversed order, 12 won all 1,040 slots where only the two diagonals were pending.
+Earlier service changed the later pending sets, so the contention counts differ.
+Pair 12 gained 446 completions and pair 03 lost 490. The paired change in total
+rate was −0.01467, with pointwise 95% Student-t interval [−0.02614, −0.00319].
+This demonstrates sensitivity to deterministic tie priority for these inputs.
+Neither order implements a fairness policy. [Results](results/qcast/order-sensitivity-01/report.json) · [Diagnostic and replay checks](scripts/qcast_order_sensitivity.py)
+
+### Persistent POQI can fill memory with pairs that no request can release
+
+The [orientation-guard comparison](Guarded_Diamond_Results.md) revisits these
+frozen inventories with the same diamond inputs and a second cohort of seeds.
+
+At the end of a slot, a sufficient certificate for permanent loss of service
+under this workload is the following combination. All stored pairs have infinite
+lifetime and endpoints outside the support of future demand. Every node has at
+most one distinct entangled partner. Every physical edge has a full endpoint
+or has used its generation-origin quota at an endpoint. Consequently no request
+can consume a pair, no pivot can swap, and no edge can start a trial. Future
+arrivals can increase the queue, but no future event can change the inventory.
+Checking the origin quota matters because a qubit keeps its origin after a swap.
+
+The checker independently replayed each trajectory from empty and found the
+first end-of-slot boundary satisfying all conditions. In seed order those
+boundaries were **25, 12, 20, 2, 13, 4, 6, 28, 25, 8**. Six inventories held
+two 02 pairs and one 13 pair. Four held one 02 pair and two 13 pairs. None of
+the demand classes (03, 01, 12) can consume either stored type. All ten had zero
+trials, swaps and completions throughout the measurement window. At $p=1$,
+the ten matched control runs completed 32–61 requests each in the window and
+none reached the certified state. The certificate proves permanence once reached.
+Ten sampled paths do not determine the probability of ever reaching it.
+[Per-seed inventories and edge blockers](results/qcast/diamond-stall-certificates-01/report.json) · [Certificate checker](scripts/qcast_diamond_stalls.py)
+
+Reproduce both diagnostics from the repository root with the November 20 raw
+trajectories and native build available. The first command needs a fresh output
+directory. The second prints its complete report to standard output.
+
+```powershell
+.\.venv\Scripts\python.exe -B scripts/qcast_order_sensitivity.py --output results/qcast/order-sensitivity-rerun
+.\.venv\Scripts\python.exe -B scripts/qcast_diamond_stalls.py results/qcast/concurrent-main-01
+```
+
+The November 24 root suite passed **730 tests** with the native build and
+reference validation artifacts enabled. This includes the two diamond
+diagnostics and the [chain theorem checks](Saturated_Chain_Theorem.md).
 
 ## Validation and provenance
 
@@ -127,7 +202,7 @@ The author source remains exactly
 **`0a0251dd5f38eb1669ff6abe18ab83436ddbba18`**, with paper/version and
 accounting qualifications in [reference validation](QCAST_Validation_Results.md).
 Root starting revision: **`f359d2c7546df937097f2b5acf2cbf5be73e56f3`**.
-New sources are uncommitted; the manifest records their exact hashes, protocol,
+At the time of the November 20 run the new sources were uncommitted. The manifest records their exact hashes, protocol,
 frozen root helpers, native source/build, dependency jars and compiled classes.
 The portable Java/Maven build from `pilot-smoke-01` was reused and checked.
 
