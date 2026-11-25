@@ -25,6 +25,9 @@ except ImportError:
 
 ROOT, REVISION = pilot.ROOT, pilot.REVISION
 ARMS = ("QCAST-Slot", *pilot.ARMS[1:])
+# Preserve the frozen comparison grid while exposing the new policy to trajectory callers.
+TRAJECTORY_ARMS = (*ARMS, "POQI-Slot-pressure_oriented", "POQI-Persistent-pressure_oriented",
+                   "POQI-Cutoff10-pressure_oriented")
 SERVICE_MODES = ("fifo", "concurrent_per_pair")
 METRICS = ("completed", "throughput", "mean_backlog", "initial_backlog", "final_backlog",
            "backlog_growth", "completed_mean_latency", "unfinished_mean_age",
@@ -68,7 +71,7 @@ def serve_requests(pending, counts, tick, completions, service_mode, consume=Non
 def audit_trajectory(data):
     """Fast accounting/service replay; the separate auditor replays physics."""
     mode = data["service_mode"]
-    if mode not in SERVICE_MODES or data["arm"] not in ARMS:
+    if mode not in SERVICE_MODES or data["arm"] not in TRAJECTORY_ARMS:
         raise ValueError("unknown arm or service mode")
     name, memory, seed, horizon = (data[k] for k in ("topology", "memory", "seed", "horizon"))
     graph, _, _, _, channels = pilot.specification(name)
@@ -129,7 +132,7 @@ def audit_trajectory(data):
 
 
 def run_trajectory(name, memory, p, seed, arm_name, horizon, bridge, service_mode="concurrent_per_pair"):
-    if service_mode not in SERVICE_MODES or arm_name not in ARMS:
+    if service_mode not in SERVICE_MODES or arm_name not in TRAJECTORY_ARMS:
         raise ValueError("unknown arm or service mode")
     graph, _, _, _, channels = pilot.specification(name)
     arrivals = pilot.workload(name, seed, horizon)
