@@ -110,6 +110,24 @@ diamond links the guard increased measured service, while some intervals with
 pending demand and no completion grew longer. [Guarded chain proof](Guarded_Chain_Theorem.md) ·
 [Matched diamond experiments](Guarded_Diamond_Results.md)
 
+An exhaustive search of reachable inventories extends the lockup beyond the
+two-slot chain. On one repeater it needs a two-slot endpoint facing a one-slot
+reservation. On longer chains the original pressure policy locks at larger
+budgets, even under permanent backlog, and the orientation rule removes it. On
+the diamond the orientation rule does not help and a different published swap
+condition does. On five- and six-node cycles with sparse demand no swap
+condition we tried removes it. With a cutoff each lockup becomes an outage of
+almost one cutoff, and the mean request delay of the unguarded two-slot chain
+approaches half the cutoff. With swap success $q$ the lockup threshold becomes
+$q\mu_2$. [Lockup extensions](Lockup_Extensions.md)
+
+The mean-occupancy LP is a fluid bound and does not size hard memory. Its
+memory row is slack at the residence times a chain actually produces. Under
+permanent backlog, eager oriented swapping on a chain is exactly a tandem line
+of finite-buffer servers with blocking, which gives the slots per repeater
+needed at each chain length. Corrected balancing needs four slots per repeater
+before it serves at all. [Chain capacity](Chain_Capacity.md)
+
 ## Root implementation
 
 The root-owned `poqi` package implements a prescribed-residence, finite-average-
