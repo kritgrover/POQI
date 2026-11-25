@@ -98,7 +98,7 @@ Three observations follow.
 - **A restriction can create a lockup.** On the 5-cycle at four slots the unrestricted policy has none, and adding the no-shortcut filter introduces one. Forbidding a swap also removes an escape.
 - **Sparse demand on a cycle defeats all of them at small budgets.** Path-oblivious swapping makes pairs that nobody requested. A frozen 5-cycle inventory under both conditions holds elementary pairs 0–1, 0–4 and 2–3 and a 1–4 pair built the long way round through nodes 2 and 3. That pair fills node 1's slot toward 2 and node 4's slot toward 3, so the two links needed for a 0–2 pair cannot generate. A single 1–4 request would release it.
 
-A frozen inventory always consists of pair types outside the demand support. If every pair type had positive demand, requests alone could empty any inventory. The lockup is therefore a property of hard slots, no expiry and demand that covers only some pairs. Local swap conditions reduce it. On general topologies they do not remove it, so some form of expiry or eviction is required, and its cost is the subject of the next section.
+A frozen inventory always consists of pair types outside the demand support. If every pair type had positive demand, requests alone could empty any inventory. The lockup is therefore a property of hard slots, no expiry and demand that covers only some pairs. Local swap conditions reduce it. On general topologies they do not remove it, so some form of expiry or eviction is required. The cost of expiry is the subject of the next section. An eviction rule that needs no clock, and the same search with a shared pool of slots in place of reservations, are in the [recovery baseline](Recovery_Baseline.md).
 
 ## With a cutoff the lockup becomes an outage
 

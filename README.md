@@ -121,6 +121,17 @@ almost one cutoff, and the mean request delay of the unguarded two-slot chain
 approaches half the cutoff. With swap success $q$ the lockup threshold becomes
 $q\mu_2$. [Lockup extensions](Lockup_Extensions.md)
 
+A drop-when-stuck rule gives path-oblivious swapping a recovery baseline for
+the low-memory corner. A blocked generation may evict the pair that holds its
+slot. With zero patience the search finds no lockup in any enumerated case.
+Cycles of 8 and 12 nodes then serve a light load in full from two slots, where
+they serve 11% and 17% without recovery. Waiting before the drop cuts waste and
+lengthens outages, and a cutoff recovers less at the same budgets. With one
+shared pool of slots per node in place of per-neighbor reservations, every
+enumerated case locks, so the lockups are not an artifact of reservations.
+Every simulator result now reports interruptions, outages and starved demand
+pairs. [Recovery baseline](Recovery_Baseline.md)
+
 The mean-occupancy LP is a fluid bound and does not size hard memory. Its
 memory row is slack at the residence times a chain actually produces. Under
 permanent backlog, eager oriented swapping on a chain is exactly a tandem line
@@ -167,7 +178,8 @@ since pytest replaces that directory's contents.
 Output directories must be new. The LP maximizes proportional demand
 satisfaction and can size uniform or weighted **mean** memory budgets. The
 simulator measures integer slot occupancy, admission blocking, inherited expiry,
-per-pair service, and request backlog under an explicit policy. An LP budget does
+per-pair service, interruptions and starvation of each demand pair, and request
+backlog under an explicit policy. An LP budget does
 not prove a hard-slot implementation can attain its target, and prescribed mean
 residence times are independent of the optional simulator cutoff.
 
