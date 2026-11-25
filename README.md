@@ -92,9 +92,18 @@ no-expiry pressure chain eventually locks with probability one. Above that rate
 the queue can grow while service continues, and the probability of locking is
 strictly between zero and one. [Offered-demand theorem and exact probabilities](Saturated_Chain_Theorem.md#offered-demand-at-two-slots)
 
+The saturated rate of pressure relaxation is the known finite-buffer result for
+a single repeater, and so is the two-slot rate. The new statements are the
+two-slot cost of balancing and the lockup. The lockup comes from an endpoint
+swap that the max-min balancing rule permits and that the published
+continuous-distribution protocols exclude. [What is recovered and what is new](Saturated_Chain_Theorem.md#what-is-recovered-and-what-is-new) ·
+[Which swap rules admit the trap](Saturated_Chain_Theorem.md#which-swap-rules-admit-the-trap)
+
 Requiring the two swap inputs to come from different physical neighbors restores
 queue stability on the two-slot, no-expiry chain at every strictly subcritical
-load. With unit-rate links this means every request rate below $2/3$. On the
+load. With unit-rate links this means every request rate below $2/3$. The rule
+is the orientation condition of Talsma, Iñesta and Wehner (2024). The stability
+proof is new. [Source of the rule](Guarded_Chain_Theorem.md#source-of-the-rule-and-what-is-new) On the
 two-slot diamond, each physical neighbor already has a one-slot reservation,
 so the same rule leaves every trajectory unchanged. At four slots on lossy
 diamond links the guard increased measured service, while some intervals with
