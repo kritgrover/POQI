@@ -33,13 +33,62 @@ def _positive(value, name, *, allow_zero=False):
     return float(value)
 
 
+class _Gaps:
+    """Intervals with a request waiting and no completion, for one class of requests.
+
+    Arrivals do not restart an interval. A completion ends it and starts the
+    next one if a request is still waiting. Lengths are clipped to the window,
+    and the interval still open at the horizon counts with its observed length.
+    """
+
+    def __init__(self, start_tick, end_tick, ticks, threshold):
+        self.start_tick, self.end_tick, self.ticks = start_tick, end_tick, ticks
+        self.threshold = None if threshold is None else threshold * ticks
+        self.pending = 0
+        self.opened = None
+        self.lengths = []
+
+    def arrival(self, tick):
+        if self.pending == 0:
+            self.opened = tick
+        self.pending += 1
+
+    def departure(self, tick):
+        if tick > self.start_tick:
+            self.lengths.append(tick - max(self.opened, self.start_tick))
+        self.pending -= 1
+        self.opened = tick if self.pending else None
+
+    def summary(self):
+        lengths = list(self.lengths)
+        trailing = None
+        if self.opened is not None:
+            trailing = self.end_tick - max(self.opened, self.start_tick)
+            lengths.append(trailing)
+        window = self.end_tick - self.start_tick
+        answer = {"interruptions": len(lengths),
+                  "interrupted_time": sum(lengths) / self.ticks,
+                  "interrupted_fraction": sum(lengths) / window,
+                  "longest_interruption": max(lengths, default=0) / self.ticks,
+                  "mean_interruption": sum(lengths) / (len(lengths) * self.ticks) if lengths else None,
+                  "trailing_interruption": None if trailing is None else trailing / self.ticks,
+                  "right_censored": trailing is not None}
+        if self.threshold is not None:
+            long = [length for length in lengths if length >= self.threshold]
+            answer.update(outages=len(long), outage_time=sum(long) / self.ticks,
+                          outage_fraction=sum(long) / window)
+        return answer
+
+
 class _SequenceSimulation:
     priorities = {"expire": 0, "generate": 1, "swap": 2, "request": 3, "finish": 4}
 
     def __init__(self, graph, demand_rate, *, memory_slots, cutoff_time,
                  distillation_pairs, horizon, seed, ticks_per_time_unit,
                  time_unit, swap_policy, admission_policy, request_regime,
-                 initial_pairs, trace, record_events):
+                 initial_pairs, trace, record_events, recovery_policy="none",
+                 stuck_patience=0.0, service_order="fifo", measure_from=0.0,
+                 outage_threshold=None):
         # Keep SeQUeNCe optional for LP-only imports and commands.
         from sequence.kernel.event import Event
         from sequence.kernel.process import Process
@@ -70,6 +119,19 @@ class _SequenceSimulation:
             raise ValueError("pressure_oriented requires distillation_pairs=1")
         if request_regime != "offered":
             raise ValueError("request_regime must be offered (explicit unbounded request FIFO)")
+        if recovery_policy not in {"none", "drop_when_stuck"}:
+            raise ValueError("recovery_policy must be none or drop_when_stuck")
+        if service_order not in {"fifo", "per_pair"}:
+            raise ValueError("service_order must be fifo or per_pair")
+        self.recovery_policy, self.service_order = recovery_policy, service_order
+        self.stuck_patience = _positive(stuck_patience, "stuck_patience", allow_zero=True)
+        self.patience_ticks = self._exact_tick(self.stuck_patience, "stuck_patience")
+        self.measure_from = _positive(measure_from, "measure_from", allow_zero=True)
+        self.window_tick = self._exact_tick(self.measure_from, "measure_from")
+        if self.window_tick >= self.end_tick:
+            raise ValueError("measure_from must be earlier than horizon")
+        self.outage_threshold = (None if outage_threshold is None
+                                 else _positive(outage_threshold, "outage_threshold"))
         self.swap_policy, self.time_unit, self.seed = swap_policy, time_unit, seed
         self.admission_policy = admission_policy
         self.record_events = record_events
@@ -78,6 +140,8 @@ class _SequenceSimulation:
         self.serial = 0
         self.events = []
         self.queue = deque()
+        self.waiting = {}
+        self.backlog = 0
         self.offered = Counter()
         self.completed = Counter()
         self.latencies = []
@@ -88,6 +152,11 @@ class _SequenceSimulation:
         self.max_backlog = 0
         self.initial_count = 0
         self.demand = self._normalize_demand(demand_rate)
+        # Interruption clocks: one per demand pair and one (key None) for all pairs.
+        self.gaps = {key: _Gaps(self.window_tick, self.end_tick, self.ticks, self.outage_threshold)
+                     for key in (None, *self.demand)}
+        self.window_offered = Counter()
+        self.window_completed = Counter()
         self.generation = {}
         for u, v, attributes in graph.edges(data=True):
             if "generation_capacity" not in attributes:
@@ -213,7 +282,7 @@ class _SequenceSimulation:
             self.events.append({"kind": kind, "tick": self.timeline.now(),
                                 "time": self.timeline.now() / self.ticks,
                                 "occupancy": [{"node": n, "slots": self.inventory.occupancy[n]} for n in self.inventory.nodes],
-                                "queue_length": len(self.queue), **details})
+                                "queue_length": self.backlog, **details})
 
     def _under_pressure(self, pivot, pair, input_ids=None):
         """Would these inputs release a full pivot or a full positive origin quota?"""
@@ -271,21 +340,33 @@ class _SequenceSimulation:
         self._log("swap", pivot=pivot, removed=removed, created=[self._pair_record(output)], **details)
         return True
 
+    def _complete(self, queue):
+        now = self.timeline.now()
+        identifier, pair, arrived = queue.popleft()
+        removed = self.inventory.oldest(pair, self.inventory.D)
+        for item_id in removed:
+            self.inventory.remove(item_id, now, "consumption")
+        self.backlog -= 1
+        self.completed[pair] += 1
+        if now >= self.window_tick:
+            self.window_completed[pair] += 1
+        latency = (now - arrived) / self.ticks
+        self.latencies.append(latency)
+        self.latencies_by_pair.setdefault(pair, []).append(latency)
+        self.gaps[pair].departure(now)
+        self.gaps[None].departure(now)
+        self._log("complete", request_id=identifier, endpoints=list(pair), removed=removed, latency=latency)
+
     def _drain(self):
         D = self.inventory.D
-        while self.queue:
-            identifier, pair, arrived = self.queue[0]
-            if len(self.inventory.buffers[pair]) < D:
-                break
-            removed = self.inventory.oldest(pair, D)
-            for item_id in removed:
-                self.inventory.remove(item_id, self.timeline.now(), "consumption")
-            self.queue.popleft()
-            self.completed[pair] += 1
-            latency = (self.timeline.now() - arrived) / self.ticks
-            self.latencies.append(latency)
-            self.latencies_by_pair.setdefault(pair, []).append(latency)
-            self._log("complete", request_id=identifier, endpoints=list(pair), removed=removed, latency=latency)
+        if self.service_order == "per_pair":
+            # Each demand pair is its own FIFO; a waiting pair never holds back another.
+            for pair, queue in self.waiting.items():
+                while queue and len(self.inventory.buffers[pair]) >= D:
+                    self._complete(queue)
+            return
+        while self.queue and len(self.inventory.buffers[self.queue[0][1]]) >= D:
+            self._complete(self.queue)
 
     def _settle(self):
         if self.swap_policy != "none":
@@ -324,6 +405,22 @@ class _SequenceSimulation:
                     break
         self._drain()
 
+    def _drop_and_generate(self, pair, now, deadline, reason):
+        """Drop-when-stuck: evict what has blocked this link for at least the patience."""
+        patience = self.patience_ticks
+        victims = self.inventory.blocking_victims(pair, lambda item: now - item.admitted >= patience)
+        if not victims:
+            return None, reason
+        for identifier in victims:
+            self.inventory.remove(identifier, now, "stuck_drop")
+        self.counters["stuck_drops"] += len(victims)
+        self.counters["stuck_drop_events"] += 1
+        self._log("drop", endpoints=list(pair), removed=victims, blocked_by=reason)
+        item, reason = self.inventory.generate(pair, now, deadline)
+        if reason:
+            raise AssertionError("generation still blocked after dropping its blockers")
+        return item, None
+
     def dispatch(self, kind, *args):
         now = self.timeline.now()
         self.inventory.advance(now)
@@ -353,6 +450,8 @@ class _SequenceSimulation:
                 self.counters["offered_generation"] += 1
                 deadline = None if self.cutoff_ticks is None else now + self.cutoff_ticks
                 item, reason = self.inventory.generate(pair, now, deadline)
+                if reason and self.recovery_policy == "drop_when_stuck":
+                    item, reason = self._drop_and_generate(pair, now, deadline, reason)
                 if reason:
                     self.rejections[reason] += 1
                     self._log("reject", endpoints=list(pair), reason=reason)
@@ -362,12 +461,18 @@ class _SequenceSimulation:
                     self._log("generate", created=[self._pair_record(item)])
         elif kind == "request":
             pair, count = args
+            queue = self.queue if self.service_order == "fifo" else self.waiting.setdefault(pair, deque())
             for _ in range(count):
-                self.queue.append((self.request_id, pair, now))
+                queue.append((self.request_id, pair, now))
+                self.backlog += 1
                 self.offered[pair] += 1
+                if now >= self.window_tick:
+                    self.window_offered[pair] += 1
+                self.gaps[pair].arrival(now)
+                self.gaps[None].arrival(now)
                 self._log("request", request_id=self.request_id, endpoints=list(pair))
                 self.request_id += 1
-            self.max_backlog = max(self.max_backlog, len(self.queue))
+            self.max_backlog = max(self.max_backlog, self.backlog)
         elif kind == "swap":
             pair, count, pivot = args
             for _ in range(count):
@@ -383,12 +488,38 @@ class _SequenceSimulation:
     def _check_conservation(self):
         expected = (self.initial_count + self.counters["admitted_generation"]
                     - (2 * self.inventory.D - 1) * self.counters["swaps"]
-                    - self.inventory.D * sum(self.completed.values()) - self.counters["expired_pairs"])
+                    - self.inventory.D * sum(self.completed.values()) - self.counters["expired_pairs"]
+                    - self.counters["stuck_drops"])
         if len(self.inventory.pairs) != expected:
             raise AssertionError("pair conservation failed")
         if self.counters["offered_generation"] != self.counters["admitted_generation"] + sum(self.rejections.values()):
             raise AssertionError("generation admission accounting failed")
         self.inventory.validate()
+
+    def _continuity(self):
+        """Interruptions and starvation on the window [measure_from, horizon)."""
+        window = self.horizon - self.measure_from
+        rows = []
+        for pair, demand in self.demand.items():
+            gaps = self.gaps[pair].summary()
+            done = self.window_completed[pair]
+            rows.append({"endpoints": list(pair), "demand_rate": demand,
+                         "offered_requests": self.window_offered[pair],
+                         "completed_requests": done, "throughput": done / window,
+                         "satisfaction": done / (window * demand) if demand else None,
+                         "waiting_at_horizon": self.gaps[pair].pending,
+                         # Something waited inside the window and nothing completed in it.
+                         "starved": done == 0 and gaps["interrupted_time"] > 0, **gaps})
+        ratios = [row["satisfaction"] for row in rows if row["satisfaction"] is not None]
+        fairness = (sum(ratios) ** 2 / (len(ratios) * sum(r * r for r in ratios))
+                    if any(ratios) else None)
+        return {"window": [self.measure_from, self.horizon], "outage_threshold": self.outage_threshold,
+                "definition": "interruption: a request of the class waits and none of that class completes; "
+                              "lengths are clipped to the window and an unfinished one counts to the horizon",
+                "all_pairs": self.gaps[None].summary(),
+                "starved_pairs": sum(row["starved"] for row in rows),
+                "minimum_satisfaction": min(ratios, default=None), "jain_fairness": fairness,
+                "by_pair": rows}
 
     def run(self):
         self.timeline.init()
@@ -423,6 +554,9 @@ class _SequenceSimulation:
                             "mean_completed_latency": sum(latencies) / len(latencies) if latencies else None})
         completed = sum(self.completed.values())
         offered = sum(self.offered.values())
+        unserved = sorted(entry for queue in (self.queue, *self.waiting.values()) for entry in queue)
+        if len(unserved) != self.backlog or offered - completed != self.backlog:
+            raise AssertionError("request conservation failed")
         occupancy = [{"node": node, "memory_slots": inv.limits[node],
                       "mean": inv.area[node] / (self.ticks * self.horizon),
                       "peak": inv.peak_occupancy[node], "final": inv.occupancy[node],
@@ -435,7 +569,13 @@ class _SequenceSimulation:
             "timeline_schedule_counter": self.timeline.schedule_counter, "seed": self.seed,
             "cutoff_time": self.cutoff, "distillation_pairs": inv.D,
             "swap_policy": self.swap_policy, "admission_policy": self.admission_policy,
-            "request_regime": "offered-unbounded-global-fifo", "warmup": 0,
+            "request_regime": ("offered-unbounded-global-fifo" if self.service_order == "fifo"
+                               else "offered-unbounded-per-pair-fifo"),
+            "service_order": self.service_order, "warmup": 0,
+            "recovery_policy": self.recovery_policy,
+            **({"stuck_patience": self.stuck_patience, "stuck_drops": self.counters["stuck_drops"],
+                "stuck_drop_events": self.counters["stuck_drop_events"]}
+               if self.recovery_policy == "drop_when_stuck" else {}),
             "scheduling": "expiry, generation, explicit swap, request; automatic swap-to-quiescence then FIFO after each event before horizon",
             "rounding": "Poisson arrival times rounded to nearest timeline tick; horizon arrivals excluded",
             "initial_pairs": self.initial_count, "remaining_pairs": len(inv.pairs),
@@ -447,18 +587,19 @@ class _SequenceSimulation:
                if self.swap_policy in {"pressure_relaxed", "pressure_oriented"} else {}),
             "infeasible_swap_attempts": self.counters["infeasible_swap_attempts"],
             "stale_expiry_events": self.counters["stale_expiry_events"],
-            "offered_requests": offered, "completed_requests": completed, "unserved_requests": len(self.queue),
-            "maximum_backlog": self.max_backlog, "backlog_growth_rate": len(self.queue) / self.horizon,
+            "offered_requests": offered, "completed_requests": completed, "unserved_requests": self.backlog,
+            "maximum_backlog": self.max_backlog, "backlog_growth_rate": self.backlog / self.horizon,
             "throughput": completed / self.horizon,
             "mean_completed_latency": sum(self.latencies) / completed if completed else None,
             "latency_interpretation": "completed requests only, censored backlog retained; no stationarity claim",
-            "service_by_pair": service, "occupancy_by_node": occupancy,
+            "service_by_pair": service, "service_continuity": self._continuity(),
+            "occupancy_by_node": occupancy,
             "reservations": [{"node": node, "neighbors": [{"neighbor": neighbor, "slots": quota} for neighbor, quota in quotas.items()]} for node, quotas in inv.quotas.items()],
             "residence_by_pair": episodes,
             "occupancy_episode_residual": (total_area - total_residence) / self.ticks,
             "pair_conservation_residual": 0,
             "live_pairs": [self._pair_record(item) for item in inv.pairs.values()],
-            "unserved_queue": [{"id": identifier, "endpoints": list(pair), "arrival_tick": arrived, "age": (self.end_tick - arrived) / self.ticks} for identifier, pair, arrived in self.queue],
+            "unserved_queue": [{"id": identifier, "endpoints": list(pair), "arrival_tick": arrived, "age": (self.end_tick - arrived) / self.ticks} for identifier, pair, arrived in unserved],
             "events": self.events,
         })
 
@@ -468,7 +609,8 @@ def run_simulation(graph, demand_rate, *, memory_slots=None, cutoff_time=None,
                    ticks_per_time_unit=1000000, time_unit="abstract",
                    swap_policy="balancing", admission_policy="reserved",
                    request_regime="offered", initial_pairs=None, trace=None,
-                   record_events=True):
+                   record_events=True, recovery_policy="none", stuck_patience=0.0,
+                   service_order="fifo", measure_from=0.0, outage_threshold=None):
     """Run real SeQUeNCe events with hard slots and optional inherited expiry.
 
     ``trace`` replaces Poisson input with explicit events of the form
@@ -480,6 +622,15 @@ def run_simulation(graph, demand_rate, *, memory_slots=None, cutoff_time=None,
     ``initial_pairs`` accepts physical-edge counts or zero-age entry records.
     Every run observes [0, horizon); expiries at horizon are processed before
     the finish marker so final inventory is alive at the observation boundary.
+
+    ``recovery_policy='drop_when_stuck'`` lets a blocked generation evict the
+    pair that holds its slot, provided that pair is not an elementary pair of
+    the same link and has been stored for at least ``stuck_patience``.
+    ``service_order='per_pair'`` serves each demand pair from its own FIFO.
+    ``service_continuity`` reports interruptions on [``measure_from``, horizon):
+    intervals with a request waiting and no completion, per demand pair and
+    for all pairs together. ``outage_threshold`` sets the length from which an
+    interruption counts as an outage.
     """
     return _SequenceSimulation(graph, demand_rate, memory_slots=memory_slots,
                                cutoff_time=cutoff_time, distillation_pairs=distillation_pairs,
@@ -487,7 +638,9 @@ def run_simulation(graph, demand_rate, *, memory_slots=None, cutoff_time=None,
                                time_unit=time_unit, swap_policy=swap_policy,
                                admission_policy=admission_policy, request_regime=request_regime,
                                initial_pairs=initial_pairs, trace=trace,
-                               record_events=record_events).run()
+                               record_events=record_events, recovery_policy=recovery_policy,
+                               stuck_patience=stuck_patience, service_order=service_order,
+                               measure_from=measure_from, outage_threshold=outage_threshold).run()
 
 
 def sequence_smoke():

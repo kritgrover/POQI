@@ -106,6 +106,43 @@ class Inventory:
                 return "neighbor_reservation"
         return None
 
+    def blocking_victims(self, endpoints, eligible=None):
+        """Stored pairs whose removal admits a blocked generation on this edge.
+
+        At each blocked end the candidate is the longest-stored pair that holds
+        the contested slot: under reserved admission a qubit generated toward the
+        same neighbor, under tail drop any qubit at the node. A pair that is itself
+        an elementary pair of this edge is never a candidate, because replacing it
+        by a new one changes nothing. ``eligible`` filters candidates, for example
+        by age. Returns ``None`` unless every blocked end has a candidate, so
+        nothing is dropped in vain, and ``[]`` if the generation is not blocked.
+        """
+        if endpoints not in self.physical_edges:
+            raise ValueError("physical generation requires a physical edge")
+        u, v = endpoints
+        own = {u: v, v: u}
+        chosen = []
+        for node, neighbor in (endpoints, endpoints[::-1]):
+            limit = self.limits[node]
+            if limit is None:
+                continue
+            reserved = self.admission_policy == "reserved" and node in self.quotas
+            freed = sum(node in self.pairs[i].endpoints for i in chosen)
+            freed_origin = sum(self.pairs[i].origins.get(node) == neighbor for i in chosen)
+            blocked = self.occupancy[node] - freed >= limit or (
+                reserved and self.origin_occupancy[node, neighbor] - freed_origin >= self.quotas[node][neighbor])
+            if not blocked:
+                continue
+            candidates = [item for item in self.pairs.values()
+                          if node in item.endpoints and item.identifier not in chosen
+                          and (not reserved or item.origins[node] == neighbor)
+                          and not (item.endpoints == endpoints and item.origins == own)
+                          and (eligible is None or eligible(item))]
+            if not candidates:
+                return None
+            chosen.append(min(candidates, key=lambda item: (item.admitted, item.identifier)).identifier)
+        return chosen
+
     def _insert(self, endpoints, tick, deadline, origins, parents=()):
         item = Pair(self.next_id, endpoints, tick, deadline, origins, parents)
         self.next_id += 1
