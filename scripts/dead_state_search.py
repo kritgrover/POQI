@@ -21,6 +21,14 @@ This is the swap condition of Iñesta and Wehner, Phys. Rev. A 108, 052615 (2023
 new endpoints. It implies the no-shortcut condition.
 ``Arm(..., asap=True)`` drops the count thresholds, so every physically possible
 swap that the selected policy's input rule allows is taken at once.
+
+``--admission tail_drop`` replaces per-neighbor reservations by one shared pool
+of slots at each node. ``--drop-stuck`` adds the drop-when-stuck recovery rule
+with zero patience: a blocked generation evicts the longest-stored pair that
+holds its slot and is not an elementary pair of the same link. Both use the
+production inventory code. The victim is the longest-stored candidate, which
+can compare pairs in different buffers, so with the drop rule a state records
+the storage order of all pairs and not only the order within each buffer.
 """
 
 import argparse
@@ -75,7 +83,8 @@ class Arm:
     _swap = _SequenceSimulation._swap
     _pair_record = staticmethod(_SequenceSimulation._pair_record)
 
-    def __init__(self, edges, demand, memory, policy, *, no_shortcut=False, geodesic=False, asap=False):
+    def __init__(self, edges, demand, memory, policy, *, no_shortcut=False, geodesic=False, asap=False,
+                 admission="reserved", drop_stuck=False):
         self.graph = nx.Graph()
         self.graph.add_nodes_from(range(1 + max(max(edge) for edge in edges)))
         self.graph.add_edges_from(edges)
@@ -85,7 +94,7 @@ class Arm:
         self.memory = dict(enumerate(memory)) if isinstance(memory, (tuple, list)) else memory
         self.swap_policy, self.no_shortcut, self.geodesic, self.asap = policy, no_shortcut, geodesic, asap
         self.distance = dict(nx.all_pairs_shortest_path_length(self.graph))
-        self.admission_policy = "reserved"
+        self.admission_policy, self.drop_stuck = admission, drop_stuck
         self.timeline = _Clock()
         self.counters = Counter()
         self.swap_log = []
@@ -160,13 +169,17 @@ class Arm:
         self._drain()
 
     def restore(self, signature):
-        self.inventory = Inventory(self.graph, self.memory, admission_policy="reserved")
-        for endpoints, pairs in signature:
-            for first, second in pairs:
-                self.inventory._insert(endpoints, 0, None, {endpoints[0]: first, endpoints[1]: second})
+        self.inventory = Inventory(self.graph, self.memory, admission_policy=self.admission_policy)
+        self.dropped = 0
+        for endpoints, (first, second) in stored_pairs(signature):
+            self.inventory._insert(endpoints, 0, None, {endpoints[0]: first, endpoints[1]: second})
 
     def signature(self):
         inv = self.inventory
+        if self.drop_stuck:
+            # Storage order of every pair. Identifiers increase with storage time.
+            return tuple((item.endpoints, (item.origins[item.endpoints[0]], item.origins[item.endpoints[1]]))
+                         for _, item in sorted(inv.pairs.items()))
         return tuple(sorted(
             (endpoints, tuple((inv.pairs[i].origins[endpoints[0]], inv.pairs[i].origins[endpoints[1]])
                               for i in sorted(ids)))
@@ -179,11 +192,23 @@ class Arm:
         self.swap_log = []
         kind, pair = event
         if kind == "generate":
-            self.inventory.generate(pair, 0, None)
+            self.generate(pair)
         else:
             self.pending[self.demand.index(pair)] += 1
         self._settle()
         return self.signature(), tuple(self.pending), tuple(self.done)
+
+    def generate(self, pair):
+        """One generation, with the zero-patience drop rule if it is switched on."""
+        _, reason = self.inventory.generate(pair, 0, None)
+        if reason and self.drop_stuck:
+            victims = self.inventory.blocking_victims(pair)
+            if victims:
+                for identifier in victims:
+                    self.inventory.remove(identifier, 0, "stuck_drop")
+                self.dropped += len(victims)
+                if self.inventory.generate(pair, 0, None)[1]:
+                    raise AssertionError("generation still blocked after dropping its blockers")
 
     def events(self):
         return [("generate", edge) for edge in self.edges] + [("request", pair) for pair in self.demand]
@@ -240,21 +265,34 @@ def witness(parent, state):
     return path[::-1]
 
 
+def stored_pairs(signature):
+    """Pairs of either signature form as ``(endpoints, (origin, origin))``, in insertion order."""
+    if signature and isinstance(signature[0][1][0], tuple):
+        return [(endpoints, origins) for endpoints, pairs in signature for origins in pairs]
+    return list(signature)
+
+
 def describe(signature):
-    """Readable inventory. A qubit's origin is the neighbor it was generated toward."""
+    """Readable inventory. A qubit's origin is the neighbor it was generated toward.
+
+    A storage-ordered signature is listed by pair type, so two orders of the
+    same pairs read the same.
+    """
     parts = []
-    for endpoints, pairs in signature:
-        for first, second in pairs:
-            own = first == endpoints[1] and second == endpoints[0]
-            tag = "" if own else f"[slots {endpoints[0]}>{first},{endpoints[1]}>{second}]"
-            parts.append(f"{endpoints[0]}{endpoints[1]}{tag}")
+    entries = stored_pairs(signature)
+    if signature and not isinstance(signature[0][1][0], tuple):
+        entries = sorted(entries)
+    for endpoints, (first, second) in entries:
+        own = first == endpoints[1] and second == endpoints[0]
+        tag = "" if own else f"[slots {endpoints[0]}>{first},{endpoints[1]}>{second}]"
+        parts.append(f"{endpoints[0]}{endpoints[1]}{tag}")
     return " ".join(parts) or "empty"
 
 
 def analyse(arm):
     graph, parent = explore(arm)
     classes = list(nx.attracting_components(graph))
-    inventories = {state[0] for state in graph}
+    inventories = {describe(state[0]) for state in graph}
     summary = {"states": graph.number_of_nodes(), "inventories": len(inventories), "closed_classes": []}
     for component in classes:
         served = set()
@@ -263,6 +301,9 @@ def analyse(arm):
                 if target in component:
                     served |= data["served"]
         signatures = sorted({state[0] for state in component})
+        if arm.drop_stuck:
+            # Storage orders of the same pairs are one inventory.
+            signatures = list({describe(s): s for s in signatures}.values())
         first = min(component, key=lambda s: len(witness(parent, s)))
         entry = {"states": len(component), "inventories": len(signatures),
                  "served": [list(arm.demand[i]) for i in sorted(served)],
@@ -305,7 +346,7 @@ def check_copy(arm, graph):
             arm.pending, arm.done = list(concrete), [0] * len(arm.demand)
             kind, pair = event
             if kind == "generate":
-                arm.inventory.generate(pair, 0, None)
+                arm.generate(pair)
             else:
                 arm.pending[arm.demand.index(pair)] += 1
             arm._filtered_settle(False)
@@ -313,22 +354,28 @@ def check_copy(arm, graph):
                 raise AssertionError("copied settling loop disagrees with the repository policy")
 
 
-def check_against_simulator(topology, memory, policy, samples=200, length=40, seed=20261125):
-    """Random event words through this driver and through the public simulator."""
+def check_against_simulator(topology, memory, policy, samples=200, length=40, seed=20261125,
+                            admission="reserved", drop_stuck=False):
+    """Random event words through this driver and through the public simulator.
+
+    The simulator serves each demand pair from its own queue here, which is the
+    search's service rule, so topologies with several demand pairs can be compared.
+    """
     edges, demand = TOPOLOGIES[topology]
-    if len(demand) != 1:
-        raise ValueError("the public simulator comparison needs a single demand class")
     rng = random.Random(seed)
-    arm = Arm(edges, demand, memory, policy)
+    arm = Arm(edges, demand, memory, policy, admission=admission, drop_stuck=drop_stuck)
     for _ in range(samples):
         word = [rng.choice(arm.events()) for _ in range(length)]
-        signature, pending, completed = (), [0], 0
+        signature, pending, completed, dropped = (), [0] * len(demand), [0] * len(demand), 0
         for event in word:
             signature, pending, done = arm.apply(signature, pending, event)
             pending = list(pending)
-            completed += done[0]
+            completed = [a + b for a, b in zip(completed, done)]
+            dropped += arm.dropped
         nx.set_edge_attributes(arm.graph, 1.0, "generation_capacity")
-        result = run_simulation(arm.graph, {demand[0]: 1.0}, memory_slots=memory, swap_policy=policy,
+        result = run_simulation(arm.graph, {pair: 1.0 for pair in demand}, memory_slots=memory,
+                                swap_policy=policy, admission_policy=admission, service_order="per_pair",
+                                recovery_policy="drop_when_stuck" if drop_stuck else "none",
                                 horizon=length + 2, ticks_per_time_unit=1,
                                 trace=[{"kind": kind, "endpoints": pair, "time": i + 1}
                                        for i, (kind, pair) in enumerate(word)])
@@ -336,8 +383,11 @@ def check_against_simulator(topology, memory, policy, samples=200, length=40, se
                        tuple(sorted((o["node"], o["neighbor"]) for o in item["origins"])))
                       for item in result["live_pairs"])
         mine = sorted((endpoints, tuple(sorted(zip(endpoints, origins))))
-                      for endpoints, pairs in signature for origins in pairs)
-        if live != mine or result["completed_requests"] != completed or result["unserved_requests"] != pending[0]:
+                      for endpoints, origins in stored_pairs(signature))
+        served = [row["completed_requests"] for row in result["service_by_pair"]]
+        waiting = [row["unserved_requests"] for row in result["service_by_pair"]]
+        if (live != mine or served != completed or waiting != pending
+                or result.to_dict().get("stuck_drops", 0) != dropped):
             raise AssertionError(f"driver disagrees with the simulator on {word}")
     return samples
 
@@ -351,21 +401,26 @@ def main():
     parser.add_argument("--policies", nargs="+", default=["pressure_relaxed", "pressure_oriented"])
     parser.add_argument("--no-shortcut", action="store_true")
     parser.add_argument("--geodesic", action="store_true")
+    parser.add_argument("--admission", choices=["reserved", "tail_drop"], default="reserved")
+    parser.add_argument("--drop-stuck", action="store_true",
+                        help="add the zero-patience drop-when-stuck recovery rule")
     parser.add_argument("--check", action="store_true", help="also run the two self-checks")
     parser.add_argument("--all-rules", action="store_true",
                         help="compact verdicts for the five swap rules in RULES")
     args = parser.parse_args()
     edges, demand = TOPOLOGIES[args.topology]
+    variant = {"admission": args.admission, "drop_stuck": args.drop_stuck}
     rows = []
     if args.all_rules:
         layouts = [tuple(int(v) for v in layout.split(",")) for layout in args.layouts] or args.memory
         for memory in layouts:
             for name, (policy, no_shortcut, geodesic) in RULES.items():
                 summary, _, _ = analyse(Arm(edges, demand, memory, policy,
-                                            no_shortcut=no_shortcut, geodesic=geodesic))
+                                            no_shortcut=no_shortcut, geodesic=geodesic, **variant))
                 classes = summary["closed_classes"]
                 print(json.dumps({
-                    "topology": args.topology, "memory": memory, "rule": name, "verdict": summary["verdict"],
+                    "topology": args.topology, "memory": memory, "rule": name, **variant,
+                    "verdict": summary["verdict"],
                     "states": summary["states"], "inventories": summary["inventories"],
                     "dead_classes": sum(not c["served"] for c in classes),
                     "partly_starved_classes": sum(bool(c["served"]) and bool(c["starved"]) for c in classes),
@@ -375,14 +430,16 @@ def main():
     budgets = [tuple(int(v) for v in layout.split(",")) for layout in args.layouts] or args.memory
     for memory in budgets:
         for policy in args.policies:
-            arm = Arm(edges, demand, memory, policy, no_shortcut=args.no_shortcut, geodesic=args.geodesic)
+            arm = Arm(edges, demand, memory, policy, no_shortcut=args.no_shortcut, geodesic=args.geodesic,
+                      **variant)
             summary, graph, _ = analyse(arm)
             if args.check:
-                check_copy(Arm(edges, demand, memory, policy), graph)
-                if len(demand) == 1 and not (args.no_shortcut or args.geodesic):
-                    summary["simulator_words_checked"] = check_against_simulator(args.topology, memory, policy)
+                check_copy(Arm(edges, demand, memory, policy, **variant), graph)
+                if not (args.no_shortcut or args.geodesic):
+                    summary["simulator_words_checked"] = check_against_simulator(
+                        args.topology, memory, policy, **variant)
             rows.append({"topology": args.topology, "memory": memory, "policy": policy,
-                         "no_shortcut": args.no_shortcut, "geodesic": args.geodesic, **summary})
+                         "no_shortcut": args.no_shortcut, "geodesic": args.geodesic, **variant, **summary})
             print(json.dumps(rows[-1]), flush=True)
 
 
