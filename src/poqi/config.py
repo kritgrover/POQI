@@ -181,12 +181,14 @@ def parse_config(data: dict) -> Config:
     if sim.get("cutoff_time") is not None:
         sim["cutoff_time"] = _number(sim["cutoff_time"], "simulation.cutoff_time", positive=True)
     for key, choices in {
-        "swap_policy": ("balancing", "pressure_relaxed", "physical", "none"),
+        "swap_policy": ("balancing", "pressure_relaxed", "pressure_oriented", "physical", "none"),
         "admission_policy": ("reserved", "tail_drop"),
         "request_regime": ("offered",),
     }.items():
         if key in sim and sim[key] not in choices:
             raise ValueError(f"simulation.{key} must be one of {choices}")
+    if sim.get("swap_policy") == "pressure_oriented" and distillation != 1:
+        raise ValueError("pressure_oriented requires distillation_pairs=1")
     if "record_events" in sim and not isinstance(sim["record_events"], bool):
         raise ValueError("simulation.record_events must be boolean")
     if sim.get("initial_pairs") is not None:

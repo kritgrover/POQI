@@ -64,8 +64,10 @@ class _SequenceSimulation:
             raise ValueError("time_unit must be a nonempty label")
         if isinstance(seed, bool) or not isinstance(seed, int) or seed < 0:
             raise ValueError("seed must be a nonnegative integer")
-        if swap_policy not in {"balancing", "pressure_relaxed", "physical", "none"}:
-            raise ValueError("swap_policy must be balancing, pressure_relaxed, physical, or none")
+        if swap_policy not in {"balancing", "pressure_relaxed", "pressure_oriented", "physical", "none"}:
+            raise ValueError("swap_policy must be balancing, pressure_relaxed, pressure_oriented, physical, or none")
+        if swap_policy == "pressure_oriented" and distillation_pairs != 1:
+            raise ValueError("pressure_oriented requires distillation_pairs=1")
         if request_regime != "offered":
             raise ValueError("request_regime must be offered (explicit unbounded request FIFO)")
         self.swap_policy, self.time_unit, self.seed = swap_policy, time_unit, seed
@@ -213,7 +215,7 @@ class _SequenceSimulation:
                                 "occupancy": [{"node": n, "slots": self.inventory.occupancy[n]} for n in self.inventory.nodes],
                                 "queue_length": len(self.queue), **details})
 
-    def _under_pressure(self, pivot, pair):
+    def _under_pressure(self, pivot, pair, input_ids=None):
         """Would these inputs release a full pivot or a full positive origin quota?"""
         inv = self.inventory
         limit = inv.limits[pivot]
@@ -222,17 +224,43 @@ class _SequenceSimulation:
         if inv.occupancy[pivot] >= limit:
             return True
         if self.admission_policy == "reserved":
-            for partner in pair:
-                inputs = inv.oldest(inv.pair(pivot, partner), inv.D)
-                for identifier in inputs:
-                    origin = inv.pairs[identifier].origins[pivot]
-                    quota = inv.quotas[pivot][origin]
-                    if quota > 0 and inv.origin_occupancy[pivot, origin] >= quota:
-                        return True
+            if input_ids is None:
+                input_ids = (identifier for partner in pair
+                             for identifier in inv.oldest(inv.pair(pivot, partner), inv.D))
+            for identifier in input_ids:
+                origin = inv.pairs[identifier].origins[pivot]
+                quota = inv.quotas[pivot][origin]
+                if quota > 0 and inv.origin_occupancy[pivot, origin] >= quota:
+                    return True
         return False
 
-    def _swap(self, pivot, pair, *, pressure_relaxed=False):
-        output, removed = self.inventory.swap(pivot, pair, self.timeline.now())
+    def _oriented_inputs(self, pivot, pair, require_pressure):
+        """First eligible two-qubit input in the ordinary deadline/age/ID order."""
+        inv = self.inventory
+        oldest_by_origin = []
+        for partner in pair:
+            # Eligibility depends only on the two origins, so a later pair of
+            # the same origin can never precede its first eligible representative.
+            first = {}
+            for identifier in inv.oldest(inv.pair(pivot, partner)):
+                first.setdefault(inv.pairs[identifier].origins[pivot], identifier)
+            oldest_by_origin.append(first)
+        for left_origin, left_id in oldest_by_origin[0].items():
+            for right_origin, right_id in oldest_by_origin[1].items():
+                if left_origin == right_origin:
+                    continue
+                input_ids = (left_id, right_id)
+                if not require_pressure or self._under_pressure(pivot, pair, input_ids):
+                    return input_ids
+        return None
+
+    def _swap(self, pivot, pair, *, pressure_relaxed=False, input_ids=None):
+        if self.swap_policy == "pressure_oriented" and input_ids is None:
+            # Explicit trace swaps also respect this policy's physical-origin restriction.
+            input_ids = self._oriented_inputs(pivot, pair, require_pressure=False)
+            if input_ids is None:
+                return False
+        output, removed = self.inventory.swap(pivot, pair, self.timeline.now(), input_ids=input_ids)
         if output is None:
             return False
         self.counters["swaps"] += 1
@@ -273,16 +301,24 @@ class _SequenceSimulation:
                         right = len(self.inventory.buffers[self.inventory.pair(y, pivot)])
                         output = len(self.inventory.buffers[pair])
                         preferred = output + 1 <= min(left - self.inventory.D, right - self.inventory.D)
-                        relaxed = (self.swap_policy == "pressure_relaxed" and not preferred
+                        # First use the original policy's oldest inputs to determine
+                        # partner-pair eligibility, even if the guard must replace one.
+                        relaxed = (self.swap_policy in {"pressure_relaxed", "pressure_oriented"} and not preferred
                                    and output <= min(left - self.inventory.D, right - self.inventory.D)
                                    and self._under_pressure(pivot, pair))
-                        if self.swap_policy in {"balancing", "pressure_relaxed"} and not (preferred or relaxed):
+                        if self.swap_policy != "physical" and not (preferred or relaxed):
                             self.counters["heuristic_refusals"] += 1
                             continue
-                        candidates.append((output, self.inventory.order[x], self.inventory.order[y], pair, relaxed))
+                        input_ids = None
+                        if self.swap_policy == "pressure_oriented":
+                            input_ids = self._oriented_inputs(pivot, pair, require_pressure=relaxed)
+                            if input_ids is None:
+                                self.counters["heuristic_refusals"] += 1
+                                continue
+                        candidates.append((output, self.inventory.order[x], self.inventory.order[y], pair, relaxed, input_ids))
                     if candidates:
                         selected = min(candidates)
-                        self._swap(pivot, selected[3], pressure_relaxed=selected[4])
+                        self._swap(pivot, selected[3], pressure_relaxed=selected[4], input_ids=selected[5])
                         changed = True
                 if not changed:
                     break
@@ -408,7 +444,7 @@ class _SequenceSimulation:
             "expired_pairs": self.counters["expired_pairs"], "swaps": self.counters["swaps"],
             "heuristic_refusals": self.counters["heuristic_refusals"],
             **({"pressure_relaxed_swaps": self.counters["pressure_relaxed_swaps"]}
-               if self.swap_policy == "pressure_relaxed" else {}),
+               if self.swap_policy in {"pressure_relaxed", "pressure_oriented"} else {}),
             "infeasible_swap_attempts": self.counters["infeasible_swap_attempts"],
             "stale_expiry_events": self.counters["stale_expiry_events"],
             "offered_requests": offered, "completed_requests": completed, "unserved_requests": len(self.queue),
@@ -437,7 +473,9 @@ def run_simulation(graph, demand_rate, *, memory_slots=None, cutoff_time=None,
 
     ``trace`` replaces Poisson input with explicit events of the form
     ``{time, kind, endpoints, count?}``; explicit ``swap`` also takes ``pivot``
-    and attempts a physically feasible swap independent of automatic policy.
+    and bypasses automatic count and pressure thresholds. The D=1
+    ``pressure_oriented`` policy also requires the two selected pivot qubits
+    to have different physical generation neighbors, including in explicit swaps.
     Set ``swap_policy='none'`` when testing an entirely explicit trace.
     ``initial_pairs`` accepts physical-edge counts or zero-age entry records.
     Every run observes [0, horizon); expiries at horizon are processed before

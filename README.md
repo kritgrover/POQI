@@ -76,9 +76,30 @@ are separate from the original continuous-time experiments; see the
 The [matched concurrent-service follow-up](QCAST_Concurrent_Results.md) applies
 the same request-service rule to every system. Its 560-run diamond comparison
 finds a Q-CAST advantage with four-qubit lossy links, an unresolved throughput
-difference from persistent pressure at four qubits with perfect links, and a
-two-qubit Q-CAST demand-coverage failure hidden by total throughput. See the
-[fixed follow-up protocol](QCAST_Concurrent_Protocol.md) for scope and controls.
+difference from persistent pressure at four qubits with perfect links, and two
+distinct failures at two qubits with lossy links. Reversing the order of tied
+Q-CAST demands restored service to the previously unserved diagonal in all ten
+seeds. Persistent POQI without expiry reached a permanently frozen inventory
+in all ten seeds under the same workload. [Diamond diagnostics](QCAST_Concurrent_Results.md#why-the-two-qubit-diamond-failed)
+
+The [saturated-chain theorem](Saturated_Chain_Theorem.md) gives an exact memory
+tradeoff for a three-node chain with a continuously waiting endpoint request,
+fixed neighbor reservations and no expiry. Pressure relaxation achieves the
+same long-run service rate as balancing with two fewer slots per node, even
+when the two links generate at different rates. With just two slots, a backlog
+that can empty changes the result. At or below that saturated rate, the
+no-expiry pressure chain eventually locks with probability one. Above that rate
+the queue can grow while service continues, and the probability of locking is
+strictly between zero and one. [Offered-demand theorem and exact probabilities](Saturated_Chain_Theorem.md#offered-demand-at-two-slots)
+
+Requiring the two swap inputs to come from different physical neighbors restores
+queue stability on the two-slot, no-expiry chain at every strictly subcritical
+load. With unit-rate links this means every request rate below $2/3$. On the
+two-slot diamond, each physical neighbor already has a one-slot reservation,
+so the same rule leaves every trajectory unchanged. At four slots on lossy
+diamond links the guard increased measured service, while some intervals with
+pending demand and no completion grew longer. [Guarded chain proof](Guarded_Chain_Theorem.md) ·
+[Matched diamond experiments](Guarded_Diamond_Results.md)
 
 ## Root implementation
 

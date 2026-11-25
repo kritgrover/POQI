@@ -139,21 +139,28 @@ class Inventory:
         self.departures_by_reason[reason] += 1
         return item
 
-    def oldest(self, endpoints, count):
+    def oldest(self, endpoints, count=None):
         # Earliest deadline first, then oldest buffer episode, then identifier.
         return sorted(self.buffers[endpoints], key=lambda identifier: (
             self.pairs[identifier].deadline if self.pairs[identifier].deadline is not None else math.inf,
             self.pairs[identifier].admitted, identifier))[:count]
 
-    def swap(self, pivot, endpoints, tick):
+    def swap(self, pivot, endpoints, tick, *, input_ids=None):
         x, y = endpoints
         if pivot in endpoints or pivot not in self.order:
             raise ValueError("swap pivot must be a third known node")
         left, right = self.pair(pivot, x), self.pair(pivot, y)
         if len(self.buffers[left]) < self.D or len(self.buffers[right]) < self.D:
             return None, []
+        if input_ids is None:
+            left_ids, right_ids = self.oldest(left, self.D), self.oldest(right, self.D)
+        else:
+            # A two-qubit swap may select specific physical pairs from mixed-origin buffers.
+            left_id, right_id = input_ids
+            if self.D != 1 or left_id not in self.buffers[left] or right_id not in self.buffers[right]:
+                raise ValueError("selected swap inputs must belong to their respective buffers at D=1")
+            left_ids, right_ids = [left_id], [right_id]
         self.advance(tick)
-        left_ids, right_ids = self.oldest(left, self.D), self.oldest(right, self.D)
         origins = {x: self.pairs[left_ids[0]].origins[x], y: self.pairs[right_ids[0]].origins[y]}
         parents = tuple(left_ids + right_ids)
         deadlines = [self.pairs[i].deadline for i in parents if self.pairs[i].deadline is not None]

@@ -32,14 +32,15 @@ class PoqiOpportunityArm:
 
     _settle = _SequenceSimulation._settle
     _under_pressure = _SequenceSimulation._under_pressure
+    _oriented_inputs = _SequenceSimulation._oriented_inputs
     _swap = _SequenceSimulation._swap
     _pair_record = staticmethod(_SequenceSimulation._pair_record)
 
     def __init__(self, graph, memory, policy, persistence, cutoff=None, admission="reserved"):
         if isinstance(memory, bool) or not isinstance(memory, int) or memory < 0:
             raise ValueError("memory must be a finite nonnegative integer")
-        if policy not in {"balancing", "pressure_relaxed"}:
-            raise ValueError("pilot policy must be balancing or pressure_relaxed")
+        if policy not in {"balancing", "pressure_relaxed", "pressure_oriented"}:
+            raise ValueError("pilot policy must be balancing, pressure_relaxed, or pressure_oriented")
         if type(persistence) is not bool:
             raise ValueError("persistence must be boolean")
         if cutoff is not None and (isinstance(cutoff, bool) or not isinstance(cutoff, int) or cutoff < 1):
