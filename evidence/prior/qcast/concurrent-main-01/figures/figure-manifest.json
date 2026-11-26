@@ -1,0 +1,39 @@
+{
+  "input_status": "passed",
+  "horizon": 400,
+  "warmup": 100,
+  "seeds": [
+    7271,
+    7272,
+    7273,
+    7274,
+    7275,
+    7276,
+    7277,
+    7278,
+    7279,
+    7280
+  ],
+  "figures_service_mode": "concurrent_per_pair",
+  "csv_service_modes": [
+    "fifo",
+    "concurrent_per_pair"
+  ],
+  "intervals": "Pointwise 95% Student t intervals across seed observations; undefined entries retained with n and undefined counts.",
+  "late_throughput_relative_to_nominal_rate": "Per-seed useful completions in (warmup,H] / (H-warmup) / nominal pair arrival rate; not a completion fraction.",
+  "cohort_completion_fraction_full_horizon": "Per-seed (offered_total - pending_at_H) / offered_total for all arrivals in [0,H), including final-slot arrivals; undefined if offered_total=0.",
+  "input_hashes": {
+    "manifest.json": "80fe73667b2c701af3cb03bced88cc2b7461ac5efd40398c76ec3b0b34103e5b",
+    "observations.json": "4bed6110ae90403d0f1ae2ef7329ab13105a685ef3cf21575120cef6d53fd5ea",
+    "report.json": "99e3eb9067d3a6b649b9135a06ca51f8f911ec66364cd1a9cdf3ef4661caef78"
+  },
+  "script_sha256": "2f3e6f00597cf505b6f5a213fc6aad2699571c1c6969ebd9d540fe899e7e4ed3",
+  "artifact_hashes": {
+    "concurrent_per_pair_throughput.pdf": "11e007c70423c168a1bb2fd2ec6d6ff5ca510ac51ce6edda158d2fadce086540",
+    "concurrent_per_pair_throughput.png": "2879f5f3c92b6cad298ace08ef9227da5021712ffb60afcc1e9463611c5ac746",
+    "concurrent_throughput.pdf": "0e85936b119235b13772f0745605780822907231845d800fffd47083b7d603c4",
+    "concurrent_throughput.png": "236825b5f864a3e650f30744aa1e10dc7da744520a5f9137fb266ec4eb0d1b8a",
+    "per_pair_summary.csv": "9588d4c8a1c799a0941c80b99d872c6a18435ff3c4b1f7729dfad84515837064",
+    "summary.csv": "d091968fb2be851c044f675edd690ad32989f36bdd501ab77a7e3e40a8f183c5"
+  }
+}

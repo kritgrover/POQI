@@ -10,3 +10,6 @@ __pycache__/
 /build/
 /dist/
 docs/
+!/docs/
+/docs/*
+!/docs/finite-memory-model.md

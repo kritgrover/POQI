@@ -1,10 +1,10 @@
 # Hard-slot capacity of chains and what the mean-occupancy LP misses
 
-The memory row of the LP never binds at the residence times a chain actually produces. On one repeater under pressure relaxation the mean occupancy stays at or below 43% of the budget at every tested budget from 2 to 16, so the LP returns full service while the exact rate is $M/(M+1)$. The LP is a valid upper bound that cannot see blocking, and blocking is the whole loss.
+On the single-repeater workloads below, the memory row of the LP is slack at the measured residence times. At unit generation rates, pressure relaxation delivers $M/(M+1)$ requests per unit time, while the LP predicts one. Generation blocked at a full reservation accounts for the difference.
 
-For chains the missing piece has an exact form. Under permanent backlog, swapping as soon as possible with the orientation rule turns a chain of $n$ links into a tandem line of $n-1$ exponential servers with finite buffers and blocking. The repository's guarded pressure policy stays within 0.023 below that line in every case tested. Multiplying one-repeater factors, as an independent-node approximation would, is far too pessimistic. The line also answers how memory must grow with chain length: 9, 13 and 15 slots per repeater for 90% of the unlimited rate at one, two and three repeaters.
+Under permanent backlog, eager oriented swapping on a chain with nonbinding endpoint memories has the long-run throughput of a finite-buffer tandem line with blocking. At unit link rates, 90% of unlimited-memory throughput requires 9, 13 and 15 slots per repeater for one, two and three repeaters, respectively. These thresholds assume immediate swapping of compatible pairs.
 
-Corrected balancing needs four slots per repeater before it serves at all: 4, 8 and 12 slots at one, two and three repeaters. Pressure relaxation needs 2 at every length tested. [Model guide](docs/finite-memory-model.md) · [Chain theorem](Saturated_Chain_Theorem.md) · [Lockup extensions](Lockup_Extensions.md)
+For corrected balancing, the smallest uniform node budgets with positive service are 4, 8 and 12 for one, two and three repeaters, respectively. Guarded pressure relaxation serves at two slots at these lengths. [Model guide](docs/finite-memory-model.md) · [Chain theorem](Saturated_Chain_Theorem.md) · [Lockup extensions](Lockup_Extensions.md)
 
 ## The memory row is slack on one repeater
 
@@ -39,7 +39,7 @@ Let the center reserve $a=\lceil c/2\rceil$ and $b=\lfloor c/2\rfloor$ of its $c
 | Guarded pressure, $a=1$ or $b=1$ | $A+B+1$ |
 | Guarded pressure, $a,b\ge2$ | $A+B+1-[A<a]-[B<b]$ |
 
-The bracket is one when the condition holds. A side whose reservation the endpoint cannot fill never comes under pressure from that side, and behaves like balancing there. The rule matched the simulator-backed enumerator on all 720 layouts with endpoint budgets 2 to 7 and center budgets up to 12. It fails for one-slot endpoints, which can stall entirely.
+The bracket is one when the condition holds. A side whose reservation the endpoint cannot fill behaves like balancing there. The rule matched the simulator-backed enumerator on 720 policy/layout combinations with endpoint budgets 2 through 7 and center budgets 2 through 12. One-slot endpoints can stall entirely.
 
 This makes the earlier reversal exact. With two-slot endpoints, a four-slot center gives $n=5$ and rate $4/5$. A six-slot center reserves three per side, which neither endpoint can fill, so $n=3$ and the rate falls to $2/3$. Added repeater memory helps only up to what the neighbors can supply. [Stress tests](Stress_Testing.md#2-change-only-the-repeaters-slots)
 
@@ -53,17 +53,25 @@ Number the nodes $0,\dots,n$ and let link $i$ join nodes $i-1$ and $i$. Under th
 - A swap changes no $x_i$.
 - A completed end-to-end pair lowers every $x_i$ by one.
 
-Suppose each repeater swaps whenever it holds a pair ending there and a pair starting there. Then repeater $i$ holds only one kind, and $d_i=x_i-x_{i+1}$ counts the pairs ending there when positive and those starting there when negative. A generation on link $i$ needs a free left-facing slot at node $i$ and a free right-facing slot at node $i-1$, that is $d_i<a_i$ and $d_{i-1}>-b_{i-1}$. It then raises $d_i$ and lowers $d_{i-1}$. Completions leave every $d_i$ unchanged.
+Let repeater $i$ reserve $a_i\ge1$ slots to the left and $b_i\ge1$ to the right, with $M_i=a_i+b_i$. Suppose every repeater swaps whenever it holds both a pair ending there and a pair starting there. In settled inventory it holds only one kind. The difference $d_i=x_i-x_{i+1}$ counts pairs ending there when positive and pairs starting there when negative. At an interior link $i$, generation requires $d_i<a_i$ and $d_{i-1}>-b_{i-1}$. These inequalities express availability in the two required reservations. Admission raises $d_i$ and lowers $d_{i-1}$. End-to-end completions preserve every $d_i$.
 
-Put $q_i=d_i+b_i\in\{0,\dots,M_i\}$. Link 1 adds a unit to station 1 and is lost when it is full. Link $i$ moves a unit from station $i-1$ to station $i$, and is blocked when the source is empty or the destination is full. Link $n$ removes a unit from the last station, and each removal is one completed request. This is a tandem line of $n-1$ exponential servers with buffers $M_i$, loss at the entrance and blocking between stages. The end nodes must have enough slots never to bind, since node 0 holds one qubit of every pair covering link 1. One repeater is the single queue with $M+1$ states, which is the chain theorem.
+Put $q_i=d_i+b_i\in\{0,\ldots,M_i\}$. An empty physical chain starts with $q_i=b_i$. An accepted generation on link 1 adds a unit to station 1. On an interior link it moves one unit from the station on its left to the station on its right whenever the source is nonempty and the destination has room. An accepted generation on the final link removes one unit from the last station. With independent Poisson generation attempts these are the transitions of a finite-buffer tandem line with loss at the entrance and blocking between stations.
+
+**Endpoint condition.** Let $B=\sum_{i=1}^{n-1} M_i$. In settled inventory every qubit at an end node has a partner at a repeater, because a waiting request consumes every end-to-end pair immediately. Thus each endpoint holds at most $B$ qubits before the next generation. Giving each endpoint $B+1$ slots guarantees its admission test succeeds whenever the neighboring repeater can admit. This is a sufficient bound.
+
+**Throughput identity.** Let $D_n(t)$ count line departures and $C(t)$ completed requests. A departure is an admitted generation on the last physical link. Only these generations and end-to-end completions change the count $x_n$ of stored pairs spanning that link. Therefore
+$$
+D_n(t)-C(t)=x_n(t)-x_n(0).
+$$
+The right-hand side is bounded by $B$ at settled event times. The finite irreducible tandem chain with positive rates has a long-run departure rate. Dividing the identity by $t$ gives the same long-run completion rate. The two counts can differ even at the first event. A generation on the final link of an empty chain causes a line departure and leaves one elementary pair waiting for a match.
 
 **What was checked.**
 
 | Comparison | Result |
 | --- | --- |
-| Eager oriented swapping, end nodes with ample memory | Equal to the line in 14 of 14 cases: 3 to 6 links, budgets 2 to 6, equal and unequal rates. Exact rational arithmetic up to 80 states. |
-| Eager oriented swapping, uniform budgets | Equal for one repeater, and for two repeaters at even budgets. Otherwise the end nodes bind and the chain is slightly slower. |
-| Repository's guarded pressure policy | Equal at two slots when the end nodes have ample memory, for 3 to 6 links. Below the line at larger budgets, by at most 0.023 in the cases tested. |
+| Eager oriented swapping, nonbinding end nodes | All 14 rate comparisons agreed across 3–6 links, repeater budgets 2–6 and equal or unequal positive rates. Ten used exact fractions. Four used floating-point stationary laws with absolute tolerance $10^{-10}$. [Case inputs and rates](evidence/theory/tandem.json) |
+| Eager oriented swapping, uniform budgets | One repeater gives the same rate. Tests at two repeaters found equality with even budgets and a shortfall at three slots. |
+| Repository's guarded pressure policy | At two slots with one reservation per side, the second input puts the pivot under pressure. The guarded-policy comparison at larger budgets is numerical. The largest shortfall in the uniform-budget enumerations was about 0.023. |
 
 "Eager" is an experimental variant in the search script that drops the count thresholds. It is not a production policy. The guarded pressure policy holds back some swaps that eager swapping would make, which costs it up to 0.023 in rate. [Equivalence checks](scripts/chain_tandem_check.py) · [Tests](tests/test_chain_tandem_check.py)
 
@@ -82,7 +90,7 @@ Rates at unit link rates and uniform budgets. The middle value is the root simul
 | 5 | 4 | 0.684 | 0.687 | 0.410 |
 | 5 | 8 | 0.815 | 0.812 | 0.624 |
 
-The simulated column has seed-to-seed noise of roughly 0.007, which is why it sits slightly above the line in three rows. Blocking at neighboring repeaters is strongly dependent, so the loss grows far more slowly with length than a product suggests. An Erlang-style fixed point that treats nodes as independent would inherit the product's error. Tandem lines with blocking have no closed form beyond one station, but they are a classical model with exact numerical solutions and established decomposition methods.
+The simulated column has seed-to-seed variation of roughly 0.007. In these cells the product approximation understates throughput. The rate calculations above allow blocking at neighboring repeaters to depend on the same generation event.
 
 ## Memory against chain length
 
@@ -94,9 +102,9 @@ Smallest uniform budget per repeater at which the tandem line reaches a fraction
 | 90% | 9 | 13 | 15 | not computed |
 | 95% | 19 | 27 | 32 | not computed |
 
-The requirement grows with length, and more slowly at each step. This is the first quantitative answer in the project to how memory must scale with network size. It holds for chains, eager oriented swapping, permanent backlog, no expiry and perfect swaps.
+The tabulated thresholds apply to eager oriented swapping with nonbinding endpoint memories, equal generation rates, permanent backlog, perfect swaps and no expiry. The table covers up to four repeaters. A general scaling law for growing chain length remains open.
 
-## Balancing needs four slots per repeater
+## Minimum observed budget for balancing
 
 Exact enumeration of saturated inventories gives the smallest uniform budget with positive service.
 
@@ -110,7 +118,7 @@ Balancing holds a spare pair on every input before it swaps, and a longer chain 
 
 ## What this means for the LP
 
-- **On a chain the closure is the tandem line.** Replacing the generation bound $g\le\gamma$ by the line's throughput reproduces hard-slot service for eager oriented swapping, and is within 0.023 for the guarded pressure policy in the cases tested.
+- **Saturated chain throughput.** For eager oriented swapping with nonbinding endpoints, the tandem calculation gives the achievable rate directly. In the enumerated uniform-budget comparisons, differences for the guarded pressure policy were at most 0.023. Using this single-demand result in a multi-demand LP would require a joint feasible-rate region.
 - **Elsewhere it is open.** A hub that matches several neighbors, or a cycle with two routes, is not a line. The independent-node shortcut is ruled out by the table above. A closure has to carry the dependence between neighboring reservations.
 - **The LP's present role is a fluid bound.** Its memory row should not be read as hard slots, and a prescribed residence time should not be read as a property of the network.
 
@@ -118,17 +126,18 @@ Balancing holds a spare pair on every input before it swaps, and a longer chain 
 
 - Permanent backlog, no expiry, perfect swaps and one end-to-end demand class throughout.
 - The tandem derivation assumes eager swapping and end nodes that never fill. For the guarded pressure policy the match is numerical.
-- We have not searched the literature for this equivalence. Finite-buffer repeater chains have been analysed for nested swapping by Dai and Towsley, with a product formula over nesting levels and memory assigned per level. That is a different protocol and memory model. The classical references on tandem lines with blocking still need to be read for results that transfer.
+- Classical tandem queues already have exact and approximate analytical methods. Downstream capacity and the precise blocking rule matter when transferring results. The derivation above identifies the transition rates of this eager inventory policy. Dai and Towsley’s finite-memory repeater analysis uses a nesting hierarchy with memory assigned per level. Establishing priority for the specific inventory-to-tandem mapping would require a broader comparison. [Exponential tandem queues with blocking](https://doi.org/10.1137/0601013) · [Dai and Towsley](https://arxiv.org/abs/2111.10994)
 - Sizing entries marked "not computed" exceed the state limit of the solver used here.
 
 ## Reproduce
 
-From the repository root, with the environment in the README. The capacity script takes several minutes because it enumerates 720 layouts through the simulator.
+Run these commands from the repository root with the environment in the README. The capacity script checks 720 policy/layout combinations.
 
 ```powershell
+.\.venv\Scripts\python.exe -B -m scripts.theory_evidence --output evidence/theory
 .\.venv\Scripts\python.exe -B scripts/chain_tandem_check.py
 .\.venv\Scripts\python.exe -B scripts/chain_capacity.py
 .\.venv\Scripts\python.exe -B scripts/saturated_long_chain_sim.py --output results/memory/long-chains-rerun.json
 ```
 
-[Capacity report](results/memory/lockup-generalization-01/chain-capacity.json) · [Long-chain simulations](results/memory/lockup-generalization-01/saturated-long-chains.json)
+[Capacity report](evidence/prior/lockup-generalization-01/chain-capacity.json) · [Long-chain simulations](evidence/prior/lockup-generalization-01/saturated-long-chains.json) · [Tandem verification manifest](evidence/theory/manifest.json)

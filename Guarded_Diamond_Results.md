@@ -31,7 +31,7 @@ Rates are completed requests per time unit. Changes are guarded minus original p
 
 At four qubits with lossy links and no expiry, mean backlog fell by 31.33 requests [25.26, 37.41] on fresh seeds. Over 300 measured slots, mean attempts fell from 1,664.0 to 1,520.7 and mean swaps fell from 647.9 to 541.2. With cutoff 10, mean expired pairs rose from 1.4 to 7.5 per run. The guarded rate stayed below the total offered load of .90 under both lifetimes.
 
-![Paired effect of the local origin guard on diamond service and interruptions](results/qcast/guarded-diamond-02/guard_tradeoff.png)
+![Paired effect of the local origin guard on diamond service and interruptions](evidence/prior/qcast/guarded-diamond-02/guard_tradeoff.png)
 
 ## Who receives service
 
@@ -48,7 +48,7 @@ Fresh seeds, four qubits, link success .5. Each interruption is a continuous int
 
 Most of the throughput gain went to 03. For 12 without expiry, the longest observed interruption shortened by 11.73 slots [6.42, 17.03], even though its throughput difference remained unresolved. Across all classes combined, the longest interruption grew from 6.5 to 8.7 slots, a paired increase of 2.20 [.45, 3.95]. An aggregate interruption ends on *any* service, so its duration can move differently from the interruption for a specific class.
 
-The perfect-link controls reveal a further tradeoff. With cutoff 10, the longest observed interruption for 01 grew from 3.46 to 16.92 slots, an increase of 13.46 [8.17, 18.75]. For 12 it fell from 19.92 to 9.32, a decrease of 10.60 [4.60, 16.61]. Total throughput changed by just .0017 [−.0090, .0123]. The per-class numerical results for both cohorts include backlog, zero service, longest interruption, observed gaps of at least 10 slots, and the unfinished trailing interval. [All paired estimates](results/qcast/guarded-diamond-02/summary.json)
+The perfect-link controls reveal a further tradeoff. With cutoff 10, the longest observed interruption for 01 grew from 3.46 to 16.92 slots, an increase of 13.46 [8.17, 18.75]. For 12 it fell from 19.92 to 9.32, a decrease of 10.60 [4.60, 16.61]. Total throughput changed by just .0017 [−.0090, .0123]. The per-class numerical results for both cohorts include backlog, zero service, longest interruption, observed gaps of at least 10 slots, and the unfinished trailing interval. [All paired estimates](evidence/prior/qcast/guarded-diamond-02/summary.json)
 
 ## Permanent loss of service and temporary interruptions
 
@@ -71,4 +71,4 @@ The checker reconstructs slot reservations, physical generations, concrete swap 
 .\.venv\Scripts\python.exe -B -m pytest tests/test_qcast_guarded_diamond.py -q -o addopts= -p no:cacheprovider --basetemp E:/POQI/tmp/guarded-diamond-tests
 ```
 
-[Runner and checks](scripts/qcast_guarded_diamond.py) · [Focused tests](tests/test_qcast_guarded_diamond.py) · [Manifest](results/qcast/guarded-diamond-02/manifest.json) · [Seed-level measurements and raw file hashes](results/qcast/guarded-diamond-02/observations.json)
+[Runner and checks](scripts/qcast_guarded_diamond.py) · [Focused tests](tests/test_qcast_guarded_diamond.py) · [Manifest](evidence/prior/qcast/guarded-diamond-02/manifest.json) · [Seed-level measurements and raw file hashes](evidence/prior/qcast/guarded-diamond-02/observations.json)

@@ -1,0 +1,4 @@
+left,right,metric,primary,positive_seeds,n,mean,lower,upper
+pre_drop_shuffle,pre_drop,core.satisfaction,True,12,12,0.9962962962962963,0.9537450629407699,1.0388475296518227
+pre_drop_shuffle,srs50,core.satisfaction,False,11,12,0.15597222222222226,0.062495567624652415,0.2494488768197921
+pre_drop,srs50,core.satisfaction,False,0,12,-0.840324074074074,-0.9185533058363701,-0.7620948423117778

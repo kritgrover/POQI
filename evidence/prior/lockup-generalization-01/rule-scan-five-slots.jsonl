@@ -1,0 +1,10 @@
+{"topo": "cycle5-two", "M": 5, "rule": "none", "verdict": "no lockup", "states": 1088769, "inv": 225901, "dead": 0, "partial": 0, "every": null, "frozen": [], "sec": 1009.6}
+{"topo": "cycle5-two", "M": 5, "rule": "orientation", "verdict": "dead classes only", "states": 98410, "inv": 19606, "dead": 2, "partial": 0, "every": true, "frozen": ["01 01 14[slots 1>0,4>0] 23[slots 2>1,3>4] 23[slots 2>1,3>4] 23 23 24[slots 2>1,4>0] 34[slots 3>2,4>0]", "03[slots 0>1,3>2] 04[slots 0>1,4>3] 04[slots 0>1,4>3] 04 04 12 12 23 34[slots 3>2,4>0]"], "sec": 86.2}
+{"topo": "cycle5-two", "M": 5, "rule": "no-shortcut", "verdict": "no lockup", "states": 471601, "inv": 266051, "dead": 0, "partial": 0, "every": null, "frozen": [], "sec": 454.7}
+{"topo": "cycle5-two", "M": 5, "rule": "both", "verdict": "no lockup", "states": 53635, "inv": 19575, "dead": 0, "partial": 0, "every": null, "frozen": [], "sec": 75.5}
+{"topo": "cycle5-two", "M": 5, "rule": "geodesic", "verdict": "no lockup", "states": 7633, "inv": 2261, "dead": 0, "partial": 0, "every": null, "frozen": [], "sec": 9.4}
+{"topo": "diamond-diagonals", "M": 5, "rule": "none", "verdict": "no lockup", "states": 34851, "inv": 12811, "dead": 0, "partial": 0, "every": null, "frozen": [], "sec": 38.6}
+{"topo": "diamond-diagonals", "M": 5, "rule": "orientation", "verdict": "no lockup", "states": 6732, "inv": 2136, "dead": 0, "partial": 0, "every": null, "frozen": [], "sec": 3.9}
+{"topo": "diamond-diagonals", "M": 5, "rule": "no-shortcut", "verdict": "no lockup", "states": 1752, "inv": 1000, "dead": 0, "partial": 0, "every": null, "frozen": [], "sec": 0.8}
+{"topo": "diamond-diagonals", "M": 5, "rule": "both", "verdict": "no lockup", "states": 1752, "inv": 1000, "dead": 0, "partial": 0, "every": null, "frozen": [], "sec": 0.8}
+{"topo": "diamond-diagonals", "M": 5, "rule": "geodesic", "verdict": "no lockup", "states": 1752, "inv": 1000, "dead": 0, "partial": 0, "every": null, "frozen": [], "sec": 0.8}

@@ -1,0 +1,192 @@
+{
+  "offered": {
+    "states": 17,
+    "transitions": 51,
+    "witnesses": [
+      {
+        "phase": "L",
+        "queue": 0,
+        "events": "L"
+      },
+      {
+        "phase": "L",
+        "queue": 1,
+        "events": "LA"
+      },
+      {
+        "phase": "L",
+        "queue": 2,
+        "events": "LAA"
+      },
+      {
+        "phase": "L",
+        "queue": 3,
+        "events": "LAAA"
+      },
+      {
+        "phase": "LR",
+        "queue": 0,
+        "events": "LRLRA"
+      },
+      {
+        "phase": "LRV",
+        "queue": 0,
+        "events": "LRLR"
+      },
+      {
+        "phase": "LV",
+        "queue": 0,
+        "events": "LRL"
+      },
+      {
+        "phase": "R",
+        "queue": 0,
+        "events": "R"
+      },
+      {
+        "phase": "R",
+        "queue": 1,
+        "events": "RA"
+      },
+      {
+        "phase": "R",
+        "queue": 2,
+        "events": "RAA"
+      },
+      {
+        "phase": "R",
+        "queue": 3,
+        "events": "RAAA"
+      },
+      {
+        "phase": "RV",
+        "queue": 0,
+        "events": "LRR"
+      },
+      {
+        "phase": "V",
+        "queue": 0,
+        "events": "LR"
+      },
+      {
+        "phase": "empty",
+        "queue": 0,
+        "events": ""
+      },
+      {
+        "phase": "empty",
+        "queue": 1,
+        "events": "A"
+      },
+      {
+        "phase": "empty",
+        "queue": 2,
+        "events": "AA"
+      },
+      {
+        "phase": "empty",
+        "queue": 3,
+        "events": "AAA"
+      }
+    ]
+  },
+  "saturated": {
+    "memory": 2,
+    "policy": "pressure_oriented",
+    "reachable_states": 3,
+    "recurrent_states": 3,
+    "one_arrival_transitions": 6,
+    "rates_checked": [
+      {
+        "link_rates": [
+          1,
+          1
+        ],
+        "stationary_reward": 0.6666666666666666,
+        "formula": 0.6666666666666666
+      },
+      {
+        "link_rates": [
+          1,
+          2
+        ],
+        "stationary_reward": 0.8571428571428572,
+        "formula": 0.8571428571428571
+      },
+      {
+        "link_rates": [
+          2,
+          1
+        ],
+        "stationary_reward": 0.8571428571428572,
+        "formula": 0.8571428571428571
+      }
+    ]
+  },
+  "saturated_policy_parity": [
+    {
+      "memory": 1,
+      "transitions": 4
+    },
+    {
+      "memory": 2,
+      "transitions": 6
+    },
+    {
+      "memory": 3,
+      "transitions": 8
+    },
+    {
+      "memory": 4,
+      "transitions": 12
+    },
+    {
+      "memory": 5,
+      "transitions": 16
+    },
+    {
+      "memory": 6,
+      "transitions": 20
+    },
+    {
+      "memory": 7,
+      "transitions": 24
+    },
+    {
+      "memory": 8,
+      "transitions": 28
+    },
+    {
+      "memory": 9,
+      "transitions": 32
+    },
+    {
+      "memory": 10,
+      "transitions": 36
+    },
+    {
+      "memory": 11,
+      "transitions": 40
+    },
+    {
+      "memory": 12,
+      "transitions": 44
+    },
+    {
+      "memory": 13,
+      "transitions": 48
+    },
+    {
+      "memory": 14,
+      "transitions": 52
+    },
+    {
+      "memory": 15,
+      "transitions": 56
+    },
+    {
+      "memory": 16,
+      "transitions": 60
+    }
+  ]
+}

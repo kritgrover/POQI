@@ -156,7 +156,7 @@ Earlier service changed the later pending sets, so the contention counts differ.
 Pair 12 gained 446 completions and pair 03 lost 490. The paired change in total
 rate was −0.01467, with pointwise 95% Student-t interval [−0.02614, −0.00319].
 This demonstrates sensitivity to deterministic tie priority for these inputs.
-Neither order implements a fairness policy. [Results](results/qcast/order-sensitivity-01/report.json) · [Diagnostic and replay checks](scripts/qcast_order_sensitivity.py)
+Neither order implements a fairness policy. [Results](evidence/prior/qcast/order-sensitivity-01/report.json) · [Diagnostic and replay checks](scripts/qcast_order_sensitivity.py)
 
 ### Persistent POQI can fill memory with pairs that no request can release
 
@@ -181,7 +181,7 @@ trials, swaps and completions throughout the measurement window. At $p=1$,
 the ten matched control runs completed 32–61 requests each in the window and
 none reached the certified state. The certificate proves permanence once reached.
 Ten sampled paths do not determine the probability of ever reaching it.
-[Per-seed inventories and edge blockers](results/qcast/diamond-stall-certificates-01/report.json) · [Certificate checker](scripts/qcast_diamond_stalls.py)
+[Per-seed inventories and edge blockers](evidence/prior/qcast/diamond-stall-certificates-01/report.json) · [Certificate checker](scripts/qcast_diamond_stalls.py)
 
 Reproduce both diagnostics from the repository root with the November 20 raw
 trajectories and native build available. The first command needs a fresh output
@@ -249,23 +249,23 @@ $env:QCAST_VALIDATION_DIR='E:/POQI/results/qcast/validation-03'
 .\.venv\Scripts\python.exe -B -m pytest tests -q -o addopts= -p no:cacheprovider --basetemp E:/POQI/tmp/qcast-concurrent-full-tests-01
 ```
 
-- [Manifest and source hashes](results/qcast/concurrent-main-01/manifest.json),
-  [all group/paired statistics](results/qcast/concurrent-main-01/report.json),
-  [seed/per-pair observations](results/qcast/concurrent-main-01/observations.json).
-- [Independent audit](results/qcast/concurrent-main-01/independent-audit.json),
-  [full-horizon conservation ledger](results/qcast/concurrent-main-01/conservation-ledger.json),
-  [full test log](results/qcast/concurrent-full-tests-01.log).
-- [Summary CSV](results/qcast/concurrent-main-01/figures/summary.csv),
-  [per-pair CSV with distinct rate/fraction metrics](results/qcast/concurrent-main-01/figures/per_pair_summary.csv),
-  [figure/export provenance](results/qcast/concurrent-main-01/figures/figure-manifest.json).
+- [Manifest and source hashes](evidence/prior/qcast/concurrent-main-01/manifest.json),
+  [all group/paired statistics](evidence/prior/qcast/concurrent-main-01/report.json),
+  [seed/per-pair observations](evidence/prior/qcast/concurrent-main-01/observations.json).
+- [Independent audit](evidence/prior/qcast/concurrent-main-01/independent-audit.json),
+  [full-horizon conservation ledger](evidence/prior/qcast/concurrent-main-01/conservation-ledger.json),
+  [full test log](evidence/prior/qcast/concurrent-full-tests-01.log).
+- [Summary CSV](evidence/prior/qcast/concurrent-main-01/figures/summary.csv),
+  [per-pair CSV with distinct rate/fraction metrics](evidence/prior/qcast/concurrent-main-01/figures/per_pair_summary.csv),
+  [figure/export provenance](evidence/prior/qcast/concurrent-main-01/figures/figure-manifest.json).
 
-![Concurrent useful throughput, all systems and physical conditions](results/qcast/concurrent-main-01/figures/concurrent_throughput.png)
+![Concurrent useful throughput, all systems and physical conditions](evidence/prior/qcast/concurrent-main-01/figures/concurrent_throughput.png)
 
-The separate [per-pair figure](results/qcast/concurrent-main-01/figures/concurrent_per_pair_throughput.png)
+The separate [per-pair figure](evidence/prior/qcast/concurrent-main-01/figures/concurrent_per_pair_throughput.png)
 shows coverage failures hidden by aggregate service. Both figures were visually
 checked, and all 336 derived rate/fraction rows were checked against seed-level
-observations. [Aggregate PDF](results/qcast/concurrent-main-01/figures/concurrent_throughput.pdf);
-[per-pair PDF](results/qcast/concurrent-main-01/figures/concurrent_per_pair_throughput.pdf).
+observations. [Aggregate PDF](evidence/prior/qcast/concurrent-main-01/figures/concurrent_throughput.pdf);
+[per-pair PDF](evidence/prior/qcast/concurrent-main-01/figures/concurrent_per_pair_throughput.pdf).
 
 Intervals are pointwise 95% Student-t intervals across seeds; contrasts use
 paired-seed differences, with no multiplicity correction. The targeted

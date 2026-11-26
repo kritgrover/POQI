@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "audit_sha256": "73af810f18ba51aac3e55a641be34ac47b0c0a547117f65f2e949e615de718cb",
+  "physical_audit_sha256": "8f4eec20d1f2839e46a03ffad8164b78799923222539fec170fcfbc9a143779e",
+  "manifest_sha256": "80fe73667b2c701af3cb03bced88cc2b7461ac5efd40398c76ec3b0b34103e5b",
+  "trajectories": 560,
+  "slots_replayed": 224000,
+  "completed_requests_replayed": 61664,
+  "observation_fields_checked": 17360,
+  "per_pair_observations_checked": 1680,
+  "summary_groups_checked": 56,
+  "paired_contrasts_checked": 76,
+  "zero_service_trajectories_retained": 203,
+  "absorbing_trajectories_retained": 0,
+  "historical_mode": false,
+  "current_source_matches": {
+    "scripts\\qcast_concurrent.py": true,
+    "scripts\\qcast_pilot.py": true,
+    "scripts\\qcast_poqi.py": true,
+    "scripts\\qcast_reference.py": true,
+    "scripts\\qcast\\SlotBridge.kt": true,
+    "QCAST_Concurrent_Protocol.md": true,
+    "src\\poqi\\config.py": true,
+    "src\\poqi\\simulation\\sequence_adapter.py": true,
+    "src\\poqi\\simulation\\inventory.py": true
+  },
+  "raw_artifact_hashes_verified": 560,
+  "native_runtime_hashes_verified": 174,
+  "main_protocol_grid": true,
+  "method": "independent full physical replay with mode-aware service; chronological overall/per-pair queue integration; seed-paired statistics"
+}

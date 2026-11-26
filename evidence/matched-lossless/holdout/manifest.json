@@ -1,0 +1,10 @@
+{
+  "started_utc": "2026-11-26T03:53:54.455499+00:00",
+  "completed_utc": "2026-11-26T03:54:04.817296+00:00",
+  "trajectories": 36,
+  "sha256": {
+    "protocol.json": "52e11daee2673a274f9ce83679099528ba4c43cd9d7b58fe530d5183abc2654b",
+    "seeds.csv": "20311895bef4035a3619b380570b41802bb34cadfbe26c9c290ad1b97e6f4c90",
+    "paired.csv": "fdc14e8df9683816e6cb87659e70fa013d8f845a095e5194d5a8bd5974ce5a61"
+  }
+}

@@ -1,0 +1,516 @@
+{
+  "metrics": {
+    "throughput": {
+      "sorted": {
+        "mean": 0.581,
+        "low": 0.5487320002884346,
+        "high": 0.6132679997115653,
+        "n": 10,
+        "undefined": 0
+      },
+      "reversed": {
+        "mean": 0.5663333333333334,
+        "low": 0.5409867521744562,
+        "high": 0.5916799144922105,
+        "n": 10,
+        "undefined": 0
+      },
+      "paired_reversed_minus_sorted": {
+        "mean": -0.014666666666666661,
+        "low": -0.026141043855096566,
+        "high": -0.0031922894782367584,
+        "n": 10,
+        "undefined": 0
+      }
+    },
+    "completed": {
+      "sorted": {
+        "mean": 174.3,
+        "low": 164.6196000865304,
+        "high": 183.98039991346963,
+        "n": 10,
+        "undefined": 0
+      },
+      "reversed": {
+        "mean": 169.9,
+        "low": 162.29602565233688,
+        "high": 177.50397434766313,
+        "n": 10,
+        "undefined": 0
+      },
+      "paired_reversed_minus_sorted": {
+        "mean": -4.4,
+        "low": -7.842313156528968,
+        "high": -0.9576868434710328,
+        "n": 10,
+        "undefined": 0
+      }
+    },
+    "mean_backlog": {
+      "sorted": {
+        "mean": 88.05309558087995,
+        "low": 76.11301168397324,
+        "high": 99.99317947778667,
+        "n": 10,
+        "undefined": 0
+      },
+      "reversed": {
+        "mean": 91.65809558087996,
+        "low": 80.3492789542583,
+        "high": 102.96691220750162,
+        "n": 10,
+        "undefined": 0
+      },
+      "paired_reversed_minus_sorted": {
+        "mean": 3.6050000000000013,
+        "low": 1.0676640112842057,
+        "high": 6.1423359887157964,
+        "n": 10,
+        "undefined": 0
+      }
+    },
+    "final_backlog": {
+      "sorted": {
+        "mean": 136.9,
+        "low": 121.38978208010425,
+        "high": 152.41021791989576,
+        "n": 10,
+        "undefined": 0
+      },
+      "reversed": {
+        "mean": 142.7,
+        "low": 128.69795575393766,
+        "high": 156.70204424606231,
+        "n": 10,
+        "undefined": 0
+      },
+      "paired_reversed_minus_sorted": {
+        "mean": 5.8,
+        "low": 2.962517798128046,
+        "high": 8.637482201871954,
+        "n": 10,
+        "undefined": 0
+      }
+    },
+    "attempts": {
+      "sorted": {
+        "mean": 1025,
+        "low": 1009.5870511466659,
+        "high": 1040.412948853334,
+        "n": 10,
+        "undefined": 0
+      },
+      "reversed": {
+        "mean": 1025,
+        "low": 1009.5870511466659,
+        "high": 1040.412948853334,
+        "n": 10,
+        "undefined": 0
+      },
+      "paired_reversed_minus_sorted": {
+        "mean": 0,
+        "low": 0.0,
+        "high": 0.0,
+        "n": 10,
+        "undefined": 0
+      }
+    },
+    "swaps": {
+      "sorted": {
+        "mean": 102.5,
+        "low": 95.82120684520625,
+        "high": 109.17879315479375,
+        "n": 10,
+        "undefined": 0
+      },
+      "reversed": {
+        "mean": 101,
+        "low": 95.2375397450854,
+        "high": 106.7624602549146,
+        "n": 10,
+        "undefined": 0
+      },
+      "paired_reversed_minus_sorted": {
+        "mean": -1.5,
+        "low": -5.258934134914085,
+        "high": 2.2589341349140852,
+        "n": 10,
+        "undefined": 0
+      }
+    }
+  },
+  "by_pair": [
+    {
+      "pair": [
+        0,
+        1
+      ],
+      "throughput": {
+        "sorted": {
+          "mean": 0.23933333333333334,
+          "low": 0.21923155441605863,
+          "high": 0.25943511225060806,
+          "n": 10,
+          "undefined": 0
+        },
+        "reversed": {
+          "mean": 0.23933333333333334,
+          "low": 0.21923155441605863,
+          "high": 0.25943511225060806,
+          "n": 10,
+          "undefined": 0
+        },
+        "paired_reversed_minus_sorted": {
+          "mean": 0.0,
+          "low": 0.0,
+          "high": 0.0,
+          "n": 10,
+          "undefined": 0
+        }
+      },
+      "completed": {
+        "sorted": {
+          "mean": 71.8,
+          "low": 65.76946632481759,
+          "high": 77.83053367518241,
+          "n": 10,
+          "undefined": 0
+        },
+        "reversed": {
+          "mean": 71.8,
+          "low": 65.76946632481759,
+          "high": 77.83053367518241,
+          "n": 10,
+          "undefined": 0
+        },
+        "paired_reversed_minus_sorted": {
+          "mean": 0,
+          "low": 0.0,
+          "high": 0.0,
+          "n": 10,
+          "undefined": 0
+        }
+      },
+      "final_backlog": {
+        "sorted": {
+          "mean": 0.2,
+          "low": -0.1016209550397606,
+          "high": 0.5016209550397606,
+          "n": 10,
+          "undefined": 0
+        },
+        "reversed": {
+          "mean": 0.2,
+          "low": -0.1016209550397606,
+          "high": 0.5016209550397606,
+          "n": 10,
+          "undefined": 0
+        },
+        "paired_reversed_minus_sorted": {
+          "mean": 0,
+          "low": 0.0,
+          "high": 0.0,
+          "n": 10,
+          "undefined": 0
+        }
+      },
+      "completions_total": {
+        "sorted": 718,
+        "reversed": 718
+      },
+      "zero_service_seeds": {
+        "sorted": [],
+        "reversed": []
+      }
+    },
+    {
+      "pair": [
+        0,
+        3
+      ],
+      "throughput": {
+        "sorted": {
+          "mean": 0.3416666666666667,
+          "low": 0.31940402281735414,
+          "high": 0.3639293105159792,
+          "n": 10,
+          "undefined": 0
+        },
+        "reversed": {
+          "mean": 0.17833333333333334,
+          "low": 0.1479781065779824,
+          "high": 0.20868856008868428,
+          "n": 10,
+          "undefined": 0
+        },
+        "paired_reversed_minus_sorted": {
+          "mean": -0.16333333333333333,
+          "low": -0.1791104768319475,
+          "high": -0.14755618983471916,
+          "n": 10,
+          "undefined": 0
+        }
+      },
+      "completed": {
+        "sorted": {
+          "mean": 102.5,
+          "low": 95.82120684520625,
+          "high": 109.17879315479375,
+          "n": 10,
+          "undefined": 0
+        },
+        "reversed": {
+          "mean": 53.5,
+          "low": 44.39343197339472,
+          "high": 62.60656802660528,
+          "n": 10,
+          "undefined": 0
+        },
+        "paired_reversed_minus_sorted": {
+          "mean": -49,
+          "low": -53.73314304958425,
+          "high": -44.26685695041575,
+          "n": 10,
+          "undefined": 0
+        }
+      },
+      "final_backlog": {
+        "sorted": {
+          "mean": 78.4,
+          "low": 67.38360687464015,
+          "high": 89.41639312535986,
+          "n": 10,
+          "undefined": 0
+        },
+        "reversed": {
+          "mean": 141.9,
+          "low": 127.84364635912351,
+          "high": 155.9563536408765,
+          "n": 10,
+          "undefined": 0
+        },
+        "paired_reversed_minus_sorted": {
+          "mean": 63.5,
+          "low": 57.59860660956102,
+          "high": 69.40139339043898,
+          "n": 10,
+          "undefined": 0
+        }
+      },
+      "completions_total": {
+        "sorted": 1025,
+        "reversed": 535
+      },
+      "zero_service_seeds": {
+        "sorted": [],
+        "reversed": []
+      }
+    },
+    {
+      "pair": [
+        1,
+        2
+      ],
+      "throughput": {
+        "sorted": {
+          "mean": 0.0,
+          "low": 0.0,
+          "high": 0.0,
+          "n": 10,
+          "undefined": 0
+        },
+        "reversed": {
+          "mean": 0.14866666666666667,
+          "low": 0.1297167502246318,
+          "high": 0.16761658310870153,
+          "n": 10,
+          "undefined": 0
+        },
+        "paired_reversed_minus_sorted": {
+          "mean": 0.14866666666666667,
+          "low": 0.1297167502246318,
+          "high": 0.16761658310870153,
+          "n": 10,
+          "undefined": 0
+        }
+      },
+      "completed": {
+        "sorted": {
+          "mean": 0,
+          "low": 0.0,
+          "high": 0.0,
+          "n": 10,
+          "undefined": 0
+        },
+        "reversed": {
+          "mean": 44.6,
+          "low": 38.91502506738954,
+          "high": 50.28497493261046,
+          "n": 10,
+          "undefined": 0
+        },
+        "paired_reversed_minus_sorted": {
+          "mean": 44.6,
+          "low": 38.91502506738954,
+          "high": 50.28497493261046,
+          "n": 10,
+          "undefined": 0
+        }
+      },
+      "final_backlog": {
+        "sorted": {
+          "mean": 58.3,
+          "low": 52.03591657352066,
+          "high": 64.56408342647934,
+          "n": 10,
+          "undefined": 0
+        },
+        "reversed": {
+          "mean": 0.6,
+          "low": 0.09981823161222925,
+          "high": 1.1001817683877708,
+          "n": 10,
+          "undefined": 0
+        },
+        "paired_reversed_minus_sorted": {
+          "mean": -57.7,
+          "low": -63.91853247725288,
+          "high": -51.481467522747124,
+          "n": 10,
+          "undefined": 0
+        }
+      },
+      "completions_total": {
+        "sorted": 0,
+        "reversed": 446
+      },
+      "zero_service_seeds": {
+        "sorted": [
+          7271,
+          7272,
+          7273,
+          7274,
+          7275,
+          7276,
+          7277,
+          7278,
+          7279,
+          7280
+        ],
+        "reversed": []
+      }
+    }
+  ],
+  "allocations": {
+    "sorted": [
+      {
+        "active": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "first_major_pair": [
+          0,
+          1
+        ],
+        "slots": 875
+      },
+      {
+        "active": [
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "first_major_pair": [
+          0,
+          3
+        ],
+        "slots": 2125
+      }
+    ],
+    "reversed": [
+      {
+        "active": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            3
+          ]
+        ],
+        "first_major_pair": [
+          0,
+          1
+        ],
+        "slots": 456
+      },
+      {
+        "active": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "first_major_pair": [
+          0,
+          1
+        ],
+        "slots": 419
+      },
+      {
+        "active": [
+          [
+            0,
+            3
+          ]
+        ],
+        "first_major_pair": [
+          0,
+          3
+        ],
+        "slots": 1085
+      },
+      {
+        "active": [
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "first_major_pair": [
+          1,
+          2
+        ],
+        "slots": 1040
+      }
+    ]
+  }
+}

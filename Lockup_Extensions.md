@@ -1,16 +1,20 @@
 # Where lockup occurs, what stops it, and what it costs
 
-The two-slot lockup is one case of a wider failure. A stored pair that no pending request can consume and no swap can extend holds its slots forever. On the three-node chain this needs a two-slot endpoint facing a one-slot reservation, so uniform budgets of three or more are safe. On longer chains the original pressure policy locks at larger budgets, and it does so even with a request always waiting. The orientation rule removes the lockup on every chain we enumerated. It does not remove it on the diamond, where a different published condition does. On five- and six-node cycles with one or two demand pairs, no swap condition we tried removes it.
+The two-slot chain, diamond and sparse-demand cycles have concrete generation sequences that freeze their memories under pressure relaxation. Under the physical-origin guard, the two-slot chain is stable below its saturated rate, while the diamond and both cycles still admit a freeze. On one repeater the finite search found no freeze at uniform budgets 3 through 14. Larger uniform budgets remain open. [Uncapped traces and terminal inventories](evidence/theory/uncapped-freezes.json)
 
-A cutoff turns each lockup into an outage of almost exactly one cutoff. For long cutoffs the original two-slot chain spends all of its spare capacity in outages, and the mean request delay approaches half the cutoff. The guarded chain's delay does not depend on the cutoff.
+On the two-slot chain, a wrong-origin pair prevents service until its inherited cutoff. At cutoff 300 and unit link rates, the unguarded mean delay measured 151 and 152 time units at loads 0.25 and 0.50. A renewal argument predicts half the cutoff at long lifetimes. For the guarded chain at load 0.25, measured mean delay fell from 0.79 at cutoff 3 to 0.25 at cutoff 300.
 
 With swap success probability $q$ the threshold of the lockup theorem moves from $\mu_2$ to $q\mu_2$, and the lock probability keeps a closed form. [Unguarded theorem](Saturated_Chain_Theorem.md#offered-demand-at-two-slots) · [Guarded theorem](Guarded_Chain_Theorem.md)
 
 ## How the cases were decided
 
-Without expiry the swap policy never reads the clock. Every inventory reachable from empty can therefore be listed by applying each possible next event and letting the policy settle. The search reuses the repository's settling, pressure, orientation and inventory code unchanged, and only replaces the event timing. It tracks which physical slot each qubit occupies and the order of pairs in each buffer, because the policy consumes the oldest pair first. Request backlogs are capped at "three or more" with every consistent successor explored, so the reachable set is exact.
+The search enumerates a finite graph of inventories and per-demand queue counts. It retains the qubits' physical origins and the order of pairs within each buffer. With oldest-first eviction it also retains the order across buffers. With no expiry and zero or infinite eviction patience, event order determines the transitions. Independent event streams of strictly positive rates give each finite generation/request word positive probability.
 
-A closed set of states in which some demand class is never served is a structural lockup. If no class is served it is a dead class. A single inventory that no event changes is frozen. The search agrees with the public simulator on random event words, and its copy of the settling loop agrees with the original on every explored state. [Search and self-checks](scripts/dead_state_search.py) · [Tests](tests/test_dead_state_search.py)
+**What capping establishes.** Project a concrete queue count $q$ to $\min(q,K)$, where $K=3$ unless indicated. A count below $K$ is known exactly. From a capped count the code tests the smallest possible representative $q=K$ and rejects the enumeration if a single event empties that queue. Otherwise increasing its length leaves a positive queue after draining and preserves both the inventory and number served. For $a$ arrivals and $s$ completions of that class in the event, all possible projected successors lie between $\min(K,K+a-s)$ and $K$, inclusive. The search includes the Cartesian product of these possibilities across classes. Induction on the event word proves that the graph contains every projected concrete path. Two consecutive graph edges can select inconsistent hidden queue lengths. The general reachability and starvation tables below describe closed classes of this finite graph.
+
+**What can be ruled out.** A concrete frozen inventory has no possible service or inventory change under any event. Sending one request class at a time until every count reaches $K$ leaves the same inventory. At that projected state every edge is a self-loop with zero reward, so it must appear as a closed singleton in the search. Therefore a search with no such node rules out an uncapped freeze. Absence of graph classes that starve a demand does not by itself establish queue stability, almost-sure service, or absence of every possible starvation behavior with unbounded queues.
+
+**Positive witnesses.** A closed component with no completion for one class indicates structural starvation in the finite graph. A concrete freeze can be proved separately. Starting empty and issuing only generations, we searched for inventories in which every link is blocked and no stored pair matches any demand. We replayed ten traces through the public simulator with unbounded per-class queues and checked every possible next event from backlog zero and seven per class. Each check preserved all stored pairs, admitted no generation, made no swap and completed no request. These facts extend to any backlog: admission and swap selection read only inventory and the service step has no matching pair to remove. Inducting over subsequent events proves permanence without queue truncation. The certificates include both mirror inventories on the two-slot chain and diamond, and freezes on the five- and six-node cycles under the two production pressure policies. The search script's additional filters have separate finite-graph results. [Uncapped certificates](evidence/theory/uncapped-freezes.json) · [Reproduction manifest](evidence/theory/manifest.json) · [Finite search](scripts/dead_state_search.py)
 
 Three experimental filters exist only in this script. None is a production policy.
 
@@ -20,7 +24,7 @@ Three experimental filters exist only in this script. None is a production polic
 
 ## Three-node chain at other budgets
 
-| Budgets (endpoint, center, endpoint) | Original pressure | Orientation guard |
+| Budgets (endpoint, center, endpoint) | Original pressure, finite graph | Orientation guard, finite graph |
 | --- | --- | --- |
 | 2, 2, 2 | Frozen inventories reachable from every state | No lockup |
 | 2, 3, 2 | Frozen inventories reachable from every state | No lockup |
@@ -28,9 +32,9 @@ Three experimental filters exist only in this script. None is a production polic
 | 2, 4, 2 and 3, 2, 3 | No lockup | No lockup |
 | 1, 4, 1 | Zero service | Zero service |
 
-The backward swap needs pressure at an endpoint. An endpoint is under pressure only when it is full, and a cached end-to-end pair plus one elementary pair fill it only if it has two slots. The wrong-origin pair then freezes the chain only if the reservation it occupies has a single slot. A scan over equal endpoint budgets 1 to 5 and center budgets 2 to 8 found this lockup at exactly those two layouts.
+The four-event trap on the two-slot chain uses a full endpoint to swap backward and a single-slot center reservation to retain the resulting wrong-origin pair. With equal endpoint budgets 1–5 and center budgets 2–8, the scan found this type of lockup in the two layouts shown above.
 
-Uniform budgets from 3 to 14 were each enumerated in full. Backward swaps still occur there and waste pairs, but every reachable state can serve again. A proof for all larger budgets is open.
+The finite search covered each uniform budget from 3 through 14. Some backward swaps wasted pairs, but the search found no closed starving component at these budgets. This rules out an uncapped frozen inventory there. A proof covering larger uniform budgets remains open.
 
 The last row is a different failure, shared by both policies. One-slot endpoints can supply one pair per side. A center with four slots reserves two per side, so no reservation ever fills, pressure never arises, and the balancing threshold of two pairs per side is never met. Center budgets 2 and 3 serve normally with the same endpoints. [Effective buffers for arbitrary budgets](Chain_Capacity.md#arbitrary-budgets-at-one-repeater)
 
@@ -38,7 +42,7 @@ The last row is a different failure, shared by both policies. One-slot endpoints
 
 With two or more repeaters the original policy locks at larger budgets. An intermediate pair that is not yet end-to-end can sit idle even when a request is waiting, so permanent backlog no longer protects it.
 
-| Links | Original pressure locks at | Orientation guard |
+| Links | Original pressure, finite-graph locks | Orientation guard, finite graph |
 | ---: | --- | --- |
 | 2 | 2 slots | No lockup at 2 to 14 |
 | 3 | 2 and 3 slots | No lockup at 2, 3, 4 |
@@ -58,7 +62,7 @@ On one repeater the two policies coincide under backlog, as the guarded theorem 
 
 ## The diamond
 
-The search finds exactly two frozen inventories on the two-qubit diamond. One holds two 0–2 pairs and one 1–3 pair, and the other is its mirror. These are the pair types and counts recorded in all ten archived frozen runs. The search also finds a third closed class that keeps serving 0–1 while 0–3 and 1–2 starve, which is what the two unfrozen seeds of the later cohort did. [Archived runs](QCAST_Concurrent_Results.md#persistent-poqi-can-fill-memory-with-pairs-that-no-request-can-release) · [Guard comparison](Guarded_Diamond_Results.md)
+The finite graph has exactly two frozen inventories on the two-qubit diamond. Concrete public replays reach both. One holds two 0–2 pairs and one 1–3 pair, and the other is its mirror. These are the pair types and counts seen in the ten archived frozen runs. A third closed component of the finite graph contains completions for 0–1 alone, consistent with the observed finite-window starvation of the two unfrozen seeds in a later cohort. [Archived runs](QCAST_Concurrent_Results.md#persistent-poqi-can-fill-memory-with-pairs-that-no-request-can-release) · [Guard comparison](Guarded_Diamond_Results.md) · [Concrete traces](evidence/theory/uncapped-freezes.json)
 
 The mechanism is the chain's, routed around the cycle.
 
@@ -71,7 +75,7 @@ In step 2 node 3 uses two qubits generated toward different neighbors, so the or
 
 ## No single swap condition is enough
 
-Each cell reports whether a class that starves some demand is reachable. "Lock" means it is. Uniform budgets, no expiry, pressure relaxation with the stated condition added.
+Each cell reports the finite graph for the stated network, budget and swap rule. “Lock” means a reachable closed component has no completion for at least one demand class. A dash means every closed component contains a completion for every demand class. The uncapped certificates above establish permanence for selected cells.
 
 | Network and demand pairs | Slots | None | Orientation | No shortcut | Both | Geodesic |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -90,15 +94,23 @@ Each cell reports whether a class that starves some demand is reachable. "Lock" 
 | 6-cycle, 0–3 | 2, 3 | Lock | Lock | Lock | Lock | Lock |
 | 6-cycle, 0–3 and 1–4 | 2 | Lock | Lock | Lock | Lock | Lock |
 
-Budgets at which every rule was free of lockup are omitted: the three-node chain at 3 and 4, the four-node chain at 4, both diamonds at 4, and the first diamond at 3. The five-slot row used a backlog cap of two.
+Additional finite-graph cases with no closed starving component under any rule were the three-node chain at 3 and 4, the four-node chain at 4, both diamonds at 4, and the first diamond at 3. The five-slot row used a backlog cap of two.
 
 Three observations follow.
 
-- **Each published condition fails somewhere.** Orientation fails on the diamond, and on the 5-cycle it is the only rule that still locks at five slots. The no-shortcut condition fails on every chain with two or more repeaters, because an endpoint can still reverse a long pair into a shorter one that is not a physical edge.
-- **A restriction can create a lockup.** On the 5-cycle at four slots the unrestricted policy has none, and adding the no-shortcut filter introduces one. Forbidding a swap also removes an escape.
-- **Sparse demand on a cycle defeats all of them at small budgets.** Path-oblivious swapping makes pairs that nobody requested. A frozen 5-cycle inventory under both conditions holds elementary pairs 0–1, 0–4 and 2–3 and a 1–4 pair built the long way round through nodes 2 and 3. That pair fills node 1's slot toward 2 and node 4's slot toward 3, so the two links needed for a 0–2 pair cannot generate. A single 1–4 request would release it.
+- **Rule effects depend on topology.** The public replay certifies an oriented diamond freeze. In the finite graph, the five-slot 5-cycle has a starving class only with the orientation condition. The no-shortcut graph has a starving class on the tested longer chains, where an endpoint can reverse a long pair into a shorter virtual link.
+- **A restriction can remove an escape.** On the four-slot 5-cycle, adding the no-shortcut filter introduced a closed starving component in the finite graph.
+- **Sparse demand leaves occupied memory that no request can release.** The finite graph has starving components under all five rules on the two-slot 5- and 6-cycles. An example on the 5-cycle under both conditions holds elementary pairs 0–1, 0–4 and 2–3 and a 1–4 pair built through nodes 2 and 3. That pair fills node 1’s slot toward 2 and node 4’s slot toward 3. A 1–4 request would release it.
 
-A frozen inventory always consists of pair types outside the demand support. If every pair type had positive demand, requests alone could empty any inventory. The lockup is therefore a property of hard slots, no expiry and demand that covers only some pairs. Local swap conditions reduce it. On general topologies they do not remove it, so some form of expiry or eviction is required. The cost of expiry is the subject of the next section. An eviction rule that needs no clock, and the same search with a shared pool of slots in place of reservations, are in the [recovery baseline](Recovery_Baseline.md).
+A freeze with no possible completion contains only pair types outside the demand support. If every pair type has positive request rate and per-pair service is available, a sequence of requests can empty any finite inventory. The duration of a stall then depends on the arrival rates of requests able to release memory. For the sparse demand studied here, expiry and eviction both offer ways to restore service. [Recovery experiments](Recovery_Baseline.md)
+
+## First release under rare background demand
+
+**Proposition.** Condition on a settled frozen inventory $F$ with no eviction. The original workload has no demand for its stored pair types. Let $J(F)$ be the set of **distinct** stored endpoint pairs. Add independent Poisson background requests at rates $\beta_j$ and serve requests concurrently per pair. Put $\eta_F=\sum_{j\in J(F)}\beta_j$. Without expiry the time $U$ to the first change of inventory is exponential of rate $\eta_F$ when $\eta_F>0$. At $\eta_F=0$ the inventory stays frozen indefinitely.
+
+**Proof.** Before the first request for a type in $J(F)$, every generation remains blocked, swapping remains disabled and every other request simply queues. The first arrival for any type in $J(F)$ consumes a pair at once. At a stopping time when $F$ has been reached, independence of future Poisson increments gives $\Pr(U>t\mid F)=e^{-\eta_Ft}$. An arrival targets an endpoint pair, so two stored copies of that type share one request clock. If each type in $J(F)$ receives rate $\epsilon$, the mean first-release time is $1/(|J(F)|\epsilon)$. For example, the frozen diamond holding two 0–2 pairs and one 1–3 pair has two releasing types.
+
+If the earliest remaining inherited lifetime in $F$ is $r$, the first inventory change occurs at $\min(U,r)$ under the same assumptions. Its mean conditional on the inventory and current deadlines is $(1-e^{-\eta_Fr})/\eta_F$, with value $r$ at $\eta_F=0$. These statements concern the first freed qubit. Service to the original workload can require further generations and swaps. The uncapped checker independently injects one request for each distinct stored type and verifies that it consumes a pair. [Releasing types and traces](evidence/theory/uncapped-freezes.json)
 
 ## With a cutoff the lockup becomes an outage
 
@@ -110,14 +122,14 @@ Give every pair a lifetime $T$ from generation. A swap output inherits the earli
 
 The outage therefore lasts $T-(s-g)$. In 11,982 outages across the runs below, the measured length plus the measured age $s-g$ equaled the cutoff to the simulator tick, and no completion occurred inside any outage. For long cutoffs the mean age should approach $1/(\lambda+\delta)+1/(2\lambda+\delta)$ at equal link rates $\lambda$. This is the wait for the second link given that no request came first, plus the wait for the generation that triggers the endpoint swap. It gives 1.07 and 1.24 at the two loads below. The measured means at cutoff 300 were 0.97 and 1.32, each from about 220 outages.
 
-**Consequences for long cutoffs.** Fix a request rate $\delta<\mu_2$. During an outage about $\delta T$ requests accumulate. They drain at net rate $\mu_2-\delta$, and while they drain the queue is never empty, so no pair sits idle and no new outage can start. After the drain the next outage begins within a time that does not grow with $T$. One cycle thus lasts about $T\mu_2/(\mu_2-\delta)$, and
+**Conjectured long-cutoff limits.** Fix $0<\delta<\mu_2$. An outage of order $T$ accumulates about $\delta T$ requests. The renewal approximation assumes the subsequent busy period drains these requests at net rate $\mu_2-\delta$ and that the time until a new outage after the queue empties is negligible relative to $T$. This gives cycle length approximately $T\mu_2/(\mu_2-\delta)$ and predicts
 
 $$
 \text{fraction of time in outage}\to 1-\frac{\delta}{\mu_2},\qquad
 \frac{\text{mean request delay}}{T}\to\frac12 .
 $$
 
-The first limit says the chain spends all of its spare capacity in outages. The second follows from the queue area of one cycle, $\delta T^2\mu_2/(2(\mu_2-\delta))$, divided by the cycle length and by $\delta$. The proposition is proved. These two limits are a renewal argument that we have not written as a full proof.
+The first prediction assigns the spare capacity to outages. For the second, the approximate queue area per cycle is $\delta T^2\mu_2/(2(\mu_2-\delta))$. Dividing by cycle length and by $\delta$ gives $T/2$. Establishing these limits requires control of the residual outage length, recovery time and queue-area moments as $T$ increases. The finite-cutoff no-service proposition above is proved.
 
 Simulation at unit link rates, eight seeds per row, original and guarded policy on identical arrivals. The limits are $0.625$ and $0.25$ for the outage fraction at the two loads, and $T/2$ for the delay.
 
@@ -134,11 +146,11 @@ Simulation at unit link rates, eight seeds per row, original and guarded policy 
 | 300 | 0.25 | 0.623 | 298.68 | 150.96 | 0.25 |
 | 300 | 0.50 | 0.246 | 299.03 | 152.36 | 2.63 |
 
-Both policies served the offered load in every row. The cost of the missing guard is delay, and it grows in proportion to the memory lifetime. A better memory makes the unguarded chain slower. The no-expiry theorem is the limit of this statement. [Runner](scripts/cutoff_outage_analysis.py) · [Summary](results/memory/cutoff-outage-02/summary.json)
+Both policies served approximately the offered load over these finite windows. Under the original policy, measured mean delay grew from 2.20 to 150.96 at load 0.25 and from 5.17 to 152.36 at load 0.50 as the cutoff increased from 3 to 300. [Runner](scripts/cutoff_outage_analysis.py) · [Observed results](evidence/prior/cutoff-outage-02/summary.json)
 
 ## Swap success below one
 
-Let each swap succeed with probability $q$, independently. A failed swap destroys both inputs and produces nothing.
+Let each swap succeed independently with probability $0<q\le1$. A failed swap destroys both inputs and produces nothing.
 
 **Saturated rates.** A failed center swap changes the inventory exactly as a success followed by immediate consumption. The imbalance walk is unchanged, and both saturated rates are multiplied by $q$.
 
@@ -174,9 +186,9 @@ The root simulator has perfect swaps. These are results about the model with fai
 
 ## Limits
 
-- Verdicts are exact for the listed networks, budgets and demand sets, and say nothing about others. Requests are served concurrently per demand pair, which for one demand class is the root simulator's FIFO.
+- Closed-component verdicts are exact for the finite queue abstraction, stated topology, budget, rules and demand support. The uncapped certificates establish frozen inventories on the specific instances replayed. Requests are served concurrently per demand pair.
 - The diamond experiments used a slotted wrapper with batched generation. The search applies one event at a time. It reproduces their frozen inventories, but the two models need not reach exactly the same sets.
-- The absence of lockup at uniform budgets above two on the three-node chain is enumerated up to 14 and not proved in general.
+- Frozen inventories are ruled out on the three-node chain at uniform budgets 3 through 14 by the finite search. Larger uniform budgets remain open.
 - The two long-cutoff limits rest on a renewal argument and simulation.
 - Cutoff and swap-failure results are for the two-slot three-node chain.
 
@@ -185,6 +197,7 @@ The root simulator has perfect swaps. These are results about the model with fai
 From the repository root, with the environment in the README.
 
 ```powershell
+.\.venv\Scripts\python.exe -B -m scripts.theory_evidence --output evidence/theory
 .\.venv\Scripts\python.exe -B scripts/dead_state_search.py chain --memory 2 3 4 --all-rules
 .\.venv\Scripts\python.exe -B scripts/dead_state_search.py chain --layouts 2,3,2 3,2,3 1,4,1 --all-rules
 .\.venv\Scripts\python.exe -B scripts/dead_state_search.py diamond --memory 2 --check
@@ -194,4 +207,4 @@ From the repository root, with the environment in the README.
 .\.venv\Scripts\python.exe -B scripts/two_slot_swap_failure.py
 ```
 
-Other topologies are listed in `TOPOLOGIES` in the search script. The six-node chain at four slots takes several minutes. [All rule verdicts](results/memory/lockup-generalization-01/rule-scan.jsonl)
+Other topologies are listed in `TOPOLOGIES` in the search script. The six-node chain at four slots takes several minutes. [Rule scan](evidence/prior/lockup-generalization-01/rule-scan.jsonl) · [Five-slot supplement](evidence/prior/lockup-generalization-01/rule-scan-five-slots.jsonl)
