@@ -1,10 +1,9 @@
 """Exhaustive search for inventories that can never serve again without expiry.
 
-Every inventory reachable from empty is enumerated by applying each possible
-next event (one generation on a physical edge, or one request) and letting the
-actual swap policy settle. The repository's settling, pressure, orientation and
-inventory code are reused unchanged. Only event timing is abstracted away, which
-is harmless without expiry because the policy never reads the clock.
+The graph contains the projection of every reachable uncapped state. Each step
+applies one generation or request and lets the swap policy settle. The
+repository's inventory code is reused. Without expiry or positive patience the
+policy does not read the clock.
 
 A closed set of states with no completion of some demand class is a structural
 lockup for that class. A closed set with no completion at all is a dead class.
@@ -12,7 +11,10 @@ A single inventory that no event changes is a frozen inventory.
 
 Service is concurrent per demand pair. With one demand class this is the root
 simulator's FIFO. Pending counts are capped at ``CAP``, read as "at least CAP",
-with every consistent successor explored, so reachability is exact.
+with every one-step-consistent successor explored. Projecting a concrete path
+gives a graph path. Consecutive abstract edges may choose different hidden
+queue lengths, so graph paths and recurrent classes alone need not lift to the
+uncapped process. See Lockup_Extensions.md and the uncapped witness checker.
 
 Two experimental filters are available. Neither is a production policy.
 ``--no-shortcut``: a swap may not create a pair between two physical neighbors.
@@ -255,6 +257,33 @@ def explore(arm, limit=2_000_000):
                 if len(parent) > limit:
                     raise MemoryError("state limit exceeded")
     return graph, parent
+
+
+def frozen_generation_words(arm, count=1):
+    """Shortest generation-only words reaching distinct inventories frozen for any backlog."""
+    if arm.drop_stuck:
+        raise ValueError("blocked generations can evict under the recovery policy")
+    frontier = deque([()])
+    parent = {(): None}
+    found = []
+    while frontier:
+        signature = frontier.popleft()
+        arm.restore(signature)
+        inv = arm.inventory
+        if (all(not inv.buffers[pair] for pair in arm.demand)
+                and all(inv.admission_reason(edge) for edge in arm.edges)):
+            # No requests have arrived. The preceding generation already
+            # settled all swaps. The separate public replay checks this again.
+            found.append(witness(parent, signature))
+            if len(found) == count:
+                return found
+        for edge in arm.edges:
+            event = ("generate", edge)
+            target, _, _ = arm.apply(signature, [0] * len(arm.demand), event)
+            if target not in parent:
+                parent[target] = (signature, event)
+                frontier.append(target)
+    raise ValueError(f"found only {len(found)} distinct frozen inventories")
 
 
 def witness(parent, state):

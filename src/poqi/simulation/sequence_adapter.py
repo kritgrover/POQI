@@ -81,7 +81,7 @@ class _Gaps:
 
 
 class _SequenceSimulation:
-    priorities = {"expire": 0, "generate": 1, "swap": 2, "request": 3, "finish": 4}
+    priorities = {"measure": -1, "expire": 0, "generate": 1, "swap": 2, "request": 3, "finish": 4}
 
     def __init__(self, graph, demand_rate, *, memory_slots, cutoff_time,
                  distillation_pairs, horizon, seed, ticks_per_time_unit,
@@ -157,6 +157,8 @@ class _SequenceSimulation:
                      for key in (None, *self.demand)}
         self.window_offered = Counter()
         self.window_completed = Counter()
+        self.window_latency_ticks = Counter()
+        self.cost_snapshots = []
         self.generation = {}
         for u, v, attributes in graph.edges(data=True):
             if "generation_capacity" not in attributes:
@@ -167,6 +169,8 @@ class _SequenceSimulation:
             self._schedule_poisson_inputs()
         else:
             self._schedule_trace(trace)
+        self._schedule(self.window_tick, "measure")
+        self._schedule(self.end_tick, "measure")
         self._schedule(self.end_tick, "finish")
 
     def _exact_tick(self, value, label):
@@ -350,6 +354,7 @@ class _SequenceSimulation:
         self.completed[pair] += 1
         if now >= self.window_tick:
             self.window_completed[pair] += 1
+            self.window_latency_ticks[pair] += now - arrived
         latency = (now - arrived) / self.ticks
         self.latencies.append(latency)
         self.latencies_by_pair.setdefault(pair, []).append(latency)
@@ -423,6 +428,13 @@ class _SequenceSimulation:
 
     def dispatch(self, kind, *args):
         now = self.timeline.now()
+        if kind == "measure":
+            # Snapshots run before all physical events on either boundary.
+            counts = {key: self.counters[key] for key in (
+                "offered_generation", "admitted_generation", "stuck_drops", "expired_pairs", "swaps")}
+            counts["admission_rejections"] = sum(self.rejections.values())
+            self.cost_snapshots.append(counts)
+            return
         self.inventory.advance(now)
         if kind == "finish":
             self._log("finish")
@@ -506,6 +518,7 @@ class _SequenceSimulation:
             rows.append({"endpoints": list(pair), "demand_rate": demand,
                          "offered_requests": self.window_offered[pair],
                          "completed_requests": done, "throughput": done / window,
+                         "completed_latency_sum": self.window_latency_ticks[pair] / self.ticks,
                          "satisfaction": done / (window * demand) if demand else None,
                          "waiting_at_horizon": self.gaps[pair].pending,
                          # Something waited inside the window and nothing completed in it.
@@ -513,7 +526,9 @@ class _SequenceSimulation:
         ratios = [row["satisfaction"] for row in rows if row["satisfaction"] is not None]
         fairness = (sum(ratios) ** 2 / (len(ratios) * sum(r * r for r in ratios))
                     if any(ratios) else None)
+        before, after = self.cost_snapshots
         return {"window": [self.measure_from, self.horizon], "outage_threshold": self.outage_threshold,
+                "operations": {key: after[key] - value for key, value in before.items()},
                 "definition": "interruption: a request of the class waits and none of that class completes; "
                               "lengths are clipped to the window and an unfinished one counts to the horizon",
                 "all_pairs": self.gaps[None].summary(),

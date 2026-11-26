@@ -1,6 +1,7 @@
 from fractions import Fraction
 
 from scripts.chain_tandem_check import policy_rate, tandem_rate, tandem_rate_float
+from scripts.dead_state_search import Arm, stored_pairs
 
 ONE = Fraction(1)
 
@@ -9,6 +10,31 @@ def test_one_repeater_is_the_finite_buffer_queue():
     for memory in (2, 3, 5):
         assert tandem_rate(2, memory, [ONE, ONE]) == Fraction(memory, memory + 1)
         assert policy_rate(2, memory, [ONE, ONE])[0] == Fraction(memory, memory + 1)
+
+
+def test_each_tandem_departure_is_an_admission_and_stored_pairs_account_for_the_difference():
+    edges = ((0, 1), (1, 2), (2, 3))
+    arm = Arm(edges, ((0, 3),), (5, 2, 2, 5), "pressure_oriented", asap=True)
+    station = [1, 1]
+    departures = completions = 0
+    signature = ()
+    for step, link in enumerate([2, 2, 1, 0, 0, 1, 2, 0, 2, 1, 0]):
+        if link == 0 and station[0] < 2:
+            station[0] += 1
+        elif link == 1 and station[0] > 0 and station[1] < 2:
+            station[0] -= 1
+            station[1] += 1
+        elif link == 2 and station[1] > 0:
+            station[1] -= 1
+            departures += 1
+        signature, _, done = arm.apply(signature, [100], ("generate", edges[link]))
+        completions += done[0]
+        inventory = stored_pairs(signature)
+        occupancy = [sum(left < cut <= right for (left, right), _ in inventory) for cut in (1, 2, 3)]
+        assert station == [occupancy[0] - occupancy[1] + 1, occupancy[1] - occupancy[2] + 1]
+        assert departures - completions == occupancy[-1]
+        if step == 0:
+            assert (departures, completions) == (1, 0)
 
 
 def test_two_repeaters_at_two_slots_match_exactly_also_with_unequal_rates():

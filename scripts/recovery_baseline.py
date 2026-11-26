@@ -22,9 +22,13 @@ waits and none completes. An outage is an interruption at least as long as
 
 import argparse
 from concurrent.futures import ProcessPoolExecutor
+import gzip
+import hashlib
+from importlib.metadata import version
 from itertools import combinations
 import json
 from pathlib import Path
+import platform
 import random
 import statistics
 import subprocess
@@ -82,8 +86,9 @@ def observe(result, hops):
     window = continuity["window"][1] - continuity["window"][0]
     completed = sum(row["completed_requests"] for row in rows)
     offered_rate = sum(row["demand_rate"] for row in rows)
-    waits = [row["mean_completed_latency"] for row in result["service_by_pair"]
-             if row["mean_completed_latency"] is not None]
+    ops = continuity["operations"]
+    waits = [row["completed_latency_sum"] / row["completed_requests"] for row in rows
+             if row["completed_requests"]]
     by_hops = {}
     for row in rows:
         by_hops.setdefault(hops[tuple(row["endpoints"])], []).append(row["satisfaction"])
@@ -98,14 +103,17 @@ def observe(result, hops):
         "longest_interruption": max(row["longest_interruption"] for row in rows),
         "any_pair_longest_interruption": continuity["all_pairs"]["longest_interruption"],
         "zero_service": int(completed == 0),
-        # Whole run, completed requests only. A starved pair contributes nothing here.
-        "mean_latency": result["mean_completed_latency"],
+        "offered_requests": sum(row["offered_requests"] for row in rows),
+        "completed_requests": completed,
+        **ops,
+        "by_pair": rows,
+        "mean_latency": per(sum(row["completed_latency_sum"] for row in rows)),
         "worst_pair_mean_latency": max(waits, default=None),
         "final_backlog": result["unserved_requests"],
-        "drops_per_completion": per(result.get("stuck_drops", 0)),
-        "expired_per_completion": per(result["expired_pairs"]),
-        "swaps_per_completion": per(result["swaps"]),
-        "rejected_fraction": result["admission_rejections"] / max(1, result["offered_generation"]),
+        "drops_per_completion": per(ops["stuck_drops"]),
+        "expired_per_completion": per(ops["expired_pairs"]),
+        "swaps_per_completion": per(ops["swaps"]),
+        "rejected_fraction": ops["admission_rejections"] / ops["offered_generation"] if ops["offered_generation"] else None,
         "satisfaction_by_hops": {str(h): statistics.fmean(values) for h, values in sorted(by_hops.items())},
     }
 
@@ -148,6 +156,16 @@ def summarise(rows):
             for key, group in groups.items()]
 
 
+def save_records(path, data, compress):
+    if compress:
+        encoded = json.dumps(data, separators=(",", ":"), allow_nan=False).encode("utf-8")
+        path = path.with_suffix(".json.gz")
+        path.write_bytes(gzip.compress(encoded, compresslevel=6, mtime=0))
+    else:
+        path.write_text(json.dumps(data, indent=1, allow_nan=False), encoding="utf-8")
+    return path
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--output", type=Path, required=True)
@@ -166,6 +184,7 @@ def main():
     parser.add_argument("--warmup", type=float, default=500)
     parser.add_argument("--outage", type=float, default=50, help="interruption length that counts as an outage")
     parser.add_argument("--workers", type=int, default=8)
+    parser.add_argument("--gzip", action="store_true", help="save compact compressed seed records and summaries")
     args = parser.parse_args()
     if args.output.exists():
         raise SystemExit("output directory must be new")
@@ -176,20 +195,29 @@ def main():
     tasks = [(name, memory, policy, admission, arm, seed, options)
              for name in args.networks for memory in args.memory for policy in args.policies
              for admission in args.admissions for arm in args.arms for seed in args.seeds]
-    with ProcessPoolExecutor(args.workers) as pool:
-        rows = list(pool.map(run, tasks, chunksize=1))
-    summary = summarise(rows)
     root = Path(__file__).resolve().parents[1]
     git = lambda *words: subprocess.run(["git", *words], capture_output=True, text=True, cwd=root).stdout.strip()
     commit, uncommitted = git("rev-parse", "HEAD"), bool(git("status", "--porcelain", "--untracked-files=no"))
+    sources = ["scripts/recovery_baseline.py", "src/poqi/simulation/sequence_adapter.py",
+               "src/poqi/simulation/inventory.py"]
+    source_hashes = {name: hashlib.sha256((root / name).read_text(encoding="utf-8").encode("utf-8")).hexdigest()
+                     for name in sources}
+    sequence_commit = git("-C", "SeQUeNCe", "rev-parse", "HEAD")
+    with ProcessPoolExecutor(args.workers) as pool:
+        rows = list(pool.map(run, tasks, chunksize=1))
+    summary = summarise(rows)
     demand = {name: {str(seed): [list(pair) for pair in demand_set(network(name), seed, args.share, args.load)[0]]
                      for seed in args.seeds} for name in args.networks}
     args.output.mkdir(parents=True)
+    files = [save_records(args.output / "runs.json", rows, args.gzip),
+             save_records(args.output / "summary.json", summary, args.gzip)]
     manifest = {"commit": commit, "uncommitted_changes": uncommitted, "runs": len(rows), "demand_pairs": demand,
+                "source_sha256_lf": source_hashes, "sequence_commit": sequence_commit,
+                "python": platform.python_version(), "versions": {name: version(name) for name in ("numpy", "networkx", "scipy")},
+                "window_convention": "[warmup, horizon) for events and costs; final_backlog is the stock at horizon",
+                "file_sha256": {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in files},
                 **{key: value for key, value in vars(args).items() if key not in ("output", "workers")}}
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=1), encoding="utf-8")
-    (args.output / "runs.json").write_text(json.dumps(rows, indent=1), encoding="utf-8")
-    (args.output / "summary.json").write_text(json.dumps(summary, indent=1), encoding="utf-8")
     print(json.dumps({"runs": len(rows), "groups": len(summary), "output": str(args.output)}))
 
 

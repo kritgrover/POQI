@@ -167,8 +167,41 @@ def policy_rate(links, memory, rates, policy="pressure_oriented", asap=False):
     return rate, len(closed)
 
 
+def ample_endpoint_checks():
+    """Compare actual completion rewards and tandem departures with nonbinding endpoints."""
+    cases = [
+        (3, 2, (1, 1, 1)), (3, 2, (1, 2, 1)), (3, 3, (2, 1, 3)),
+        (3, 4, (1, 1, 1)), (3, 5, (1, 2, 3)), (3, 6, (1, 1, 1)),
+        (4, 2, (1, 1, 1, 1)), (4, 2, (2, 1, 3, 1)),
+        (4, 3, (1, 1, 1, 1)), (4, 3, (2, 1, 1, 3)),
+        (5, 2, (1, 1, 1, 1, 1)), (5, 2, (1, 2, 1, 3, 1)),
+        (6, 2, (1, 1, 1, 1, 1, 1)), (6, 2, (1, 3, 1, 2, 1, 1)),
+    ]
+    rows = []
+    for links, slots, rate_values in cases:
+        end_slots = (links - 1) * slots + 1
+        layout = [end_slots] + [slots] * (links - 1) + [end_slots]
+        rates = [Fraction(value) for value in rate_values]
+        departure = tandem_rate(links, slots, rates)
+        completion, inventory_states = policy_rate(links, layout, rates, asap=True)
+        rational = isinstance(departure, Fraction) and isinstance(completion, Fraction)
+        tolerance = 0.0 if rational else 1e-10
+        if abs(completion - departure) > tolerance:
+            raise AssertionError(f"tandem rate disagrees with eager completions at {layout}, {rates}")
+        rows.append({"links": links, "node_slots": layout, "link_rates": list(rate_values),
+                     "station_states": (slots + 1) ** (links - 1), "inventory_states": inventory_states,
+                     "tandem_departures_per_time": str(departure), "eager_completions_per_time": str(completion),
+                     "exact_rational_comparison": rational, "absolute_tolerance": tolerance})
+    return rows
+
+
 def main():
-    argparse.ArgumentParser(description=__doc__).parse_args()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--ample-endpoints", action="store_true", help="run the fourteen nonbinding-endpoint comparisons")
+    args = parser.parse_args()
+    if args.ample_endpoints:
+        print(json.dumps(ample_endpoint_checks(), indent=2))
+        return
     rows = []
     cases = [(2, m, (1, 1)) for m in range(2, 9)] + [(2, 4, (1, 2)), (2, 5, (2, 1))]
     cases += [(3, m, (1, 1, 1)) for m in range(2, 7)] + [(3, 2, (1, 2, 1)), (3, 4, (2, 1, 3))]

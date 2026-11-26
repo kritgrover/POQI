@@ -51,6 +51,30 @@ def test_zero_patience_drop_releases_the_trap_at_the_next_blocked_generation():
     assert drop["time"] == 6 and drop["blocked_by"] == "hard_slots"
 
 
+def test_costs_and_completions_use_the_same_left_closed_window():
+    result = simulate(TRAP + [event(6, "generate", [1, 2])], memory_slots=2,
+                      swap_policy="pressure_relaxed", recovery_policy="drop_when_stuck",
+                      measure_from=6, outage_threshold=2)
+    observed = recovery_baseline.observe(result, {(0, 2): 2})
+    assert result["swaps"] == 3 and observed["swaps"] == 1
+    assert observed["stuck_drops"] == observed["completed_requests"] == 1
+    assert observed["drops_per_completion"] == observed["swaps_per_completion"] == 1
+    assert observed["offered_generation"] == observed["admitted_generation"] == 1
+    assert observed["offered_requests"] == 0 and observed["mean_latency"] == 1
+
+
+def test_costs_exclude_warmup_and_expiry_at_the_horizon_even_with_zero_service():
+    result = simulate([event(t, "generate", [0, 1]) for t in (1, 4, 4.5, 8, 8.5)],
+                      nodes=2, horizon=10, memory_slots=1, cutoff_time=2,
+                      measure_from=4, outage_threshold=2)
+    observed = recovery_baseline.observe(result, {(0, 1): 1})
+    assert result["expired_pairs"] == 3 and observed["expired_pairs"] == 1
+    assert observed["offered_generation"] == 4 and observed["admission_rejections"] == 2
+    assert observed["completed_requests"] == 0 and observed["expired_per_completion"] is None
+    assert observed["swaps_per_completion"] is None and observed["drops_per_completion"] is None
+    assert observed["rejected_fraction"] == 0.5
+
+
 def test_patience_delays_the_drop_until_the_blocker_has_been_stored_that_long():
     # The wrong-origin pair is created by the swap at time 3.
     kwargs = dict(memory_slots=2, swap_policy="pressure_relaxed", recovery_policy="drop_when_stuck",

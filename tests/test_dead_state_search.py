@@ -1,4 +1,5 @@
 from scripts.dead_state_search import Arm, TOPOLOGIES, analyse, check_against_simulator, check_copy
+from scripts.theory_evidence import certify
 
 
 def summary(topology, memory, policy, **filters):
@@ -62,3 +63,14 @@ def test_driver_matches_the_public_simulator_and_the_copied_loop_matches_the_ori
     edges, demand = TOPOLOGIES["diamond"]
     _, graph, _ = summary("diamond", 2, "pressure_oriented")
     check_copy(Arm(edges, demand, 2, "pressure_oriented"), graph)
+
+
+def test_uncapped_diamond_freeze_certificates_reach_both_mirrors():
+    witnesses = certify("diamond", "pressure_oriented", 2)
+    duplicates = []
+    for witness in witnesses:
+        assert witness["public_next_events_checked"] == 14
+        assert witness["backlogs_per_class_checked"] == [0, 7]
+        pairs = [entry["endpoints"] for entry in witness["frozen_inventory"]]
+        duplicates.append(next(pair for pair in pairs if pairs.count(pair) == 2))
+    assert sorted(duplicates) == [[0, 2], [1, 3]]
