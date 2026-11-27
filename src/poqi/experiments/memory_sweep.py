@@ -189,7 +189,9 @@ def _run_memory_sweep(config, output_path, state):
                     row = {"demand_factor": demand_factor, "memory_slots": budget, "replicate": replicate,
                            "seed": seed + replicate, "status": "failed", "throughput": None,
                            "minimum_pair_satisfaction": None, "unserved_requests": None,
-                           "mean_completed_latency": None, "artifact": f"runs/{filename}"}
+                           "mean_completed_latency": None, "starved_pairs": None,
+                           "longest_pair_interruption": None, "mean_pair_outage_fraction": None,
+                           "artifact": f"runs/{filename}"}
                     try:
                         data = run_simulation(config.graph, demand, memory_slots=budget,
                                               distillation_pairs=config.distillation_pairs,
@@ -202,9 +204,16 @@ def _run_memory_sweep(config, output_path, state):
                             "aggregate_target_met": data["throughput"] >= eta * baseline.alpha * sum(demand.values()) if matched else None}
                             for eta in fractions]
                         write_json(output / "runs" / filename, data)
+                        continuity = data["service_continuity"]
+                        outages = [r.get("outage_fraction") for r in continuity["by_pair"]]
                         row.update(status="completed", throughput=data["throughput"],
                                    minimum_pair_satisfaction=satisfaction, unserved_requests=data["unserved_requests"],
-                                   mean_completed_latency=data["mean_completed_latency"])
+                                   mean_completed_latency=data["mean_completed_latency"],
+                                   starved_pairs=continuity["starved_pairs"],
+                                   longest_pair_interruption=max(r["longest_interruption"] for r in continuity["by_pair"]),
+                                   # Needs simulation.outage_threshold in the configuration.
+                                   mean_pair_outage_fraction=(None if None in outages
+                                                              else sum(outages) / len(outages)))
                     except (ValueError, RuntimeError, AssertionError) as error:
                         failure = f"simulation load {demand_factor}, budget {budget}, replicate {replicate}: {error}"
                         failures.append(failure)
@@ -215,7 +224,11 @@ def _run_memory_sweep(config, output_path, state):
                 center, low, high = _interval([r["throughput"] for r in group if r["status"] == "completed"], replicates)
                 summaries.append({"demand_factor": demand_factor, "memory_slots": budget,
                                   "replicates": replicates, "completed_replicates": sum(r["status"] == "completed" for r in group),
-                                  "throughput_mean": center, "throughput_ci_low": low, "throughput_ci_high": high})
+                                  "throughput_mean": center, "throughput_ci_low": low, "throughput_ci_high": high,
+                                  "replicates_with_starved_pair": sum(bool(r["starved_pairs"]) for r in group),
+                                  "longest_pair_interruption_max": max(
+                                      (r["longest_pair_interruption"] for r in group
+                                       if r["longest_pair_interruption"] is not None), default=None)})
     _write_csv(output / "lp.csv", lp_rows, list(lp_rows[0]))
     _write_csv(output / "sizing.csv", sizing_rows, list(sizing_rows[0]))
     if simulation_rows:

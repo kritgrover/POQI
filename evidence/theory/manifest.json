@@ -1,0 +1,27 @@
+{
+  "command": "python -B -m scripts.theory_evidence --output evidence/theory",
+  "freeze_time_model": "distinct deterministic event times, no expiry, no recovery, unit swap success",
+  "tandem_model": "independent Poisson generators, permanent backlog, unit swap success, no expiry",
+  "initial_state": "empty inventory and empty unbounded per-demand queues in the freeze replays",
+  "python": "3.12.14",
+  "libraries": {
+    "networkx": "3.7",
+    "numpy": "2.5.4",
+    "sequence": "1.3.1"
+  },
+  "source_sha256_lf": {
+    "scripts/theory_evidence.py": "70d108aaedc90224d9d7d7ed19059423385339a34758cb17b71b4b632edd19a9",
+    "scripts/chain_tandem_check.py": "7fa04286d8b3c780547b19c2bd722269534977e9d96904e7ae7719f536a222a5",
+    "scripts/dead_state_search.py": "38fdf6006347ef0f708ab2ae7c95237ead0eb985d393ec62b8bedc59ed6c0f95",
+    "src/poqi/simulation/inventory.py": "f61fbb164a0c64f5a7e6c1ee65e95881e7a681e89b6f632bcda5a12eff04d17a",
+    "src/poqi/simulation/sequence_adapter.py": "97125b138add24bae63ce566ef62f4476871c1043149b64051c714fa1dc9b874"
+  },
+  "artifact_sha256_lf": {
+    "tandem.json": "3cdc1e1e1136396018a05a95a4cec65bd3a9983e094c55b70bab6213d0bdad93",
+    "uncapped-freezes.json": "d7a6edd32bb13449210459529cfccd73a178e6648f63e400453e6c7b66aa83ea"
+  },
+  "tandem_comparisons": 14,
+  "distinct_topology_policy_traces": 10,
+  "next_event_checks": 120,
+  "background_release_checks": 20
+}

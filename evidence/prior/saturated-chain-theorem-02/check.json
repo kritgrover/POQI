@@ -1,0 +1,1069 @@
+{
+  "status": "passed",
+  "max_memory": 16,
+  "source_sha256": {
+    "scripts/saturated_chain_check.py": "770eee7c027c7911c081d641e82f8bc51993d008081d1ad1a3cb9bac1ca1166c",
+    "src/poqi/simulation/inventory.py": "d9cd035762f8a8ee4ac8b73e8f97cccaa51a51da3b543f0c4f592a0524addf3e",
+    "src/poqi/simulation/sequence_adapter.py": "4543fc784ade1da6d2c2ce2feeca9f11a2bbedbc3ae2d896690a43a448567483"
+  },
+  "transitions": 1030,
+  "stationary_rate_checks": 96,
+  "cases": [
+    {
+      "memory": 1,
+      "policy": "balancing",
+      "reachable_states": 2,
+      "recurrent_states": 1,
+      "one_arrival_transitions": 4,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        }
+      ]
+    },
+    {
+      "memory": 1,
+      "policy": "pressure_relaxed",
+      "reachable_states": 2,
+      "recurrent_states": 1,
+      "one_arrival_transitions": 4,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        }
+      ]
+    },
+    {
+      "memory": 2,
+      "policy": "balancing",
+      "reachable_states": 4,
+      "recurrent_states": 1,
+      "one_arrival_transitions": 8,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        }
+      ]
+    },
+    {
+      "memory": 2,
+      "policy": "pressure_relaxed",
+      "reachable_states": 3,
+      "recurrent_states": 3,
+      "one_arrival_transitions": 6,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.6666666666666666,
+          "formula": 0.6666666666666666
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.8571428571428572,
+          "formula": 0.8571428571428571
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.8571428571428572,
+          "formula": 0.8571428571428571
+        }
+      ]
+    },
+    {
+      "memory": 3,
+      "policy": "balancing",
+      "reachable_states": 6,
+      "recurrent_states": 1,
+      "one_arrival_transitions": 12,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.0,
+          "formula": 0.0
+        }
+      ]
+    },
+    {
+      "memory": 3,
+      "policy": "pressure_relaxed",
+      "reachable_states": 4,
+      "recurrent_states": 4,
+      "one_arrival_transitions": 8,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.75,
+          "formula": 0.75
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9333333333333333,
+          "formula": 0.9333333333333333
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9333333333333333,
+          "formula": 0.9333333333333333
+        }
+      ]
+    },
+    {
+      "memory": 4,
+      "policy": "balancing",
+      "reachable_states": 8,
+      "recurrent_states": 3,
+      "one_arrival_transitions": 16,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.6666666666666666,
+          "formula": 0.6666666666666666
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.8571428571428572,
+          "formula": 0.8571428571428571
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.8571428571428572,
+          "formula": 0.8571428571428571
+        }
+      ]
+    },
+    {
+      "memory": 4,
+      "policy": "pressure_relaxed",
+      "reachable_states": 6,
+      "recurrent_states": 5,
+      "one_arrival_transitions": 12,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.7999999999999999,
+          "formula": 0.8
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.967741935483871,
+          "formula": 0.967741935483871
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.967741935483871,
+          "formula": 0.967741935483871
+        }
+      ]
+    },
+    {
+      "memory": 5,
+      "policy": "balancing",
+      "reachable_states": 10,
+      "recurrent_states": 4,
+      "one_arrival_transitions": 20,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.75,
+          "formula": 0.75
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9333333333333333,
+          "formula": 0.9333333333333333
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9333333333333333,
+          "formula": 0.9333333333333333
+        }
+      ]
+    },
+    {
+      "memory": 5,
+      "policy": "pressure_relaxed",
+      "reachable_states": 8,
+      "recurrent_states": 6,
+      "one_arrival_transitions": 16,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.8333333333333334,
+          "formula": 0.8333333333333334
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9841269841269842,
+          "formula": 0.9841269841269841
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9841269841269842,
+          "formula": 0.9841269841269841
+        }
+      ]
+    },
+    {
+      "memory": 6,
+      "policy": "balancing",
+      "reachable_states": 12,
+      "recurrent_states": 5,
+      "one_arrival_transitions": 24,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.7999999999999999,
+          "formula": 0.8
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9677419354838709,
+          "formula": 0.967741935483871
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.967741935483871,
+          "formula": 0.967741935483871
+        }
+      ]
+    },
+    {
+      "memory": 6,
+      "policy": "pressure_relaxed",
+      "reachable_states": 10,
+      "recurrent_states": 7,
+      "one_arrival_transitions": 20,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.8571428571428571,
+          "formula": 0.8571428571428571
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9921259842519687,
+          "formula": 0.9921259842519685
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9921259842519685,
+          "formula": 0.9921259842519685
+        }
+      ]
+    },
+    {
+      "memory": 7,
+      "policy": "balancing",
+      "reachable_states": 14,
+      "recurrent_states": 6,
+      "one_arrival_transitions": 28,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.8333333333333334,
+          "formula": 0.8333333333333334
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9841269841269843,
+          "formula": 0.9841269841269841
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9841269841269842,
+          "formula": 0.9841269841269841
+        }
+      ]
+    },
+    {
+      "memory": 7,
+      "policy": "pressure_relaxed",
+      "reachable_states": 12,
+      "recurrent_states": 8,
+      "one_arrival_transitions": 24,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.875,
+          "formula": 0.875
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9960784313725493,
+          "formula": 0.996078431372549
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9960784313725489,
+          "formula": 0.996078431372549
+        }
+      ]
+    },
+    {
+      "memory": 8,
+      "policy": "balancing",
+      "reachable_states": 16,
+      "recurrent_states": 7,
+      "one_arrival_transitions": 32,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.8571428571428572,
+          "formula": 0.8571428571428571
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9921259842519684,
+          "formula": 0.9921259842519685
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9921259842519685,
+          "formula": 0.9921259842519685
+        }
+      ]
+    },
+    {
+      "memory": 8,
+      "policy": "pressure_relaxed",
+      "reachable_states": 14,
+      "recurrent_states": 9,
+      "one_arrival_transitions": 28,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.8888888888888891,
+          "formula": 0.8888888888888888
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9980430528375736,
+          "formula": 0.9980430528375733
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9980430528375733,
+          "formula": 0.9980430528375733
+        }
+      ]
+    },
+    {
+      "memory": 9,
+      "policy": "balancing",
+      "reachable_states": 18,
+      "recurrent_states": 8,
+      "one_arrival_transitions": 36,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.875,
+          "formula": 0.875
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.996078431372549,
+          "formula": 0.996078431372549
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9960784313725489,
+          "formula": 0.996078431372549
+        }
+      ]
+    },
+    {
+      "memory": 9,
+      "policy": "pressure_relaxed",
+      "reachable_states": 16,
+      "recurrent_states": 10,
+      "one_arrival_transitions": 32,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9,
+          "formula": 0.9
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9990224828934507,
+          "formula": 0.9990224828934506
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9990224828934505,
+          "formula": 0.9990224828934506
+        }
+      ]
+    },
+    {
+      "memory": 10,
+      "policy": "balancing",
+      "reachable_states": 20,
+      "recurrent_states": 9,
+      "one_arrival_transitions": 40,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.888888888888889,
+          "formula": 0.8888888888888888
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9980430528375733,
+          "formula": 0.9980430528375733
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9980430528375734,
+          "formula": 0.9980430528375733
+        }
+      ]
+    },
+    {
+      "memory": 10,
+      "policy": "pressure_relaxed",
+      "reachable_states": 18,
+      "recurrent_states": 11,
+      "one_arrival_transitions": 36,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9090909090909091,
+          "formula": 0.9090909090909091
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9995114802149487,
+          "formula": 0.9995114802149487
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9995114802149485,
+          "formula": 0.9995114802149487
+        }
+      ]
+    },
+    {
+      "memory": 11,
+      "policy": "balancing",
+      "reachable_states": 22,
+      "recurrent_states": 10,
+      "one_arrival_transitions": 44,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9000000000000001,
+          "formula": 0.9
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9990224828934505,
+          "formula": 0.9990224828934506
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9990224828934507,
+          "formula": 0.9990224828934506
+        }
+      ]
+    },
+    {
+      "memory": 11,
+      "policy": "pressure_relaxed",
+      "reachable_states": 20,
+      "recurrent_states": 12,
+      "one_arrival_transitions": 40,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9166666666666666,
+          "formula": 0.9166666666666666
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9997557997557998,
+          "formula": 0.9997557997557998
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9997557997557996,
+          "formula": 0.9997557997557998
+        }
+      ]
+    },
+    {
+      "memory": 12,
+      "policy": "balancing",
+      "reachable_states": 24,
+      "recurrent_states": 11,
+      "one_arrival_transitions": 48,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9090909090909091,
+          "formula": 0.9090909090909091
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9995114802149485,
+          "formula": 0.9995114802149487
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9995114802149485,
+          "formula": 0.9995114802149487
+        }
+      ]
+    },
+    {
+      "memory": 12,
+      "policy": "pressure_relaxed",
+      "reachable_states": 22,
+      "recurrent_states": 13,
+      "one_arrival_transitions": 44,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9230769230769231,
+          "formula": 0.9230769230769231
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9998779147845192,
+          "formula": 0.9998779147845196
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9998779147845196,
+          "formula": 0.9998779147845196
+        }
+      ]
+    },
+    {
+      "memory": 13,
+      "policy": "balancing",
+      "reachable_states": 26,
+      "recurrent_states": 12,
+      "one_arrival_transitions": 52,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9166666666666667,
+          "formula": 0.9166666666666666
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9997557997557994,
+          "formula": 0.9997557997557998
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9997557997557995,
+          "formula": 0.9997557997557998
+        }
+      ]
+    },
+    {
+      "memory": 13,
+      "policy": "pressure_relaxed",
+      "reachable_states": 24,
+      "recurrent_states": 14,
+      "one_arrival_transitions": 48,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9285714285714286,
+          "formula": 0.9285714285714286
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9999389611182318,
+          "formula": 0.9999389611182323
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9999389611182324,
+          "formula": 0.9999389611182323
+        }
+      ]
+    },
+    {
+      "memory": 14,
+      "policy": "balancing",
+      "reachable_states": 28,
+      "recurrent_states": 13,
+      "one_arrival_transitions": 56,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9230769230769231,
+          "formula": 0.9230769230769231
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9998779147845196,
+          "formula": 0.9998779147845196
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9998779147845195,
+          "formula": 0.9998779147845196
+        }
+      ]
+    },
+    {
+      "memory": 14,
+      "policy": "pressure_relaxed",
+      "reachable_states": 26,
+      "recurrent_states": 15,
+      "one_arrival_transitions": 52,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9333333333333333,
+          "formula": 0.9333333333333333
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.999969481490524,
+          "formula": 0.999969481490524
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.999969481490524,
+          "formula": 0.999969481490524
+        }
+      ]
+    },
+    {
+      "memory": 15,
+      "policy": "balancing",
+      "reachable_states": 30,
+      "recurrent_states": 14,
+      "one_arrival_transitions": 60,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9285714285714286,
+          "formula": 0.9285714285714286
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9999389611182324,
+          "formula": 0.9999389611182323
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9999389611182323,
+          "formula": 0.9999389611182323
+        }
+      ]
+    },
+    {
+      "memory": 15,
+      "policy": "pressure_relaxed",
+      "reachable_states": 28,
+      "recurrent_states": 16,
+      "one_arrival_transitions": 56,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9374999999999998,
+          "formula": 0.9375
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9999847409781033,
+          "formula": 0.9999847409781033
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9999847409781032,
+          "formula": 0.9999847409781033
+        }
+      ]
+    },
+    {
+      "memory": 16,
+      "policy": "balancing",
+      "reachable_states": 32,
+      "recurrent_states": 15,
+      "one_arrival_transitions": 64,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9333333333333335,
+          "formula": 0.9333333333333333
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9999694814905238,
+          "formula": 0.999969481490524
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.999969481490524,
+          "formula": 0.999969481490524
+        }
+      ]
+    },
+    {
+      "memory": 16,
+      "policy": "pressure_relaxed",
+      "reachable_states": 30,
+      "recurrent_states": 17,
+      "one_arrival_transitions": 60,
+      "rates_checked": [
+        {
+          "link_rates": [
+            1,
+            1
+          ],
+          "stationary_reward": 0.9411764705882352,
+          "formula": 0.9411764705882353
+        },
+        {
+          "link_rates": [
+            1,
+            2
+          ],
+          "stationary_reward": 0.9999923705472606,
+          "formula": 0.9999923705472606
+        },
+        {
+          "link_rates": [
+            2,
+            1
+          ],
+          "stationary_reward": 0.9999923705472609,
+          "formula": 0.9999923705472606
+        }
+      ]
+    }
+  ]
+}

@@ -170,8 +170,15 @@ def parse_config(data: dict) -> Config:
 
     sim = deepcopy(data.get("simulation", {}))
     sim_keys = {"horizon", "seed", "ticks_per_time_unit", "cutoff_time", "swap_policy",
-                "admission_policy", "request_regime", "initial_pairs", "trace", "record_events"}
+                "admission_policy", "request_regime", "initial_pairs", "trace", "record_events",
+                "recovery_policy", "stuck_patience", "service_order", "measure_from",
+                "outage_threshold"}
     _object(sim, "simulation", sim_keys)
+    for key in ("stuck_patience", "measure_from"):
+        if key in sim:
+            sim[key] = _number(sim[key], "simulation." + key)
+    if sim.get("outage_threshold") is not None:
+        sim["outage_threshold"] = _number(sim["outage_threshold"], "simulation.outage_threshold", positive=True)
     if "horizon" in sim:
         sim["horizon"] = _number(sim["horizon"], "simulation.horizon", positive=True)
     if "seed" in sim:
@@ -184,6 +191,8 @@ def parse_config(data: dict) -> Config:
         "swap_policy": ("balancing", "pressure_relaxed", "pressure_oriented", "physical", "none"),
         "admission_policy": ("reserved", "tail_drop"),
         "request_regime": ("offered",),
+        "recovery_policy": ("none", "drop_when_stuck"),
+        "service_order": ("fifo", "per_pair"),
     }.items():
         if key in sim and sim[key] not in choices:
             raise ValueError(f"simulation.{key} must be one of {choices}")

@@ -54,6 +54,8 @@ The cutoff of 0.5 reduced saturated service below the offered rate of 0.5. The m
 
 There is a short independent benchmark for these **two-slot saturated** cutoff rows. Starting empty, the first link offer takes mean time 1/2. Its pair then waits for the other unit-rate link for at most $T$ time units. A match occurs with probability $p=1-e^{-T}$ and the mean time in this waiting phase is also $p$. Either a match followed by immediate consumption or an expiry returns the inventory to empty. Hence the exact rate for this experiment is $p/(1/2+p)$. At cutoff 10 that rate is 0.6666566, very close to the no-expiry limit. The measured saturated throughput happened to be identical to baseline on this sample.
 
+This two-slot cutoff rate is a known result. It equals the unit-memory throughput of Mai et al. at equal rates, equal holding limits and no swap or reset delay. It is also the reciprocal of the mean service time derived by Lo Piparo, Munro and Nemoto. [Mai et al., Theorem 1, Eq. (7)](https://arxiv.org/abs/2608.11429) · [Lo Piparo, Munro and Nemoto, appendix](https://arxiv.org/abs/2603.24874)
+
 ## 4. Change memory, repeater slots, and expiry together
 
 Start with the uniform budget of four, then give the center two additional slots. The first row is the matched no-expiry control for this 4–6–4 layout. Section 3 supplies the corresponding two-slot controls.

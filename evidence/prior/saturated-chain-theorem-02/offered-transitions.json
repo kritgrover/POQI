@@ -1,0 +1,151 @@
+{
+  "states": 29,
+  "transitions": 87,
+  "witnesses": [
+    {
+      "inventory": "empty",
+      "backlog": 0,
+      "events": ""
+    },
+    {
+      "inventory": "empty",
+      "backlog": 1,
+      "events": "A"
+    },
+    {
+      "inventory": "empty",
+      "backlog": 2,
+      "events": "AA"
+    },
+    {
+      "inventory": "empty",
+      "backlog": 3,
+      "events": "AAA"
+    },
+    {
+      "inventory": "left",
+      "backlog": 0,
+      "events": "L"
+    },
+    {
+      "inventory": "left",
+      "backlog": 1,
+      "events": "LA"
+    },
+    {
+      "inventory": "left",
+      "backlog": 2,
+      "events": "LAA"
+    },
+    {
+      "inventory": "left",
+      "backlog": 3,
+      "events": "LAAA"
+    },
+    {
+      "inventory": "poison_left",
+      "backlog": 0,
+      "events": "LRR"
+    },
+    {
+      "inventory": "poison_left",
+      "backlog": 1,
+      "events": "LRRA"
+    },
+    {
+      "inventory": "poison_left",
+      "backlog": 2,
+      "events": "LRRAA"
+    },
+    {
+      "inventory": "poison_left",
+      "backlog": 3,
+      "events": "LRRAAA"
+    },
+    {
+      "inventory": "poison_right",
+      "backlog": 0,
+      "events": "LRL"
+    },
+    {
+      "inventory": "poison_right",
+      "backlog": 1,
+      "events": "LRLA"
+    },
+    {
+      "inventory": "poison_right",
+      "backlog": 2,
+      "events": "LRLAA"
+    },
+    {
+      "inventory": "poison_right",
+      "backlog": 3,
+      "events": "LRLAAA"
+    },
+    {
+      "inventory": "right",
+      "backlog": 0,
+      "events": "R"
+    },
+    {
+      "inventory": "right",
+      "backlog": 1,
+      "events": "RA"
+    },
+    {
+      "inventory": "right",
+      "backlog": 2,
+      "events": "RAA"
+    },
+    {
+      "inventory": "right",
+      "backlog": 3,
+      "events": "RAAA"
+    },
+    {
+      "inventory": "trap_left",
+      "backlog": 0,
+      "events": "LRRL"
+    },
+    {
+      "inventory": "trap_left",
+      "backlog": 1,
+      "events": "LRRLA"
+    },
+    {
+      "inventory": "trap_left",
+      "backlog": 2,
+      "events": "LRRLAA"
+    },
+    {
+      "inventory": "trap_left",
+      "backlog": 3,
+      "events": "LRRLAAA"
+    },
+    {
+      "inventory": "trap_right",
+      "backlog": 0,
+      "events": "LRLR"
+    },
+    {
+      "inventory": "trap_right",
+      "backlog": 1,
+      "events": "LRLRA"
+    },
+    {
+      "inventory": "trap_right",
+      "backlog": 2,
+      "events": "LRLRAA"
+    },
+    {
+      "inventory": "trap_right",
+      "backlog": 3,
+      "events": "LRLRAAA"
+    },
+    {
+      "inventory": "virtual",
+      "backlog": 0,
+      "events": "LR"
+    }
+  ]
+}

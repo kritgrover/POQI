@@ -29,7 +29,8 @@ def test_sequence_source_and_timeline_smoke():
     expected = Path(__file__).resolve().parents[1] / "SeQUeNCe" / "sequence" / "kernel" / "timeline.py"
     assert Path(result["sequence_source"]).resolve() == expected
     assert result["timeline_final_tick"] == 800
-    assert result["timeline_run_counter"] == 3
+    # Generation, request, finish, and the two cost-counter snapshots.
+    assert result["timeline_run_counter"] == 5
     assert result["completed_requests"] == 1
     assert result["mean_completed_latency"] == 0
     assert [row["integral"] for row in result["occupancy_by_node"]] == [1, 1]

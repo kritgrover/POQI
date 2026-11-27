@@ -1,6 +1,20 @@
 # An orientation rule restores queue stability on the two-slot chain
 
-With two memory slots per node and no expiry, the original pressure-relaxed policy eventually stops serving requests almost surely at or below its saturated service rate. Requiring the two qubits consumed **at the swapping node** to have different physical-link origins removes the responsible endpoint swap. The guarded policy can then sustain every strictly subcritical request rate and retains the saturated throughput of the original policy. The physical-neighbor orientation rule comes from Talsma, Iñesta and Wehner. The result here characterizes what that rule changes for pressure relaxation with an explicit request queue. [Unguarded chain theorem](Saturated_Chain_Theorem.md#offered-demand-at-two-slots) · [Talsma, Iñesta and Wehner, Algorithm 1, step 3.2](https://doi.org/10.1103/PhysRevA.110.022429)
+With two memory slots per node and no expiry, the original pressure-relaxed policy eventually stops serving requests almost surely at or below its saturated service rate. Requiring the two qubits consumed **at the swapping node** to have different physical-link origins removes the responsible endpoint swap. The guarded policy can then sustain every strictly subcritical request rate and retains the saturated throughput of the original policy. The orientation rule is due to Talsma, Iñesta and Wehner (2024). The result here characterizes what that rule changes for pressure relaxation with an explicit request queue. [Unguarded chain theorem](Saturated_Chain_Theorem.md#offered-demand-at-two-slots) · [Talsma, Iñesta and Wehner, Phys. Rev. A 110, 022429 (2024), Algorithm 1, step 3.2](https://doi.org/10.1103/PhysRevA.110.022429)
+
+## Source of the rule and what is new
+
+The guard is the orientation rule of Talsma, Iñesta and Wehner, *Continuously distributing entanglement in quantum networks with regular topologies*, Phys. Rev. A **110**, 022429 (2024), arXiv:2402.01527. In step 3.2 of their Algorithm 1 each node chooses its second link "from the set of links stored in differently-oriented qubits". A qubit's orientation is the physical neighbor it generates entanglement with, which is the generation origin tracked here. They adopt the rule to avoid "unnecessary" swaps, assume enough memory to hold every link until its cutoff, and leave limited memory as future work. [Journal](https://doi.org/10.1103/PhysRevA.110.022429) · [arXiv](https://arxiv.org/abs/2402.01527)
+
+This is **not** step 3.2 of Algorithm 1 in the earlier paper by Iñesta and Wehner, Phys. Rev. A **108**, 052615 (2023), arXiv:2307.01406. That step requires the two far nodes $j$ and $k$ to satisfy $A_{jk}=0$, meaning they are not physical neighbors. It depends on the current partners of the two links. The orientation rule depends on the memory slots that hold them. On a three-node chain both conditions forbid every endpoint swap and allow the center swap. On longer chains they differ. A node with two qubits facing the same neighbor can hold links to two nodes on that side that are not adjacent. The earlier condition allows that swap and the orientation rule forbids it. [Earlier paper](https://arxiv.org/abs/2307.01406)
+
+Neither paper analyses a request queue, hard memory limits without cutoffs, or the absence of its condition. Three results here are new.
+
+1. Without the rule, the pressure policy locks permanently. [Unguarded theorem](Saturated_Chain_Theorem.md#offered-demand-at-two-slots)
+2. With it, the queue has the classification below, including the critical and supercritical cases.
+3. Under permanent backlog the rule removes no executed swap, at any uniform budget.
+
+The ingredients are standard. The threshold $\mu_2$ is the known two-slot swapping rate. The load condition $\delta\,\mathbb E[S]<1$ is the usual one for a single-server queue, and Lo Piparo, Munro and Nemoto state it for request-driven entanglement delivery without proof. The proof adds the classification at and above the threshold, and shows that it holds for the actual inventory process with its idle caches. [Recovered rates](Saturated_Chain_Theorem.md#what-is-recovered-and-what-is-new) · [Lo Piparo, Munro and Nemoto, §II-E, arXiv:2603.24874](https://arxiv.org/abs/2603.24874)
 
 ## Model and result
 
@@ -71,7 +85,7 @@ The pathwise equality extends to the finite uniform budgets in the earlier satur
 
 ## Executable verification
 
-The two-slot checker replayed all three next events from **17 reachable representatives** covering the eight idle inventories and the three busy inventories at backlog levels one, two and three. All **51 transitions** matched the predicted inventory, retained qubit origins, pending queue and completion counts. Every executed swap was at the center. Direct stationary reward calculations recovered $2/3$ for $(u,v)=(1,1)$ and $6/7$ for both $(1,2)$ and $(2,1)$. The transition table above covers arbitrary positive backlog because each busy transition depends only on its inventory and whether a completion empties the queue. [Saved two-slot results](results/memory/guarded-chain-01/check.json)
+The two-slot checker replayed all three next events from **17 reachable representatives** covering the eight idle inventories and the three busy inventories at backlog levels one, two and three. All **51 transitions** matched the predicted inventory, retained qubit origins, pending queue and completion counts. Every executed swap was at the center. Direct stationary reward calculations recovered $2/3$ for $(u,v)=(1,1)$ and $6/7$ for both $(1,2)$ and $(2,1)$. The transition table above covers arbitrary positive backlog because each busy transition depends only on its inventory and whether a completion empties the queue. [Saved two-slot results](evidence/prior/guarded-chain-01/check.json)
 
 The checker also compared guarded and unguarded transitions under permanent backlog at every uniform budget from 1 through 16. All **486** one-generation transitions and completion counts agreed. From the project root, repeat both checks with the following command. [Verification script](scripts/guarded_chain_check.py)
 

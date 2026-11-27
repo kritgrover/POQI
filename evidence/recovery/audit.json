@@ -1,0 +1,52 @@
+{
+  "trajectories_checked": 2880,
+  "legacy_comparison": true,
+  "two_slot_cycles": [
+    {
+      "network": "cycle8",
+      "memory": 2,
+      "seeds": [
+        11301,
+        11302,
+        11303,
+        11304,
+        11305,
+        11306
+      ],
+      "paired_satisfaction_gain": 0.8558333333333333,
+      "pointwise_95_t": [
+        0.5655337296452173,
+        1.1461329370214495
+      ],
+      "mean_drops_per_completion": 6.197699797964945
+    },
+    {
+      "network": "cycle12",
+      "memory": 2,
+      "seeds": [
+        11301,
+        11302,
+        11303,
+        11304,
+        11305,
+        11306
+      ],
+      "paired_satisfaction_gain": 0.8292939814814813,
+      "pointwise_95_t": [
+        0.5952717364470508,
+        1.0633162265159117
+      ],
+      "mean_drops_per_completion": 7.89362649543765
+    }
+  ],
+  "shared_pool_immediate_recovery": {
+    "pressure_oriented": {
+      "trajectories": 120,
+      "runs_with_a_starved_pair": 0
+    },
+    "pressure_relaxed": {
+      "trajectories": 120,
+      "runs_with_a_starved_pair": 29
+    }
+  }
+}

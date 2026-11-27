@@ -1,0 +1,922 @@
+[
+ {
+  "policy": "pressure_relaxed",
+  "cutoff": 3,
+  "demand": 0.25,
+  "horizon": 4000.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 5462,
+  "largest_identity_residual": 0.0,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.24638157894736842,
+   0.2396622718195994,
+   0.2531008860751374
+  ],
+  "mean_queue": [
+   0.5428276963157894,
+   0.515302842833874,
+   0.5703525497977049
+  ],
+  "mean_latency": [
+   2.2009664998396294,
+   2.116613216480053,
+   2.285319783199206
+  ],
+  "outage_fraction": [
+   0.30764491786184167,
+   0.30268852620786313,
+   0.3126013095158202
+  ],
+  "mean_outage": [
+   1.7111809174441843,
+   1.6892319406010634,
+   1.7331298942873052
+  ],
+  "mean_square_outage": [
+   3.514594571168989,
+   3.4297759480932255,
+   3.599413194244753
+  ],
+  "mean_age_at_start": [
+   1.2888190825558157,
+   1.2668701057126948,
+   1.3107680593989366
+  ]
+ },
+ {
+  "policy": "pressure_oriented",
+  "cutoff": 3,
+  "demand": 0.25,
+  "horizon": 4000.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 0,
+  "largest_identity_residual": null,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.24641447368421052,
+   0.23970527189648677,
+   0.25312367547193426
+  ],
+  "mean_queue": [
+   0.19506939592105235,
+   0.17648985380093613,
+   0.21364893804116858
+  ],
+  "mean_latency": [
+   0.7898240105180968,
+   0.7170133450976766,
+   0.8626346759385171
+  ],
+  "outage_fraction": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "mean_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_square_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_age_at_start": [
+   null,
+   null,
+   null
+  ]
+ },
+ {
+  "policy": "pressure_relaxed",
+  "cutoff": 3,
+  "demand": 0.5,
+  "horizon": 4000.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 2022,
+  "largest_identity_residual": 0.0,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.5011184210526316,
+   0.4922854573478374,
+   0.5099513847574257
+  ],
+  "mean_queue": [
+   2.586872617006578,
+   2.362509540034401,
+   2.811235693978755
+  ],
+  "mean_latency": [
+   5.165026956359475,
+   4.753626074196436,
+   5.576427838522514
+  ],
+  "outage_fraction": [
+   0.12823350141447384,
+   0.11861079303070937,
+   0.13785620979823832
+  ],
+  "mean_outage": [
+   1.9268465244358473,
+   1.8997758014156436,
+   1.9539172474560509
+  ],
+  "mean_square_outage": [
+   4.199656785291726,
+   4.094910892108668,
+   4.3044026784747835
+  ],
+  "mean_age_at_start": [
+   1.0731534755641527,
+   1.0460827525439491,
+   1.1002241985843564
+  ]
+ },
+ {
+  "policy": "pressure_oriented",
+  "cutoff": 3,
+  "demand": 0.5,
+  "horizon": 4000.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 0,
+  "largest_identity_residual": null,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.5011513157894737,
+   0.49237711234821874,
+   0.5099255192307286
+  ],
+  "mean_queue": [
+   1.6677674892434224,
+   1.5002599535558263,
+   1.8352750249310186
+  ],
+  "mean_latency": [
+   3.3300965171534505,
+   3.0217111208769736,
+   3.6384819134299273
+  ],
+  "outage_fraction": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "mean_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_square_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_age_at_start": [
+   null,
+   null,
+   null
+  ]
+ },
+ {
+  "policy": "pressure_relaxed",
+  "cutoff": 10,
+  "demand": 0.25,
+  "horizon": 4000.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 1938,
+  "largest_identity_residual": 0.0,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.24644736842105264,
+   0.2396785908175936,
+   0.2532161460245117
+  ],
+  "mean_queue": [
+   1.334515414111842,
+   1.2727990214415361,
+   1.396231806782148
+  ],
+  "mean_latency": [
+   5.411206275999841,
+   5.237835199258241,
+   5.584577352741441
+  ],
+  "outage_fraction": [
+   0.5334447809868422,
+   0.5214716034661803,
+   0.5454179585075042
+  ],
+  "mean_outage": [
+   8.345388531595201,
+   8.222534210433283,
+   8.46824285275712
+  ],
+  "mean_square_outage": [
+   73.29060752592679,
+   71.79003552740136,
+   74.79117952445222
+  ],
+  "mean_age_at_start": [
+   1.6546114684047994,
+   1.531757147242881,
+   1.7774657895667179
+  ]
+ },
+ {
+  "policy": "pressure_oriented",
+  "cutoff": 10,
+  "demand": 0.25,
+  "horizon": 4000.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 0,
+  "largest_identity_residual": null,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.24654605263157894,
+   0.23982603805599953,
+   0.25326606720715833
+  ],
+  "mean_queue": [
+   0.07186086542763134,
+   0.05910568185260443,
+   0.08461604900265825
+  ],
+  "mean_latency": [
+   0.29103057062459176,
+   0.23980219033174283,
+   0.3422589509174407
+  ],
+  "outage_fraction": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "mean_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_square_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_age_at_start": [
+   null,
+   null,
+   null
+  ]
+ },
+ {
+  "policy": "pressure_relaxed",
+  "cutoff": 10,
+  "demand": 0.5,
+  "horizon": 4000.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 741,
+  "largest_identity_residual": 0.0,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.5008881578947368,
+   0.4920683651921701,
+   0.5097079505973036
+  ],
+  "mean_queue": [
+   4.097135931085527,
+   3.781079486062379,
+   4.413192376108674
+  ],
+  "mean_latency": [
+   8.177187773196898,
+   7.588844009785991,
+   8.765531536607806
+  ],
+  "outage_fraction": [
+   0.21873444888157895,
+   0.20186370639579915,
+   0.23560519136735875
+  ],
+  "mean_outage": [
+   8.937885119537707,
+   8.87334769326295,
+   9.002422545812465
+  ],
+  "mean_square_outage": [
+   80.67393415949911,
+   79.56474473896674,
+   81.78312358003149
+  ],
+  "mean_age_at_start": [
+   1.0621148804622929,
+   0.9975774541875353,
+   1.1266523067370504
+  ]
+ },
+ {
+  "policy": "pressure_oriented",
+  "cutoff": 10,
+  "demand": 0.5,
+  "horizon": 4000.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 0,
+  "largest_identity_residual": null,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.5010197368421052,
+   0.49235776216933197,
+   0.5096817115148785
+  ],
+  "mean_queue": [
+   1.2066591580592108,
+   1.0445620709779158,
+   1.3687562451405058
+  ],
+  "mean_latency": [
+   2.408645581563642,
+   2.100026975113554,
+   2.71726418801373
+  ],
+  "outage_fraction": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "mean_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_square_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_age_at_start": [
+   null,
+   null,
+   null
+  ]
+ },
+ {
+  "policy": "pressure_relaxed",
+  "cutoff": 30,
+  "demand": 0.25,
+  "horizon": 4000.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 630,
+  "largest_identity_residual": 0.0,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.24588815789473684,
+   0.23837850593503424,
+   0.25339780985443944
+  ],
+  "mean_queue": [
+   3.78226237730263,
+   3.6090456079712663,
+   3.9554791466339934
+  ],
+  "mean_latency": [
+   15.340933769656852,
+   14.901860061298411,
+   15.780007478015293
+  ],
+  "outage_fraction": [
+   0.6026390976644738,
+   0.5883031931200898,
+   0.6169750022088577
+  ],
+  "mean_outage": [
+   28.789546173645743,
+   28.621101444045664,
+   28.957990903245822
+  ],
+  "mean_square_outage": [
+   830.7620190209343,
+   823.7641622983489,
+   837.7598757435197
+  ],
+  "mean_age_at_start": [
+   1.2104538263542548,
+   1.0420090967541773,
+   1.3788985559543323
+  ]
+ },
+ {
+  "policy": "pressure_oriented",
+  "cutoff": 30,
+  "demand": 0.25,
+  "horizon": 4000.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 0,
+  "largest_identity_residual": null,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.24654605263157894,
+   0.23982603805599953,
+   0.25326606720715833
+  ],
+  "mean_queue": [
+   0.06156841078947361,
+   0.04833384745233006,
+   0.07480297412661716
+  ],
+  "mean_latency": [
+   0.24931065258870203,
+   0.19577890796114267,
+   0.3028423972162614
+  ],
+  "outage_fraction": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "mean_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_square_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_age_at_start": [
+   null,
+   null,
+   null
+  ]
+ },
+ {
+  "policy": "pressure_relaxed",
+  "cutoff": 30,
+  "demand": 0.5,
+  "horizon": 4200.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 267,
+  "largest_identity_residual": 0.0,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.4991875,
+   0.4900472541679242,
+   0.5083277458320757
+  ],
+  "mean_queue": [
+   8.87052963912501,
+   8.412629956916572,
+   9.328429321333449
+  ],
+  "mean_latency": [
+   17.768313476578143,
+   17.03188325740797,
+   18.504743695748317
+  ],
+  "outage_fraction": [
+   0.24377927324999993,
+   0.22577116098061809,
+   0.2617873855193818
+  ],
+  "mean_outage": [
+   28.908564055569816,
+   28.787612696332147,
+   29.029515414807484
+  ],
+  "mean_square_outage": [
+   836.3324496794849,
+   829.4584193888962,
+   843.2064799700735
+  ],
+  "mean_age_at_start": [
+   1.0914359444301838,
+   0.9704845851925126,
+   1.212387303667855
+  ]
+ },
+ {
+  "policy": "pressure_oriented",
+  "cutoff": 30,
+  "demand": 0.5,
+  "horizon": 4200.0,
+  "warmup": 200.0,
+  "seeds": 8,
+  "outages": 0,
+  "largest_identity_residual": null,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.49915625,
+   0.49000564085649445,
+   0.5083068591435056
+  ],
+  "mean_queue": [
+   1.1791108725625001,
+   1.0141396926260833,
+   1.344082052498917
+  ],
+  "mean_latency": [
+   2.3621345686569035,
+   2.0519117974920453,
+   2.6723573398217617
+  ],
+  "outage_fraction": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "mean_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_square_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_age_at_start": [
+   null,
+   null,
+   null
+  ]
+ },
+ {
+  "policy": "pressure_relaxed",
+  "cutoff": 100,
+  "demand": 0.25,
+  "horizon": 5400.0,
+  "warmup": 500.0,
+  "seeds": 8,
+  "outages": 239,
+  "largest_identity_residual": 0.0,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.24770408163265306,
+   0.24354904777524136,
+   0.2518591154900648
+  ],
+  "mean_queue": [
+   12.572062876301008,
+   12.23926420129398,
+   12.904861551308036
+  ],
+  "mean_latency": [
+   50.553250679951894,
+   49.04733985174558,
+   52.059161508158205
+  ],
+  "outage_fraction": [
+   0.6215230939030612,
+   0.6132588404580368,
+   0.6297873473480855
+  ],
+  "mean_outage": [
+   98.70681869326566,
+   98.65370088763557,
+   98.75993649889575
+  ],
+  "mean_square_outage": [
+   9743.843362974054,
+   9733.343356223962,
+   9754.343369724145
+  ],
+  "mean_age_at_start": [
+   1.2931813067343456,
+   1.2400635011042538,
+   1.3462991123644374
+  ]
+ },
+ {
+  "policy": "pressure_oriented",
+  "cutoff": 100,
+  "demand": 0.25,
+  "horizon": 5400.0,
+  "warmup": 500.0,
+  "seeds": 8,
+  "outages": 0,
+  "largest_identity_residual": null,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.24857142857142858,
+   0.24354475216325255,
+   0.2535981049796046
+  ],
+  "mean_queue": [
+   0.06268369818877523,
+   0.053583392257527264,
+   0.0717840041200232
+  ],
+  "mean_latency": [
+   0.2517378725423297,
+   0.21831214121474948,
+   0.28516360386990997
+  ],
+  "outage_fraction": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "mean_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_square_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_age_at_start": [
+   null,
+   null,
+   null
+  ]
+ },
+ {
+  "policy": "pressure_relaxed",
+  "cutoff": 100,
+  "demand": 0.5,
+  "horizon": 12600.0,
+  "warmup": 500.0,
+  "seeds": 8,
+  "outages": 236,
+  "largest_identity_residual": 0.0,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.5001652892561983,
+   0.49447926677251697,
+   0.5058513117398796
+  ],
+  "mean_queue": [
+   26.638651867117837,
+   25.750182065767678,
+   27.527121668467995
+  ],
+  "mean_latency": [
+   53.21895350123526,
+   51.358678540299195,
+   55.07922846217133
+  ],
+  "outage_fraction": [
+   0.24106148227272725,
+   0.23289274984585837,
+   0.24923021469959614
+  ],
+  "mean_outage": [
+   98.87614219091235,
+   98.79185746259067,
+   98.96042691923402
+  ],
+  "mean_square_outage": [
+   9777.073423128217,
+   9760.56872428334,
+   9793.578121973094
+  ],
+  "mean_age_at_start": [
+   1.1238578090876497,
+   1.0395730807659747,
+   1.2081425374093246
+  ]
+ },
+ {
+  "policy": "pressure_oriented",
+  "cutoff": 100,
+  "demand": 0.5,
+  "horizon": 12600.0,
+  "warmup": 500.0,
+  "seeds": 8,
+  "outages": 0,
+  "largest_identity_residual": null,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.5004752066115703,
+   0.4935826686541876,
+   0.5073677445689531
+  ],
+  "mean_queue": [
+   1.2912364064669442,
+   1.1374292770384213,
+   1.445043535895467
+  ],
+  "mean_latency": [
+   2.578620575851226,
+   2.295042788087977,
+   2.862198363614475
+  ],
+  "outage_fraction": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "mean_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_square_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_age_at_start": [
+   null,
+   null,
+   null
+  ]
+ },
+ {
+  "policy": "pressure_relaxed",
+  "cutoff": 300,
+  "demand": 0.25,
+  "horizon": 15000.0,
+  "warmup": 1500.0,
+  "seeds": 8,
+  "outages": 219,
+  "largest_identity_residual": 0.0,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.2482685185185185,
+   0.2429356687551503,
+   0.25360136828188673
+  ],
+  "mean_queue": [
+   37.61622131785192,
+   36.61595798685371,
+   38.616484648850125
+  ],
+  "mean_latency": [
+   150.96047133495864,
+   148.95638341613915,
+   152.96455925377813
+  ],
+  "outage_fraction": [
+   0.623478415212963,
+   0.6123681862702084,
+   0.6345886441557176
+  ],
+  "mean_outage": [
+   298.6774814265873,
+   298.547544473764,
+   298.8074183794106
+  ],
+  "mean_square_outage": [
+   89209.18784970058,
+   89131.78382837989,
+   89286.59187102127
+  ],
+  "mean_age_at_start": [
+   1.322518573412691,
+   1.1925816205894137,
+   1.4524555262359682
+  ]
+ },
+ {
+  "policy": "pressure_oriented",
+  "cutoff": 300,
+  "demand": 0.25,
+  "horizon": 15000.0,
+  "warmup": 1500.0,
+  "seeds": 8,
+  "outages": 0,
+  "largest_identity_residual": null,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.24899074074074073,
+   0.2442174518205129,
+   0.25376402966096856
+  ],
+  "mean_queue": [
+   0.06302075557407381,
+   0.058419899613296,
+   0.06762161153485162
+  ],
+  "mean_latency": [
+   0.2529802745156656,
+   0.23641984134154986,
+   0.2695407076897814
+  ],
+  "outage_fraction": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "mean_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_square_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_age_at_start": [
+   null,
+   null,
+   null
+  ]
+ },
+ {
+  "policy": "pressure_relaxed",
+  "cutoff": 300,
+  "demand": 0.5,
+  "horizon": 36600.0,
+  "warmup": 1500.0,
+  "seeds": 8,
+  "outages": 228,
+  "largest_identity_residual": 0.0,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.5010933048433048,
+   0.49816259575634164,
+   0.504024013930268
+  ],
+  "mean_queue": [
+   76.1711266795723,
+   74.74615991564852,
+   77.59609344349607
+  ],
+  "mean_latency": [
+   152.36346732611457,
+   148.99351268880775,
+   155.7334219634214
+  ],
+  "outage_fraction": [
+   0.24572385016381765,
+   0.24155331209475184,
+   0.24989438823288346
+  ],
+  "mean_outage": [
+   299.02603574322654,
+   298.8940015759821,
+   299.158069910471
+  ],
+  "mean_square_outage": [
+   89417.17744101479,
+   89338.26760734238,
+   89496.0872746872
+  ],
+  "mean_age_at_start": [
+   0.9739642567734277,
+   0.8419300895289737,
+   1.1059984240178817
+  ]
+ },
+ {
+  "policy": "pressure_oriented",
+  "cutoff": 300,
+  "demand": 0.5,
+  "horizon": 36600.0,
+  "warmup": 1500.0,
+  "seeds": 8,
+  "outages": 0,
+  "largest_identity_residual": null,
+  "completions_during_outage": 0,
+  "throughput": [
+   0.5000925925925926,
+   0.49761327795323756,
+   0.5025719072319478
+  ],
+  "mean_queue": [
+   1.3161062208867536,
+   1.269446312510541,
+   1.362766129262966
+  ],
+  "mean_latency": [
+   2.6319639769055394,
+   2.5408250212437338,
+   2.723102932567345
+  ],
+  "outage_fraction": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "mean_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_square_outage": [
+   null,
+   null,
+   null
+  ],
+  "mean_age_at_start": [
+   null,
+   null,
+   null
+  ]
+ }
+]

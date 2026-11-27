@@ -1,0 +1,1026 @@
+{
+  "source_manifest_sha256": "80fe73667b2c701af3cb03bced88cc2b7461ac5efd40398c76ec3b0b34103e5b",
+  "source_code_sha256": {
+    "qcast_diamond_stalls.py": "412f3415baa90ba23c186fe10752f5f3c3dda671dec9e74262aa324cf64bd5fd",
+    "qcast_concurrent_audit.py": "73af810f18ba51aac3e55a641be34ac47b0c0a547117f65f2e949e615de718cb",
+    "qcast_pilot_audit.py": "8f4eec20d1f2839e46a03ffad8164b78799923222539fec170fcfbc9a143779e"
+  },
+  "condition": {
+    "topology": "diamond",
+    "memory": 2,
+    "arm": "POQI-Persistent-pressure_relaxed",
+    "service_mode": "concurrent_per_pair"
+  },
+  "possible_demand_pairs": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      1,
+      2
+    ]
+  ],
+  "horizon": 400,
+  "warmup": 100,
+  "groups": [
+    {
+      "p": 0.5,
+      "runs": 10,
+      "certified": 10,
+      "zero_measured_service": 10
+    },
+    {
+      "p": 1.0,
+      "runs": 10,
+      "certified": 0,
+      "zero_measured_service": 0
+    }
+  ],
+  "trajectories": [
+    {
+      "seed": 7271,
+      "p": 0.5,
+      "first_certified_end_tick": 25,
+      "witness": {
+        "stored": [
+          {
+            "endpoints": [
+              0,
+              2
+            ],
+            "count": 2
+          },
+          {
+            "endpoints": [
+              1,
+              3
+            ],
+            "count": 1
+          }
+        ],
+        "occupancy": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "blocked_edges": [
+          {
+            "edge": [
+              0,
+              1
+            ],
+            "full_endpoints": [
+              0
+            ],
+            "quota_full_endpoints": [
+              0
+            ]
+          },
+          {
+            "edge": [
+              0,
+              2
+            ],
+            "full_endpoints": [
+              0,
+              2
+            ],
+            "quota_full_endpoints": [
+              0,
+              2
+            ]
+          },
+          {
+            "edge": [
+              1,
+              3
+            ],
+            "full_endpoints": [],
+            "quota_full_endpoints": [
+              1,
+              3
+            ]
+          },
+          {
+            "edge": [
+              2,
+              3
+            ],
+            "full_endpoints": [
+              2
+            ],
+            "quota_full_endpoints": [
+              2
+            ]
+          }
+        ]
+      },
+      "subsequent_slots_checked": 375,
+      "measured_attempts": 0,
+      "measured_swaps": 0,
+      "measured_completions": 0,
+      "artifact": "runs/diamond-m2-p0.5-7271-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "515ccd5e4777f46eccaec770ee262beffd9d707615b2d5a43273e7c5b4b411ba"
+    },
+    {
+      "seed": 7272,
+      "p": 0.5,
+      "first_certified_end_tick": 12,
+      "witness": {
+        "stored": [
+          {
+            "endpoints": [
+              0,
+              2
+            ],
+            "count": 1
+          },
+          {
+            "endpoints": [
+              1,
+              3
+            ],
+            "count": 2
+          }
+        ],
+        "occupancy": [
+          1,
+          2,
+          1,
+          2
+        ],
+        "blocked_edges": [
+          {
+            "edge": [
+              0,
+              1
+            ],
+            "full_endpoints": [
+              1
+            ],
+            "quota_full_endpoints": [
+              1
+            ]
+          },
+          {
+            "edge": [
+              0,
+              2
+            ],
+            "full_endpoints": [],
+            "quota_full_endpoints": [
+              0,
+              2
+            ]
+          },
+          {
+            "edge": [
+              1,
+              3
+            ],
+            "full_endpoints": [
+              1,
+              3
+            ],
+            "quota_full_endpoints": [
+              1,
+              3
+            ]
+          },
+          {
+            "edge": [
+              2,
+              3
+            ],
+            "full_endpoints": [
+              3
+            ],
+            "quota_full_endpoints": [
+              3
+            ]
+          }
+        ]
+      },
+      "subsequent_slots_checked": 388,
+      "measured_attempts": 0,
+      "measured_swaps": 0,
+      "measured_completions": 0,
+      "artifact": "runs/diamond-m2-p0.5-7272-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "61ef0d96ae79cadd1daf3c868dc35e8ff18fabe0f5cea7098502b563f822d464"
+    },
+    {
+      "seed": 7273,
+      "p": 0.5,
+      "first_certified_end_tick": 20,
+      "witness": {
+        "stored": [
+          {
+            "endpoints": [
+              0,
+              2
+            ],
+            "count": 2
+          },
+          {
+            "endpoints": [
+              1,
+              3
+            ],
+            "count": 1
+          }
+        ],
+        "occupancy": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "blocked_edges": [
+          {
+            "edge": [
+              0,
+              1
+            ],
+            "full_endpoints": [
+              0
+            ],
+            "quota_full_endpoints": [
+              0
+            ]
+          },
+          {
+            "edge": [
+              0,
+              2
+            ],
+            "full_endpoints": [
+              0,
+              2
+            ],
+            "quota_full_endpoints": [
+              0,
+              2
+            ]
+          },
+          {
+            "edge": [
+              1,
+              3
+            ],
+            "full_endpoints": [],
+            "quota_full_endpoints": [
+              1,
+              3
+            ]
+          },
+          {
+            "edge": [
+              2,
+              3
+            ],
+            "full_endpoints": [
+              2
+            ],
+            "quota_full_endpoints": [
+              2
+            ]
+          }
+        ]
+      },
+      "subsequent_slots_checked": 380,
+      "measured_attempts": 0,
+      "measured_swaps": 0,
+      "measured_completions": 0,
+      "artifact": "runs/diamond-m2-p0.5-7273-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "41e2d7f123640d597dae6498caadfbf5f52c9f1314652180787756e486797893"
+    },
+    {
+      "seed": 7274,
+      "p": 0.5,
+      "first_certified_end_tick": 2,
+      "witness": {
+        "stored": [
+          {
+            "endpoints": [
+              0,
+              2
+            ],
+            "count": 1
+          },
+          {
+            "endpoints": [
+              1,
+              3
+            ],
+            "count": 2
+          }
+        ],
+        "occupancy": [
+          1,
+          2,
+          1,
+          2
+        ],
+        "blocked_edges": [
+          {
+            "edge": [
+              0,
+              1
+            ],
+            "full_endpoints": [
+              1
+            ],
+            "quota_full_endpoints": [
+              1
+            ]
+          },
+          {
+            "edge": [
+              0,
+              2
+            ],
+            "full_endpoints": [],
+            "quota_full_endpoints": [
+              0,
+              2
+            ]
+          },
+          {
+            "edge": [
+              1,
+              3
+            ],
+            "full_endpoints": [
+              1,
+              3
+            ],
+            "quota_full_endpoints": [
+              1,
+              3
+            ]
+          },
+          {
+            "edge": [
+              2,
+              3
+            ],
+            "full_endpoints": [
+              3
+            ],
+            "quota_full_endpoints": [
+              3
+            ]
+          }
+        ]
+      },
+      "subsequent_slots_checked": 398,
+      "measured_attempts": 0,
+      "measured_swaps": 0,
+      "measured_completions": 0,
+      "artifact": "runs/diamond-m2-p0.5-7274-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "35fc52a27f7c8a99c4ea63f96d9eb9f7e8b6ff39be1e850fa7dba750a48f2d43"
+    },
+    {
+      "seed": 7275,
+      "p": 0.5,
+      "first_certified_end_tick": 13,
+      "witness": {
+        "stored": [
+          {
+            "endpoints": [
+              0,
+              2
+            ],
+            "count": 2
+          },
+          {
+            "endpoints": [
+              1,
+              3
+            ],
+            "count": 1
+          }
+        ],
+        "occupancy": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "blocked_edges": [
+          {
+            "edge": [
+              0,
+              1
+            ],
+            "full_endpoints": [
+              0
+            ],
+            "quota_full_endpoints": [
+              0
+            ]
+          },
+          {
+            "edge": [
+              0,
+              2
+            ],
+            "full_endpoints": [
+              0,
+              2
+            ],
+            "quota_full_endpoints": [
+              0,
+              2
+            ]
+          },
+          {
+            "edge": [
+              1,
+              3
+            ],
+            "full_endpoints": [],
+            "quota_full_endpoints": [
+              1,
+              3
+            ]
+          },
+          {
+            "edge": [
+              2,
+              3
+            ],
+            "full_endpoints": [
+              2
+            ],
+            "quota_full_endpoints": [
+              2
+            ]
+          }
+        ]
+      },
+      "subsequent_slots_checked": 387,
+      "measured_attempts": 0,
+      "measured_swaps": 0,
+      "measured_completions": 0,
+      "artifact": "runs/diamond-m2-p0.5-7275-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "2bf36e752c122fcf82506cac9d0c0126b8292468536a481469a5c3ac114db3b3"
+    },
+    {
+      "seed": 7276,
+      "p": 0.5,
+      "first_certified_end_tick": 4,
+      "witness": {
+        "stored": [
+          {
+            "endpoints": [
+              0,
+              2
+            ],
+            "count": 1
+          },
+          {
+            "endpoints": [
+              1,
+              3
+            ],
+            "count": 2
+          }
+        ],
+        "occupancy": [
+          1,
+          2,
+          1,
+          2
+        ],
+        "blocked_edges": [
+          {
+            "edge": [
+              0,
+              1
+            ],
+            "full_endpoints": [
+              1
+            ],
+            "quota_full_endpoints": [
+              1
+            ]
+          },
+          {
+            "edge": [
+              0,
+              2
+            ],
+            "full_endpoints": [],
+            "quota_full_endpoints": [
+              0,
+              2
+            ]
+          },
+          {
+            "edge": [
+              1,
+              3
+            ],
+            "full_endpoints": [
+              1,
+              3
+            ],
+            "quota_full_endpoints": [
+              1,
+              3
+            ]
+          },
+          {
+            "edge": [
+              2,
+              3
+            ],
+            "full_endpoints": [
+              3
+            ],
+            "quota_full_endpoints": [
+              3
+            ]
+          }
+        ]
+      },
+      "subsequent_slots_checked": 396,
+      "measured_attempts": 0,
+      "measured_swaps": 0,
+      "measured_completions": 0,
+      "artifact": "runs/diamond-m2-p0.5-7276-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "68b9f6413cf574b58b672f1e387faefaea6ac2b691a37c646256dcba1a07832a"
+    },
+    {
+      "seed": 7277,
+      "p": 0.5,
+      "first_certified_end_tick": 6,
+      "witness": {
+        "stored": [
+          {
+            "endpoints": [
+              0,
+              2
+            ],
+            "count": 1
+          },
+          {
+            "endpoints": [
+              1,
+              3
+            ],
+            "count": 2
+          }
+        ],
+        "occupancy": [
+          1,
+          2,
+          1,
+          2
+        ],
+        "blocked_edges": [
+          {
+            "edge": [
+              0,
+              1
+            ],
+            "full_endpoints": [
+              1
+            ],
+            "quota_full_endpoints": [
+              1
+            ]
+          },
+          {
+            "edge": [
+              0,
+              2
+            ],
+            "full_endpoints": [],
+            "quota_full_endpoints": [
+              0,
+              2
+            ]
+          },
+          {
+            "edge": [
+              1,
+              3
+            ],
+            "full_endpoints": [
+              1,
+              3
+            ],
+            "quota_full_endpoints": [
+              1,
+              3
+            ]
+          },
+          {
+            "edge": [
+              2,
+              3
+            ],
+            "full_endpoints": [
+              3
+            ],
+            "quota_full_endpoints": [
+              3
+            ]
+          }
+        ]
+      },
+      "subsequent_slots_checked": 394,
+      "measured_attempts": 0,
+      "measured_swaps": 0,
+      "measured_completions": 0,
+      "artifact": "runs/diamond-m2-p0.5-7277-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "e3bf41e50bdc9721cfa8b5579c436fbb917fed2bcfb40fa355d8179d571823fa"
+    },
+    {
+      "seed": 7278,
+      "p": 0.5,
+      "first_certified_end_tick": 28,
+      "witness": {
+        "stored": [
+          {
+            "endpoints": [
+              0,
+              2
+            ],
+            "count": 2
+          },
+          {
+            "endpoints": [
+              1,
+              3
+            ],
+            "count": 1
+          }
+        ],
+        "occupancy": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "blocked_edges": [
+          {
+            "edge": [
+              0,
+              1
+            ],
+            "full_endpoints": [
+              0
+            ],
+            "quota_full_endpoints": [
+              0
+            ]
+          },
+          {
+            "edge": [
+              0,
+              2
+            ],
+            "full_endpoints": [
+              0,
+              2
+            ],
+            "quota_full_endpoints": [
+              0,
+              2
+            ]
+          },
+          {
+            "edge": [
+              1,
+              3
+            ],
+            "full_endpoints": [],
+            "quota_full_endpoints": [
+              1,
+              3
+            ]
+          },
+          {
+            "edge": [
+              2,
+              3
+            ],
+            "full_endpoints": [
+              2
+            ],
+            "quota_full_endpoints": [
+              2
+            ]
+          }
+        ]
+      },
+      "subsequent_slots_checked": 372,
+      "measured_attempts": 0,
+      "measured_swaps": 0,
+      "measured_completions": 0,
+      "artifact": "runs/diamond-m2-p0.5-7278-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "531de7fe8206011199ea56fb28216aefe397665e2145f4b1203839b83cc58210"
+    },
+    {
+      "seed": 7279,
+      "p": 0.5,
+      "first_certified_end_tick": 25,
+      "witness": {
+        "stored": [
+          {
+            "endpoints": [
+              0,
+              2
+            ],
+            "count": 2
+          },
+          {
+            "endpoints": [
+              1,
+              3
+            ],
+            "count": 1
+          }
+        ],
+        "occupancy": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "blocked_edges": [
+          {
+            "edge": [
+              0,
+              1
+            ],
+            "full_endpoints": [
+              0
+            ],
+            "quota_full_endpoints": [
+              0
+            ]
+          },
+          {
+            "edge": [
+              0,
+              2
+            ],
+            "full_endpoints": [
+              0,
+              2
+            ],
+            "quota_full_endpoints": [
+              0,
+              2
+            ]
+          },
+          {
+            "edge": [
+              1,
+              3
+            ],
+            "full_endpoints": [],
+            "quota_full_endpoints": [
+              1,
+              3
+            ]
+          },
+          {
+            "edge": [
+              2,
+              3
+            ],
+            "full_endpoints": [
+              2
+            ],
+            "quota_full_endpoints": [
+              2
+            ]
+          }
+        ]
+      },
+      "subsequent_slots_checked": 375,
+      "measured_attempts": 0,
+      "measured_swaps": 0,
+      "measured_completions": 0,
+      "artifact": "runs/diamond-m2-p0.5-7279-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "2415beb56c6a5fefe745b405dec6446cb6862ca8830f7448c9b1c3750004c590"
+    },
+    {
+      "seed": 7280,
+      "p": 0.5,
+      "first_certified_end_tick": 8,
+      "witness": {
+        "stored": [
+          {
+            "endpoints": [
+              0,
+              2
+            ],
+            "count": 2
+          },
+          {
+            "endpoints": [
+              1,
+              3
+            ],
+            "count": 1
+          }
+        ],
+        "occupancy": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "blocked_edges": [
+          {
+            "edge": [
+              0,
+              1
+            ],
+            "full_endpoints": [
+              0
+            ],
+            "quota_full_endpoints": [
+              0
+            ]
+          },
+          {
+            "edge": [
+              0,
+              2
+            ],
+            "full_endpoints": [
+              0,
+              2
+            ],
+            "quota_full_endpoints": [
+              0,
+              2
+            ]
+          },
+          {
+            "edge": [
+              1,
+              3
+            ],
+            "full_endpoints": [],
+            "quota_full_endpoints": [
+              1,
+              3
+            ]
+          },
+          {
+            "edge": [
+              2,
+              3
+            ],
+            "full_endpoints": [
+              2
+            ],
+            "quota_full_endpoints": [
+              2
+            ]
+          }
+        ]
+      },
+      "subsequent_slots_checked": 392,
+      "measured_attempts": 0,
+      "measured_swaps": 0,
+      "measured_completions": 0,
+      "artifact": "runs/diamond-m2-p0.5-7280-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "5fe8df596969837b233d23a4572887856866a56f312b17463513dc53b744fa86"
+    },
+    {
+      "seed": 7271,
+      "p": 1.0,
+      "first_certified_end_tick": null,
+      "witness": null,
+      "subsequent_slots_checked": 0,
+      "measured_attempts": 122,
+      "measured_swaps": 61,
+      "measured_completions": 61,
+      "artifact": "runs/diamond-m2-p1.0-7271-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "4174c98e8425e5af066dc889ec754e26455c2f41f953e4af8ee3ef2d800f35b7"
+    },
+    {
+      "seed": 7272,
+      "p": 1.0,
+      "first_certified_end_tick": null,
+      "witness": null,
+      "subsequent_slots_checked": 0,
+      "measured_attempts": 74,
+      "measured_swaps": 37,
+      "measured_completions": 37,
+      "artifact": "runs/diamond-m2-p1.0-7272-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "714f630627e087659deae2b5f8ca6884ddc1bf20b9fcadfca86776f94d7cda1d"
+    },
+    {
+      "seed": 7273,
+      "p": 1.0,
+      "first_certified_end_tick": null,
+      "witness": null,
+      "subsequent_slots_checked": 0,
+      "measured_attempts": 86,
+      "measured_swaps": 43,
+      "measured_completions": 43,
+      "artifact": "runs/diamond-m2-p1.0-7273-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "7e9b3d99d93cdcbda728af8bf85867ec3ab2783334bf8a120da04de430800399"
+    },
+    {
+      "seed": 7274,
+      "p": 1.0,
+      "first_certified_end_tick": null,
+      "witness": null,
+      "subsequent_slots_checked": 0,
+      "measured_attempts": 88,
+      "measured_swaps": 44,
+      "measured_completions": 44,
+      "artifact": "runs/diamond-m2-p1.0-7274-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "7be20960d6a7ab31468c44a51eb4057bb4c87d057fe69e136463192c8e4df3fe"
+    },
+    {
+      "seed": 7275,
+      "p": 1.0,
+      "first_certified_end_tick": null,
+      "witness": null,
+      "subsequent_slots_checked": 0,
+      "measured_attempts": 102,
+      "measured_swaps": 51,
+      "measured_completions": 51,
+      "artifact": "runs/diamond-m2-p1.0-7275-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "880a4341e653b93d8828114e46dc8a6a140084da72b77c9d5007cc2b88527256"
+    },
+    {
+      "seed": 7276,
+      "p": 1.0,
+      "first_certified_end_tick": null,
+      "witness": null,
+      "subsequent_slots_checked": 0,
+      "measured_attempts": 76,
+      "measured_swaps": 38,
+      "measured_completions": 37,
+      "artifact": "runs/diamond-m2-p1.0-7276-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "8d44aac143601c1745a1e9923ddb8f8dea35fe712ce0b3ada3b426db7bfa02a0"
+    },
+    {
+      "seed": 7277,
+      "p": 1.0,
+      "first_certified_end_tick": null,
+      "witness": null,
+      "subsequent_slots_checked": 0,
+      "measured_attempts": 90,
+      "measured_swaps": 45,
+      "measured_completions": 44,
+      "artifact": "runs/diamond-m2-p1.0-7277-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "38908a0d12032c282ecf4f481e843bffb2a0be8b6772baf6a4e917949f8024a5"
+    },
+    {
+      "seed": 7278,
+      "p": 1.0,
+      "first_certified_end_tick": null,
+      "witness": null,
+      "subsequent_slots_checked": 0,
+      "measured_attempts": 64,
+      "measured_swaps": 32,
+      "measured_completions": 32,
+      "artifact": "runs/diamond-m2-p1.0-7278-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "9d2581999e5395d1da7b639996ee9d6d7448eae7a252ecb50611a109a7069ad7"
+    },
+    {
+      "seed": 7279,
+      "p": 1.0,
+      "first_certified_end_tick": null,
+      "witness": null,
+      "subsequent_slots_checked": 0,
+      "measured_attempts": 90,
+      "measured_swaps": 45,
+      "measured_completions": 44,
+      "artifact": "runs/diamond-m2-p1.0-7279-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "4ae908d2d60152fc51b0945f21c25292b293e5d970a932055ac8d01cb01361b5"
+    },
+    {
+      "seed": 7280,
+      "p": 1.0,
+      "first_certified_end_tick": null,
+      "witness": null,
+      "subsequent_slots_checked": 0,
+      "measured_attempts": 92,
+      "measured_swaps": 46,
+      "measured_completions": 45,
+      "artifact": "runs/diamond-m2-p1.0-7280-POQI-Persistent-pressure_relaxed-concurrent_per_pair.json.gz",
+      "sha256": "896db80f5154af3dadd2d3a763762393751300122b805ca920cd78eb2b42907a"
+    }
+  ]
+}

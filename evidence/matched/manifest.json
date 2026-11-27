@@ -1,0 +1,279 @@
+{
+  "protocol": "Matched_Protocol.md",
+  "source_sha256_lf": {
+    "Matched_Protocol.md": "d47b98556f07d2c9816aae6fd2e0929e48c9cc5b7db5b064b0041fb1d44196f7",
+    "scripts/matched_srs.py": "200b9f1ed69a195ee8024aa82fdad6ed3b4f6de77a02a6f62c2c3939708514ce",
+    "scripts/srs_protocol.py": "0552664137f79beaadb6ddb32ed41da75a13140c598b3f4c4e64d31b511aac5d",
+    "src/poqi/simulation/inventory.py": "f61fbb164a0c64f5a7e6c1ee65e95881e7a681e89b6f632bcda5a12eff04d17a",
+    "src/poqi/simulation/sequence_adapter.py": "97125b138add24bae63ce566ef62f4476871c1043149b64051c714fa1dc9b874"
+  },
+  "cells": {
+    "n8-m2-t10-bg0-p0.5-s1-load0.1": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 10,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m2-t10-bg0.02-p0.5-s1-load0.1": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 10,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m2-t30-bg0-p0.5-s1-load0.1": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 30,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m2-t30-bg0.02-p0.5-s1-load0.1": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 30,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m4-t10-bg0-p0.5-s1-load0.1": {
+      "nodes": 8,
+      "slots": 4,
+      "lifetime": 10,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m4-t10-bg0.02-p0.5-s1-load0.1": {
+      "nodes": 8,
+      "slots": 4,
+      "lifetime": 10,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m4-t30-bg0-p0.5-s1-load0.1": {
+      "nodes": 8,
+      "slots": 4,
+      "lifetime": 30,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m4-t30-bg0.02-p0.5-s1-load0.1": {
+      "nodes": 8,
+      "slots": 4,
+      "lifetime": 30,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n12-m2-t10-bg0-p0.5-s1-load0.1": {
+      "nodes": 12,
+      "slots": 2,
+      "lifetime": 10,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n12-m2-t10-bg0.02-p0.5-s1-load0.1": {
+      "nodes": 12,
+      "slots": 2,
+      "lifetime": 10,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n12-m2-t30-bg0-p0.5-s1-load0.1": {
+      "nodes": 12,
+      "slots": 2,
+      "lifetime": 30,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n12-m2-t30-bg0.02-p0.5-s1-load0.1": {
+      "nodes": 12,
+      "slots": 2,
+      "lifetime": 30,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n12-m4-t10-bg0-p0.5-s1-load0.1": {
+      "nodes": 12,
+      "slots": 4,
+      "lifetime": 10,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n12-m4-t10-bg0.02-p0.5-s1-load0.1": {
+      "nodes": 12,
+      "slots": 4,
+      "lifetime": 10,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n12-m4-t30-bg0-p0.5-s1-load0.1": {
+      "nodes": 12,
+      "slots": 4,
+      "lifetime": 30,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n12-m4-t30-bg0.02-p0.5-s1-load0.1": {
+      "nodes": 12,
+      "slots": 4,
+      "lifetime": 30,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m2-t10-bg0-p1-s1-load0.1": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 10,
+      "background": 0.0,
+      "generation": 1.0,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m2-t10-bg0-p0.5-s0.8-load0.1": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 10,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 0.8,
+      "load": 0.1
+    },
+    "n8-m2-t100-bg0-p0.5-s1-load0.1": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 100,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m2-t10-bg0-p0.5-s1-load0.35": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 10,
+      "background": 0.0,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.35
+    },
+    "n8-m2-t10-bg0.02-p1-s1-load0.1": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 10,
+      "background": 0.02,
+      "generation": 1.0,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m2-t10-bg0.02-p0.5-s0.8-load0.1": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 10,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 0.8,
+      "load": 0.1
+    },
+    "n8-m2-t100-bg0.02-p0.5-s1-load0.1": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 100,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.1
+    },
+    "n8-m2-t10-bg0.02-p0.5-s1-load0.35": {
+      "nodes": 8,
+      "slots": 2,
+      "lifetime": 10,
+      "background": 0.02,
+      "generation": 0.5,
+      "swap_success": 1.0,
+      "load": 0.35
+    }
+  },
+  "seeds": [
+    12101,
+    12102,
+    12103,
+    12104,
+    12105,
+    12106,
+    12107,
+    12108,
+    12109,
+    12110,
+    12111,
+    12112
+  ],
+  "arms": [
+    [
+      "srs25",
+      "srs",
+      0.25
+    ],
+    [
+      "srs50",
+      "srs",
+      0.5
+    ],
+    [
+      "srs100",
+      "srs",
+      1.0
+    ],
+    [
+      "pressure",
+      "pressure_oriented",
+      1.0
+    ],
+    [
+      "pre_drop",
+      "pressure_pre_drop",
+      1.0
+    ],
+    [
+      "post_drop",
+      "pressure_post_drop",
+      1.0
+    ]
+  ],
+  "slots": 2000,
+  "measure_from": 500,
+  "followup_slots": 50,
+  "rows": 1728,
+  "python": "3.12.14"
+}

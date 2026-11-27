@@ -1,0 +1,1250 @@
+[
+  {
+    "topology": "chain",
+    "policy": "pressure_relaxed",
+    "slots_per_node": 2,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "demand": [
+      [
+        0,
+        2
+      ]
+    ],
+    "generation_word": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "frozen_inventory": [
+      {
+        "endpoints": [
+          1,
+          2
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 0
+          },
+          {
+            "node": 2,
+            "neighbor": 1
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          1,
+          2
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 2
+          },
+          {
+            "node": 2,
+            "neighbor": 1
+          }
+        ]
+      }
+    ],
+    "backlogs_per_class_checked": [
+      0,
+      7
+    ],
+    "public_next_events_checked": 6,
+    "verified_background_release_types": [
+      [
+        1,
+        2
+      ]
+    ]
+  },
+  {
+    "topology": "chain",
+    "policy": "pressure_relaxed",
+    "slots_per_node": 2,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "demand": [
+      [
+        0,
+        2
+      ]
+    ],
+    "generation_word": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "frozen_inventory": [
+      {
+        "endpoints": [
+          0,
+          1
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 1
+          },
+          {
+            "node": 1,
+            "neighbor": 2
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          0,
+          1
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 1
+          },
+          {
+            "node": 1,
+            "neighbor": 0
+          }
+        ]
+      }
+    ],
+    "backlogs_per_class_checked": [
+      0,
+      7
+    ],
+    "public_next_events_checked": 6,
+    "verified_background_release_types": [
+      [
+        0,
+        1
+      ]
+    ]
+  },
+  {
+    "topology": "diamond",
+    "policy": "pressure_relaxed",
+    "slots_per_node": 2,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "demand": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "generation_word": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "frozen_inventory": [
+      {
+        "endpoints": [
+          1,
+          3
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 0
+          },
+          {
+            "node": 3,
+            "neighbor": 2
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          0,
+          2
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 2
+          },
+          {
+            "node": 2,
+            "neighbor": 0
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          1,
+          3
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 3
+          },
+          {
+            "node": 3,
+            "neighbor": 1
+          }
+        ]
+      }
+    ],
+    "backlogs_per_class_checked": [
+      0,
+      7
+    ],
+    "public_next_events_checked": 14,
+    "verified_background_release_types": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ]
+  },
+  {
+    "topology": "diamond",
+    "policy": "pressure_relaxed",
+    "slots_per_node": 2,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "demand": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "generation_word": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "frozen_inventory": [
+      {
+        "endpoints": [
+          0,
+          2
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 1
+          },
+          {
+            "node": 2,
+            "neighbor": 3
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          0,
+          2
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 2
+          },
+          {
+            "node": 2,
+            "neighbor": 0
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          1,
+          3
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 3
+          },
+          {
+            "node": 3,
+            "neighbor": 1
+          }
+        ]
+      }
+    ],
+    "backlogs_per_class_checked": [
+      0,
+      7
+    ],
+    "public_next_events_checked": 14,
+    "verified_background_release_types": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ]
+  },
+  {
+    "topology": "diamond",
+    "policy": "pressure_oriented",
+    "slots_per_node": 2,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "demand": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "generation_word": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "frozen_inventory": [
+      {
+        "endpoints": [
+          1,
+          3
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 0
+          },
+          {
+            "node": 3,
+            "neighbor": 2
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          0,
+          2
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 2
+          },
+          {
+            "node": 2,
+            "neighbor": 0
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          1,
+          3
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 3
+          },
+          {
+            "node": 3,
+            "neighbor": 1
+          }
+        ]
+      }
+    ],
+    "backlogs_per_class_checked": [
+      0,
+      7
+    ],
+    "public_next_events_checked": 14,
+    "verified_background_release_types": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ]
+  },
+  {
+    "topology": "diamond",
+    "policy": "pressure_oriented",
+    "slots_per_node": 2,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "demand": [
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "generation_word": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ],
+    "frozen_inventory": [
+      {
+        "endpoints": [
+          0,
+          2
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 1
+          },
+          {
+            "node": 2,
+            "neighbor": 3
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          0,
+          2
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 2
+          },
+          {
+            "node": 2,
+            "neighbor": 0
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          1,
+          3
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 3
+          },
+          {
+            "node": 3,
+            "neighbor": 1
+          }
+        ]
+      }
+    ],
+    "backlogs_per_class_checked": [
+      0,
+      7
+    ],
+    "public_next_events_checked": 14,
+    "verified_background_release_types": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        3
+      ]
+    ]
+  },
+  {
+    "topology": "cycle5",
+    "policy": "pressure_relaxed",
+    "slots_per_node": 2,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    "demand": [
+      [
+        0,
+        2
+      ]
+    ],
+    "generation_word": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    "frozen_inventory": [
+      {
+        "endpoints": [
+          0,
+          4
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 1
+          },
+          {
+            "node": 4,
+            "neighbor": 3
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          1,
+          3
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 2
+          },
+          {
+            "node": 3,
+            "neighbor": 2
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          0,
+          4
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 4
+          },
+          {
+            "node": 4,
+            "neighbor": 0
+          }
+        ]
+      }
+    ],
+    "backlogs_per_class_checked": [
+      0,
+      7
+    ],
+    "public_next_events_checked": 12,
+    "verified_background_release_types": [
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        3
+      ]
+    ]
+  },
+  {
+    "topology": "cycle5",
+    "policy": "pressure_oriented",
+    "slots_per_node": 2,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    "demand": [
+      [
+        0,
+        2
+      ]
+    ],
+    "generation_word": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        4
+      ]
+    ],
+    "frozen_inventory": [
+      {
+        "endpoints": [
+          0,
+          4
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 1
+          },
+          {
+            "node": 4,
+            "neighbor": 3
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          1,
+          3
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 2
+          },
+          {
+            "node": 3,
+            "neighbor": 2
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          0,
+          4
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 4
+          },
+          {
+            "node": 4,
+            "neighbor": 0
+          }
+        ]
+      }
+    ],
+    "backlogs_per_class_checked": [
+      0,
+      7
+    ],
+    "public_next_events_checked": 12,
+    "verified_background_release_types": [
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        3
+      ]
+    ]
+  },
+  {
+    "topology": "cycle6",
+    "policy": "pressure_relaxed",
+    "slots_per_node": 2,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        0,
+        5
+      ]
+    ],
+    "demand": [
+      [
+        0,
+        3
+      ]
+    ],
+    "generation_word": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        5
+      ]
+    ],
+    "frozen_inventory": [
+      {
+        "endpoints": [
+          0,
+          5
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 1
+          },
+          {
+            "node": 5,
+            "neighbor": 4
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          1,
+          4
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 2
+          },
+          {
+            "node": 4,
+            "neighbor": 3
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          2,
+          3
+        ],
+        "origins": [
+          {
+            "node": 2,
+            "neighbor": 3
+          },
+          {
+            "node": 3,
+            "neighbor": 2
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          0,
+          5
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 5
+          },
+          {
+            "node": 5,
+            "neighbor": 0
+          }
+        ]
+      }
+    ],
+    "backlogs_per_class_checked": [
+      0,
+      7
+    ],
+    "public_next_events_checked": 14,
+    "verified_background_release_types": [
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ]
+  },
+  {
+    "topology": "cycle6",
+    "policy": "pressure_oriented",
+    "slots_per_node": 2,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        0,
+        5
+      ]
+    ],
+    "demand": [
+      [
+        0,
+        3
+      ]
+    ],
+    "generation_word": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        5
+      ]
+    ],
+    "frozen_inventory": [
+      {
+        "endpoints": [
+          0,
+          5
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 1
+          },
+          {
+            "node": 5,
+            "neighbor": 4
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          1,
+          4
+        ],
+        "origins": [
+          {
+            "node": 1,
+            "neighbor": 2
+          },
+          {
+            "node": 4,
+            "neighbor": 3
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          2,
+          3
+        ],
+        "origins": [
+          {
+            "node": 2,
+            "neighbor": 3
+          },
+          {
+            "node": 3,
+            "neighbor": 2
+          }
+        ]
+      },
+      {
+        "endpoints": [
+          0,
+          5
+        ],
+        "origins": [
+          {
+            "node": 0,
+            "neighbor": 5
+          },
+          {
+            "node": 5,
+            "neighbor": 0
+          }
+        ]
+      }
+    ],
+    "backlogs_per_class_checked": [
+      0,
+      7
+    ],
+    "public_next_events_checked": 14,
+    "verified_background_release_types": [
+      [
+        0,
+        5
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ]
+  }
+]

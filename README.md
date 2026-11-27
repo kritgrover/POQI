@@ -92,14 +92,71 @@ no-expiry pressure chain eventually locks with probability one. Above that rate
 the queue can grow while service continues, and the probability of locking is
 strictly between zero and one. [Offered-demand theorem and exact probabilities](Saturated_Chain_Theorem.md#offered-demand-at-two-slots)
 
+The saturated rate of pressure relaxation is the known finite-buffer result for
+a single repeater, and so is the two-slot rate. The new statements are the
+two-slot cost of balancing and the lockup. The lockup comes from an endpoint
+swap that the max-min balancing rule permits and that the published
+continuous-distribution protocols exclude. [What is recovered and what is new](Saturated_Chain_Theorem.md#what-is-recovered-and-what-is-new) ·
+[Which swap rules admit the trap](Saturated_Chain_Theorem.md#which-swap-rules-admit-the-trap)
+
 Requiring the two swap inputs to come from different physical neighbors restores
 queue stability on the two-slot, no-expiry chain at every strictly subcritical
-load. With unit-rate links this means every request rate below $2/3$. On the
+load. With unit-rate links this means every request rate below $2/3$. The rule
+is the orientation condition of Talsma, Iñesta and Wehner (2024). The stability
+proof is new. [Source of the rule](Guarded_Chain_Theorem.md#source-of-the-rule-and-what-is-new) On the
 two-slot diamond, each physical neighbor already has a one-slot reservation,
 so the same rule leaves every trajectory unchanged. At four slots on lossy
 diamond links the guard increased measured service, while some intervals with
 pending demand and no completion grew longer. [Guarded chain proof](Guarded_Chain_Theorem.md) ·
 [Matched diamond experiments](Guarded_Diamond_Results.md)
+
+The same inventory failure occurs on longer chains, a diamond and sparsely
+requested cycles. On the one-repeater chain the search found the trap at
+uniform budget two and found none at uniform budgets 3 through 14. Orientation
+protects the enumerated chains. It still permits a freeze on the two-slot
+diamond and the five- and six-node cycles. A finite lifetime releases the
+blocking pair on the two-slot chain at its oldest ancestor's deadline. At
+unit link rates and lifetimes up to 300, measured mean request delay tracks
+half the lifetime at long cutoffs. A renewal argument predicts that limit.
+With independent swap success $q>0$ the two-slot trapping threshold is
+$q\mu_2$. [Lockup extensions](Lockup_Extensions.md)
+
+A drop-when-stuck rule gives path-oblivious swapping a recovery baseline for
+the low-memory corner. A blocked generation may evict the pair that holds its
+slot. With zero patience, none of 213 completed finite-state searches found
+a closed class that permanently starves a demand pair. At two slots on cycles
+of 8 and 12 nodes, measured service rose from 11% and 17% of nominal demand
+to 97% and 100%. Window-aligned costs were 6.20 and 7.89 evicted pairs per
+completion. Waiting before eviction cut waste and lengthened outages. The
+search also found lockups when each node shared its slots across neighbors.
+Every simulator result now reports interruptions, outages and starved demand
+pairs. [Recovery baseline](Recovery_Baseline.md)
+
+In a matched finite-lifetime experiment, each generation attempt can fail
+after memory has been freed. On an eight-node cycle with two slots per node,
+pre-attempt eviction served 92.6% of nominal demand, versus 79.9% for the
+published single random swap protocol adapted to the same queues. The paired
+gain was 12.6 percentage points (95% interval 7.0–18.2). Eviction used 52.5
+generation attempts per completion versus 27.3. On a twelve-node cycle with
+four slots the SRS reference served more. [Matched results](Matched_Results.md) ·
+[Research evidence and reproduction](evidence/README.md)
+
+On a lossless cycle with two slots and immediate eviction, the last three
+nodes visited by the swapping rule determine exactly which three pairs can
+serve requests in each slot. With the same demand and link opportunities,
+fixed visitation completed zero requests across twelve held-out eight-node
+workloads, while shuffling visitation each slot completed 2,612. The proof
+gives each pair a service opportunity with probability $6/[n(n-1)]$ on an
+$n$-node cycle under uniform shuffling. [Ordering result and proof](Matched_Results.md#an-exact-explanation-for-the-ordering-effect)
+
+On the single-repeater benchmark, the mean-occupancy LP overestimates service
+under hard slot limits. For eager oriented swapping on a chain with ample
+endpoint memory, permanent backlog and perfect swaps, a finite-buffer tandem
+line yields the long-run service rate. At unit link rates it takes 9, 13 and
+15 slots per repeater to reach 90% service on chains of one, two and three
+repeaters. In a separate enumeration with uniform node budgets, corrected
+balancing first achieved positive service at budgets 4, 8 and 12 for those
+three lengths. [Chain capacity](Chain_Capacity.md)
 
 ## Root implementation
 
@@ -140,7 +197,8 @@ since pytest replaces that directory's contents.
 Output directories must be new. The LP maximizes proportional demand
 satisfaction and can size uniform or weighted **mean** memory budgets. The
 simulator measures integer slot occupancy, admission blocking, inherited expiry,
-per-pair service, and request backlog under an explicit policy. An LP budget does
+per-pair service, interruptions and starvation of each demand pair, and request
+backlog under an explicit policy. An LP budget does
 not prove a hard-slot implementation can attain its target, and prescribed mean
 residence times are independent of the optional simulator cutoff.
 

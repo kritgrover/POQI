@@ -1,0 +1,68 @@
+{
+  "frozen_utc": "2026-11-26T03:53:41.911653+00:00",
+  "question": "Does randomizing the pressure pivot visit order improve core service on fresh seeds?",
+  "prediction": "Pre-attempt eviction with a new random pivot permutation each slot has higher mean core satisfaction than the same policy with fixed pivot order.",
+  "primary_contrast": "shuffled pre-attempt eviction minus fixed pre-attempt eviction",
+  "primary_endpoint": "Core completions in the window divided by nominal core arrivals in that window.",
+  "analysis": "Mean within-seed difference, two-sided pointwise 95% Student-t interval across 12 seeds. The prediction is supported if the lower endpoint exceeds zero. SRS50 contrasts are descriptive.",
+  "design": "Fresh seeds 13101-13112 on an 8-node cycle, two reserved slots per node, lifetime 10, maximum 7 elementary links per stored pair. Unit generation and swap success, no background demand, normalized core load 0.05. No tuning or further sweeps.",
+  "matching": "Same sparse core demand and ordered link opportunity sequence across arms; request traces equal the primary absolute load at p_gen=.5 and normalized load .10 for the same seed.",
+  "seeds": [
+    13101,
+    13102,
+    13103,
+    13104,
+    13105,
+    13106,
+    13107,
+    13108,
+    13109,
+    13110,
+    13111,
+    13112
+  ],
+  "arms": [
+    [
+      "pre_drop",
+      "pressure_pre_drop",
+      false
+    ],
+    [
+      "pre_drop_shuffle",
+      "pressure_pre_drop",
+      true
+    ],
+    [
+      "srs50",
+      "srs",
+      false
+    ]
+  ],
+  "horizon": 2000,
+  "warmup": 500,
+  "prior_seeds": [
+    12101,
+    12102,
+    12103,
+    12104,
+    12105,
+    12106,
+    12107,
+    12108,
+    12109,
+    12110,
+    12111,
+    12112
+  ],
+  "source_sha256_lf": {
+    "scripts/matched_order_holdout.py": "e398b8b89f18b5c454218d6159852b3ac3e562334ee45b26ffdde7311b76891e",
+    "scripts/matched_lossless_diagnostic.py": "64aa4542369fd451762b2702ea1daea3a191a3f33302b3706e046d95c2b82942",
+    "scripts/matched_srs.py": "200b9f1ed69a195ee8024aa82fdad6ed3b4f6de77a02a6f62c2c3939708514ce",
+    "scripts/matched_srs_report.py": "e83e8c856f0f8bc3a9d7e24b9db713487a8a0ded74127ed9754df3bff8a66684",
+    "scripts/srs_protocol.py": "0552664137f79beaadb6ddb32ed41da75a13140c598b3f4c4e64d31b511aac5d",
+    "src/poqi/simulation/sequence_adapter.py": "97125b138add24bae63ce566ef62f4476871c1043149b64051c714fa1dc9b874",
+    "src/poqi/simulation/inventory.py": "f61fbb164a0c64f5a7e6c1ee65e95881e7a681e89b6f632bcda5a12eff04d17a",
+    "Matched_Protocol.md": "d47b98556f07d2c9816aae6fd2e0929e48c9cc5b7db5b064b0041fb1d44196f7",
+    "evidence/matched-lossless/manifest.json": "a191c45299f5201e8b5b78e344d5ac8347ddbdc4ed4a8932acfbffb970b06598"
+  }
+}

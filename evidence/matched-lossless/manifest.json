@@ -1,0 +1,217 @@
+{
+  "purpose": "Post hoc: disentangle absolute demand intensity and pivot order in the lossless reversal.",
+  "nodes": 8,
+  "slots": 2,
+  "cutoff": 10,
+  "max_segments": 7,
+  "generation": 1,
+  "swap_success": 1,
+  "core_loads": [
+    0.05,
+    0.1
+  ],
+  "background": 0,
+  "arms": [
+    [
+      "srs50",
+      "srs",
+      false
+    ],
+    [
+      "pressure",
+      "pressure_oriented",
+      false
+    ],
+    [
+      "pre_drop",
+      "pressure_pre_drop",
+      false
+    ],
+    [
+      "pressure_shuffle",
+      "pressure_oriented",
+      true
+    ],
+    [
+      "pre_drop_shuffle",
+      "pressure_pre_drop",
+      true
+    ]
+  ],
+  "seeds": [
+    12101,
+    12102,
+    12103,
+    12104,
+    12105,
+    12106,
+    12107,
+    12108,
+    12109,
+    12110,
+    12111,
+    12112
+  ],
+  "horizon": 2000,
+  "warmup": 500,
+  "followup": 50,
+  "rows": 120,
+  "original_archive_sha256": "cecc57e6cf14b488c65a9b42a218adcaa4b6990e00242d2090de634151a24eda",
+  "source_sha256_lf": {
+    "scripts/matched_lossless_diagnostic.py": "64aa4542369fd451762b2702ea1daea3a191a3f33302b3706e046d95c2b82942",
+    "scripts/matched_srs.py": "200b9f1ed69a195ee8024aa82fdad6ed3b4f6de77a02a6f62c2c3939708514ce",
+    "scripts/matched_srs_report.py": "e83e8c856f0f8bc3a9d7e24b9db713487a8a0ded74127ed9754df3bff8a66684",
+    "scripts/srs_protocol.py": "0552664137f79beaadb6ddb32ed41da75a13140c598b3f4c4e64d31b511aac5d",
+    "src/poqi/simulation/sequence_adapter.py": "97125b138add24bae63ce566ef62f4476871c1043149b64051c714fa1dc9b874",
+    "src/poqi/simulation/inventory.py": "f61fbb164a0c64f5a7e6c1ee65e95881e7a681e89b6f632bcda5a12eff04d17a",
+    "Matched_Protocol.md": "d47b98556f07d2c9816aae6fd2e0929e48c9cc5b7db5b064b0041fb1d44196f7"
+  },
+  "inputs": [
+    {
+      "seed": 12101,
+      "load": 0.05,
+      "input_sha256": "b551de5b757ede114a7b446fff67e607df39503c5789cdc0f2ba18c368b8e151",
+      "primary_input_sha256": "64b3a2a411df0a712290aaa408f2f8c1a0bdf27e7f633aa5a41413b60f075f1c"
+    },
+    {
+      "seed": 12101,
+      "load": 0.1,
+      "input_sha256": "653aa7675ac928c14c6ac60a81dbddf3cbdf34e55c3c7224de8d72119e360e85",
+      "primary_input_sha256": "64b3a2a411df0a712290aaa408f2f8c1a0bdf27e7f633aa5a41413b60f075f1c"
+    },
+    {
+      "seed": 12102,
+      "load": 0.05,
+      "input_sha256": "62bf23df05758b5439994a8ef4ea6a47b19cf155b22201465531c79b97ffc95f",
+      "primary_input_sha256": "8df2f8ff0c9a5fb4d4610a3312406c35e2f9e54b28518a642f3bbc33cec65e05"
+    },
+    {
+      "seed": 12102,
+      "load": 0.1,
+      "input_sha256": "e072279e7afccd42b8bf5c0ece302acb4212eea1148b4721c05ad3b9ac12f7c7",
+      "primary_input_sha256": "8df2f8ff0c9a5fb4d4610a3312406c35e2f9e54b28518a642f3bbc33cec65e05"
+    },
+    {
+      "seed": 12103,
+      "load": 0.05,
+      "input_sha256": "a43d46ff5d2eafeefc8919ac6dfb6a483aab581a8e93d27fd02a4bd763ce96de",
+      "primary_input_sha256": "6bbc4c09e80982f023451ae823bf93684139f9c3e37deb9b380df4bf9fff6cc8"
+    },
+    {
+      "seed": 12103,
+      "load": 0.1,
+      "input_sha256": "c979440fcfc2b8682b3cdebd0ddb133fa235ef6156b5b775cdc9b454f488ea66",
+      "primary_input_sha256": "6bbc4c09e80982f023451ae823bf93684139f9c3e37deb9b380df4bf9fff6cc8"
+    },
+    {
+      "seed": 12104,
+      "load": 0.05,
+      "input_sha256": "292f0d34aa1859f4dd17f9d78c1883650b5f53ee9db0e503588a11aeb352bfff",
+      "primary_input_sha256": "178040dfa8934d7045f361241fd2ce5539f4c096e65e31fe2c58b17ced953139"
+    },
+    {
+      "seed": 12104,
+      "load": 0.1,
+      "input_sha256": "213cc7fe68bf509ab5edf27f08952deddfa02592bd96777a311dbb1291dbfa87",
+      "primary_input_sha256": "178040dfa8934d7045f361241fd2ce5539f4c096e65e31fe2c58b17ced953139"
+    },
+    {
+      "seed": 12105,
+      "load": 0.05,
+      "input_sha256": "13f282eb7590e0b9b4f4bf8a084d98a218ca6e8dc0542708df7c724778307040",
+      "primary_input_sha256": "0bf7d5bd2e20800ce7f64ff4e9f4c24e86f94d078304ef73af5a42901a704b63"
+    },
+    {
+      "seed": 12105,
+      "load": 0.1,
+      "input_sha256": "5c818aeca4e6b61ebe9d14ddfdb48d90efe8f401aa76525b85a4fee059a8f00a",
+      "primary_input_sha256": "0bf7d5bd2e20800ce7f64ff4e9f4c24e86f94d078304ef73af5a42901a704b63"
+    },
+    {
+      "seed": 12106,
+      "load": 0.05,
+      "input_sha256": "87f396458771f44da9b093bc774ec6d904e5795c8e837c3e27a2290ecbe1dfa9",
+      "primary_input_sha256": "99bdb50a84c1f87d2fa1dc49ec47dfbad4bf9c61641f769a043c47060d861dd4"
+    },
+    {
+      "seed": 12106,
+      "load": 0.1,
+      "input_sha256": "9a22752495453ad85c98f3661fbad7d6753304fc182713e56918e9a6f775f9ca",
+      "primary_input_sha256": "99bdb50a84c1f87d2fa1dc49ec47dfbad4bf9c61641f769a043c47060d861dd4"
+    },
+    {
+      "seed": 12107,
+      "load": 0.05,
+      "input_sha256": "75e3b7adf81df6c0e62a3d3839b98dbe0c2175e18c0713a41e132d8fb4f13c73",
+      "primary_input_sha256": "d2b901083ad012eb1a1c32f1f336ab1a3745a6263bdbce36824d7918ba25bd12"
+    },
+    {
+      "seed": 12107,
+      "load": 0.1,
+      "input_sha256": "e6013ebb524d19c59d52da09cd79e5264292e7fa7d98214ceb14578b73ea58aa",
+      "primary_input_sha256": "d2b901083ad012eb1a1c32f1f336ab1a3745a6263bdbce36824d7918ba25bd12"
+    },
+    {
+      "seed": 12108,
+      "load": 0.05,
+      "input_sha256": "c1b412299ab04867fb7e4578f957cd3afd39f581476d6bd7102714a774994c2a",
+      "primary_input_sha256": "233e4b740e503722abccabd35cb2c55ff39df2bf1cb45357848515f042ed1c6c"
+    },
+    {
+      "seed": 12108,
+      "load": 0.1,
+      "input_sha256": "57e7964df9f8b1edbbb245be2771c2d383f44efadde686c14cc6050546d4cf1b",
+      "primary_input_sha256": "233e4b740e503722abccabd35cb2c55ff39df2bf1cb45357848515f042ed1c6c"
+    },
+    {
+      "seed": 12109,
+      "load": 0.05,
+      "input_sha256": "a14304f54b3c09f86903dbf47006f623963c7062438810b5c29a9dbad515875a",
+      "primary_input_sha256": "7153c8745ba0771e5d8103604e83032dc09f4dcda41137f874bbb581eda53600"
+    },
+    {
+      "seed": 12109,
+      "load": 0.1,
+      "input_sha256": "4ba712053bbc6d2a6389c676c738febba9078a142f2578e48c157bd7e5b4775a",
+      "primary_input_sha256": "7153c8745ba0771e5d8103604e83032dc09f4dcda41137f874bbb581eda53600"
+    },
+    {
+      "seed": 12110,
+      "load": 0.05,
+      "input_sha256": "32521726f1ccc1c13895ec6582b8c0fb3fbd4b8a1916749fe9fd3832d0870d55",
+      "primary_input_sha256": "4c46f9f4043cc7b2c848cc06d925bf33ccd59c32c400b4a7b101822b88768043"
+    },
+    {
+      "seed": 12110,
+      "load": 0.1,
+      "input_sha256": "fc76110059ddea95416312771b085e0826810d5275188948462455d2717650d5",
+      "primary_input_sha256": "4c46f9f4043cc7b2c848cc06d925bf33ccd59c32c400b4a7b101822b88768043"
+    },
+    {
+      "seed": 12111,
+      "load": 0.05,
+      "input_sha256": "d3cd7331552fb64d31713409dd27d6b6252ac2522e435c15d81d762f41a0a27a",
+      "primary_input_sha256": "0a7cabed4f93eb8ef5ddc5891fb9ca337d318df25b1d73c0e162451a6ebf08e1"
+    },
+    {
+      "seed": 12111,
+      "load": 0.1,
+      "input_sha256": "ebad2e49343d98256d845c0dd43236a2dccb31ffd039efe6eb4636f5d0c3947d",
+      "primary_input_sha256": "0a7cabed4f93eb8ef5ddc5891fb9ca337d318df25b1d73c0e162451a6ebf08e1"
+    },
+    {
+      "seed": 12112,
+      "load": 0.05,
+      "input_sha256": "c02d6b388daca7afb1a140580f939aab01f8cda3d3f80935d0cbf141523f5ad3",
+      "primary_input_sha256": "0b4601ce387e801a99f5661332f168f970f7ddaf66ffbccd337a00f4adb3a329"
+    },
+    {
+      "seed": 12112,
+      "load": 0.1,
+      "input_sha256": "debb514be5b29b52ff162df79cec4046d56e97f7e3691c83066507b99815e53a",
+      "primary_input_sha256": "0b4601ce387e801a99f5661332f168f970f7ddaf66ffbccd337a00f4adb3a329"
+    }
+  ],
+  "estimate": "Seed-paired differences. Intervals are pointwise two-sided 95% Student-t intervals.",
+  "pivot_order": "Separate per-seed RNG chooses one new permutation per slot, shared by both shuffled arms and both loads. Only visitation changes at two slots."
+}

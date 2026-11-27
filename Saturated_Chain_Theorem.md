@@ -4,6 +4,24 @@ On a three-node chain with a waiting request for every endpoint pair produced, p
 
 With **two slots and no expiry**, letting the queue empty changes the outcome. At or below the saturated service rate, the pressure policy eventually loses the ability to serve any request with probability one. Above that rate, it either locks or enters a busy period that lasts forever. The second theorem derives the probability of each outcome from the reservation inherited by a swapped pair. [Offered demand at two slots](#offered-demand-at-two-slots)
 
+## What is recovered and what is new
+
+**Recovered.** The pressure-relaxation rate in the table below is the classical throughput of a two-input matching station with finite buffers. With buffers $K_1$ and $K_2$ it equals $\lambda(K_1+K_2)/(K_1+K_2+1)$ at equal rates, follows a truncated geometric law otherwise, and depends on the buffers only through their sum. The same expression is already available for quantum repeaters and switches.
+
+- Krishnamurthy, Suri and Vernon print both rate cases as equations (1.4) and (1.1), crediting earlier work on stochastic assembly systems. [§3.1](https://pages.cs.wisc.edu/~vernon/papers/poems.03buzacott.pdf#page=9)
+- Vardoyan, Guha, Nain and Towsley give the finite-buffer stationary law and capacity of an entanglement switch with $k$ heterogeneous links and $B$ qubits per link. Evaluating their expression at two links gives this chain's law for even $M=2B$. They do not write that case, and their homogeneous analysis continues with $k\ge3$ after noting that two links with unbounded buffers have no stationary distribution. [§IV-A2, arXiv:1903.04420](https://arxiv.org/abs/1903.04420) · [Journal version](https://people.cs.umass.edu/~gvardoyan/Pubs/TQE3058058_final.pdf)
+- Dai and Towsley give $\lambda q^k\prod_{i<k}2B_i/(2B_i+1)$ for nested swapping on a chain of $2^k$ links with $B_i$ memories per side at level $i$ and swap success probability $q$. It is exact in a limit and used as an approximation elsewhere. One repeater gives $\lambda q\,2B_0/(2B_0+1)$. [Theorem 1, arXiv:2111.10994](https://arxiv.org/abs/2111.10994)
+- Mai, La, Battou, Amlou and Nunn analyse the same three-node chain as a double-ended queue with memory capacities $K_0$ and $K_1$, unequal and possibly state-dependent rates, swap failure and maximum holding times. With constant rates, no holding limit and negligible swap and reset delays, their Corollary 1 reduces to the pressure row. They do not write that special case. [Eq. (12), arXiv:2608.11429](https://arxiv.org/abs/2608.11429)
+
+The two-slot rate $\mu_2$ in the second theorem is also known. It is the reciprocal of the mean of the later of two independent exponential generation times. At equal rates this is the familiar $2\lambda/3$. [Coopmans, Brand and Elkouss, Proposition 3](https://arxiv.org/abs/2103.11454) · [Mai et al., text following Eq. (7)](https://arxiv.org/abs/2608.11429)
+
+We rederive these rates because the proof has to establish which buffer sizes the two swap predicates realize in the simulator. They also check its transitions.
+
+The contribution concerns the following two statements for this swap rule, memory allocation and request process. Gyongyosi and Imre previously described an entanglement-swapping deadlock involving an unavailable eligible partner. Lo Piparo, Munro and Nemoto analyze queue stability and adaptive cutoffs for a stochastic repeater. Here the physical origins of occupied slots determine an absorbing inventory, and the offered load determines the probability of ever reaching it. [Earlier deadlock mechanism](https://doi.org/10.1038/s41598-020-78960-5) · [Queue-aware repeater control](https://tqe.ieee.org/2026/11/17/adaptive-resource-and-memory-control-for-stability-in-quantum-entanglement-distribution/)
+
+1. *Balancing costs two slots.* The max-min balancing predicate keeps one elementary pair in reserve on each link. Its saturated rate at budget $M$ equals the pressure rate at $M-2$, and it is zero below four slots.
+2. *Permanent lockup under offered demand.* With two slots and no expiry, an idle end-to-end pair can be swapped backward, after which the chain freezes. This happens with probability one at or below $\mu_2$, and with an explicitly computed probability strictly between zero and one above it. Lighter demand makes permanent failure more likely. [Which swap rules admit the trap](#which-swap-rules-admit-the-trap)
+
 ## Model and theorem
 
 The [guarded-chain follow-up](Guarded_Chain_Theorem.md) proves that checking
@@ -19,7 +37,7 @@ Let $C(t)$ be the number of completed requests by time $t$. From an empty start,
 | Pressure relaxation | $M\ge2$ | $[-b,a]$ | $\lambda M/(M+1)$ |
 | Corrected balancing | $M\ge4$ | $[1-b,a-1]$ | $\lambda(M-2)/(M-1)$ |
 
-At every smaller nonnegative budget the corresponding policy has zero service. For unequal rates let $[L,U]$ denote the applicable interval, $n=U-L+1$, and $\rho=\lambda_L/\lambda_R$. Its stationary probabilities and service rate are
+The pressure row is the known finite-buffer rate with buffers $a$ and $b$. The balancing row, and the smallest budget at which each policy serves, are specific to these swap predicates. At every smaller nonnegative budget the corresponding policy has zero service. For unequal rates let $[L,U]$ denote the applicable interval, $n=U-L+1$, and $\rho=\lambda_L/\lambda_R$. Its stationary probabilities and service rate are
 
 $$
 \pi_{L+j}=\frac{\rho^j}{\sum_{k=0}^{n-1}\rho^k},\qquad
@@ -109,6 +127,19 @@ After a trap there are finitely many prior completions and every new request joi
 
 At $\lambda_L=\lambda_R=1$ the threshold is $2/3$ request per unit time. Earlier ten-seed experiments observed the absorbing inventory in 10/10 runs at offered rate 0.5, 9/10 at 0.75 and 6/10 at 1.0. Those are finite-horizon counts from the rounded-tick simulator. The theorem classifies an eventual event in continuous time. The cutoff-10 runs and the slotted Q-CAST comparison have different transitions. [Offered-demand experiment](Robustness_Results.md#two-slot-failure-and-expiry) · [Two-slot transition checker](scripts/two_slot_chain_check.py)
 
+### Which swap rules admit the trap
+
+The trap needs one swap at an endpoint, joining a cached end-to-end pair to a fresh elementary pair. Two published protocols for continuous entanglement distribution exclude that swap by construction, for reasons unrelated to keeping the network live.
+
+- Talsma, Iñesta and Wehner let a node swap only links held in differently-oriented qubits. A qubit's orientation is the physical neighbor it generates entanglement with. They adopt the condition to avoid "unnecessary" swaps and note that edge nodes of a chain cannot swap. Their analysis assumes enough memory to hold every link until its cutoff and names limited memory as open. [Phys. Rev. A 110, 022429 (2024), Algorithm 1, step 3.2, and Fig. 4](https://arxiv.org/abs/2402.01527)
+- Iñesta and Wehner let node $i$ swap links to $j$ and $k$ only if $j$ and $k$ are not physical neighbors. Their nodes hold a fixed number of qubits per physical neighbor, as here, and every link has a finite cutoff. [Phys. Rev. A 108, 052615 (2023), Algorithm 1, step 3.2](https://arxiv.org/abs/2307.01406)
+
+On this chain either condition forbids the endpoint swap. Neither paper considers what happens without its condition, and both rely on cutoffs.
+
+The max-min balancing rule of Mutolo, Parekh and Rubenstein is different in kind. It compares pair counts and places no condition on where the two qubits came from. Its authors list a swap by a pivot far from two nearby nodes as an inefficiency to reduce later. Pressure relaxation inherits that freedom and lowers the threshold far enough for the endpoint swap to fire at two slots. Ordinary balancing avoids the trap at this budget only because it performs no swap at all there.
+
+The theorem is therefore a statement about count-based swap rules under hard per-neighbor reservations and no expiry. On this chain a direction condition separates eventual permanent lockup from a stable queue, and omitting it costs most at light load. [Balancing rule, §4, and discussion, §6](papers/hotnets25-final271.pdf) · [Queue stability with the condition](Guarded_Chain_Theorem.md)
+
 ### Probability of eventually locking from empty
 
 The same argument gives an exact risk for an initially empty system. Write $u=\lambda_L$, $v=\lambda_R$, $c=u+v$, and $k=c+\delta$. For a fresh service time $S=\max(\mathrm{Exp}(u),\mathrm{Exp}(v))$ with independent inputs, its Laplace transform follows by integrating its density,
@@ -142,9 +173,9 @@ The three terms correspond to the first event being a request, a left generation
 | $\delta=0.75$ | 0.815271 | 9/10 |
 | $\delta=1$ | $6\sqrt{2}-8 \approx 0.485281$ | 6/10 |
 
-The finite-window counts give context for the derivation. No parameter was fitted to those counts. As a separate check, the [probability calculation](scripts/two_slot_lock_probability.py) solves first-event equations on the simulator-checked inventory phases, stopping at a wrong-origin pair or at queue length $K$. The probability of reaching a wrong-origin pair first is a lower bound. After reaching $K$, the first completion leaves at least $K-1$ jobs at empty inventory, so the remaining probability of ever locking is at most $z^{K-1}$. The program checks these inequalities numerically at $K=8,32,128$ across 15 rate settings. For unit links and $\delta=0.75$, the $K=128$ interval rounds outward to $[0.8152706461,0.8152706469]$. At critical load the same calculation gives only $[0.98966,1]$ after outward rounding. The probability-one conclusion there follows from the extinction proof. [Numerical results](results/memory/saturated-chain-theorem-02/offered-probabilities.json)
+The finite-window counts give context for the derivation. No parameter was fitted to those counts. As a separate check, the [probability calculation](scripts/two_slot_lock_probability.py) solves first-event equations on the simulator-checked inventory phases, stopping at a wrong-origin pair or at queue length $K$. The probability of reaching a wrong-origin pair first is a lower bound. After reaching $K$, the first completion leaves at least $K-1$ jobs at empty inventory, so the remaining probability of ever locking is at most $z^{K-1}$. The program checks these inequalities numerically at $K=8,32,128$ across 15 rate settings. For unit links and $\delta=0.75$, the $K=128$ interval rounds outward to $[0.8152706461,0.8152706469]$. At critical load the same calculation gives only $[0.98966,1]$ after outward rounding. The probability-one conclusion there follows from the extinction proof. [Numerical results](evidence/prior/saturated-chain-theorem-02/offered-probabilities.json)
 
-The [offered-demand transition check](scripts/two_slot_chain_check.py) exercised **87** outgoing transitions from 29 reachable inventory and backlog representatives at queue lengths zero through three. It checked both mirror traps through the public simulator, preserving the physical origin at each endpoint. In the proof, all queue lengths above one have the same inventory transitions and differ only in the outstanding request count. [Simulator witnesses](results/memory/saturated-chain-theorem-02/offered-transitions.json) · [Saturated joint-inventory checks](results/memory/saturated-chain-theorem-02/check.json)
+The [offered-demand transition check](scripts/two_slot_chain_check.py) exercised **87** outgoing transitions from 29 reachable inventory and backlog representatives at queue lengths zero through three. It checked both mirror traps through the public simulator, preserving the physical origin at each endpoint. In the proof, all queue lengths above one have the same inventory transitions and differ only in the outstanding request count. [Simulator witnesses](evidence/prior/saturated-chain-theorem-02/offered-transitions.json) · [Saturated joint-inventory checks](evidence/prior/saturated-chain-theorem-02/check.json)
 
 Run the three checks from the repository root using the environment in the README.
 
@@ -154,4 +185,4 @@ Run the three checks from the repository root using the environment in the READM
 .\.venv\Scripts\python.exe -B scripts/two_slot_lock_probability.py
 ~~~
 
-The equal- and unequal-rate throughput formulas for a two-input finite-buffer matching station appear explicitly in equations (1.4) and (1.1) of Krishnamurthy, Suri and Vernon. Vardoyan et al. derive the related finite-buffer quantum-switch balances. The policy-specific steps here identify the effective buffer sizes of the two swapping rules and show how an idle backward swap can permanently disable service under arriving demand. [Classical throughput formulas, §3](https://pages.cs.wisc.edu/~vernon/papers/poems.03buzacott.pdf#page=9) · [Vardoyan et al., §IV-A](https://people.cs.umass.edu/~gvardoyan/Pubs/TQE3058058_final.pdf)
+Prior work on the saturated rates is listed under [What is recovered and what is new](#what-is-recovered-and-what-is-new).

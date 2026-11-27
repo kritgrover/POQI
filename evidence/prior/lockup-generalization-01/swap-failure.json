@@ -1,0 +1,314 @@
+[
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 1.0,
+  "request_rate": 0.2,
+  "threshold": 0.6666666666666666,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 0.9999999999999997,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 1.0,
+  "request_rate": 0.5,
+  "threshold": 0.6666666666666666,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 1.0,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 1.0,
+  "request_rate": 0.75,
+  "threshold": 0.6666666666666666,
+  "busy_extinction": 0.858523699700647,
+  "ever_lock": 0.8152706466396812,
+  "first_passage_lower": 0.8152706466396831,
+  "first_passage_upper": 0.8152706466396831
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 1.0,
+  "request_rate": 1.0,
+  "threshold": 0.6666666666666666,
+  "busy_extinction": 0.5857864376269051,
+  "ever_lock": 0.4852813742385704,
+  "first_passage_lower": 0.4852813742385702,
+  "first_passage_upper": 0.4852813742385702
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 0.9,
+  "request_rate": 0.2,
+  "threshold": 0.6,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 0.9999999999999991,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 0.9,
+  "request_rate": 0.5,
+  "threshold": 0.6,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 0.9999999999999998,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 0.9,
+  "request_rate": 0.75,
+  "threshold": 0.6,
+  "busy_extinction": 0.7535750803425001,
+  "ever_lock": 0.6668466126735024,
+  "first_passage_lower": 0.6668466126736701,
+  "first_passage_upper": 0.6668466126736701
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 0.9,
+  "request_rate": 1.0,
+  "threshold": 0.6,
+  "busy_extinction": 0.5167603025808675,
+  "ever_lock": 0.3908455719598705,
+  "first_passage_lower": 0.39084557195987013,
+  "first_passage_upper": 0.39084557195987013
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 0.5,
+  "request_rate": 0.2,
+  "threshold": 0.3333333333333333,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 0.9999999999999973,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 0.5,
+  "request_rate": 0.5,
+  "threshold": 0.3333333333333333,
+  "busy_extinction": 0.6277186767309869,
+  "ever_lock": 0.4027912098338675,
+  "first_passage_lower": 0.4027912098338663,
+  "first_passage_upper": 0.4027912098338663
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 0.5,
+  "request_rate": 0.75,
+  "threshold": 0.3333333333333333,
+  "busy_extinction": 0.38523707659174683,
+  "ever_lock": 0.18558173220456559,
+  "first_passage_lower": 0.18558173220456547,
+  "first_passage_upper": 0.18558173220456547
+ },
+ {
+  "link_rates": [
+   1,
+   1
+  ],
+  "swap_success": 0.5,
+  "request_rate": 1.0,
+  "threshold": 0.3333333333333333,
+  "busy_extinction": 0.2679491924311316,
+  "ever_lock": 0.10874112933696735,
+  "first_passage_lower": 0.10874112933696653,
+  "first_passage_upper": 0.10874112933696653
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 1.0,
+  "request_rate": 0.2,
+  "threshold": 0.8571428571428571,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 0.9999999999999999,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 1.0,
+  "request_rate": 0.5,
+  "threshold": 0.8571428571428571,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 1.0,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 1.0,
+  "request_rate": 0.75,
+  "threshold": 0.8571428571428571,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 0.9999999999999996,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 1.0,
+  "request_rate": 1.0,
+  "threshold": 0.8571428571428571,
+  "busy_extinction": 0.8299135133739922,
+  "ever_lock": 0.7853856828908915,
+  "first_passage_lower": 0.7853856828908676,
+  "first_passage_upper": 0.7853856828908676
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 0.9,
+  "request_rate": 0.2,
+  "threshold": 0.7714285714285714,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 0.9999999999999993,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 0.9,
+  "request_rate": 0.5,
+  "threshold": 0.7714285714285714,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 0.9999999999999991,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 0.9,
+  "request_rate": 0.75,
+  "threshold": 0.7714285714285714,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 0.9999999148440463,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 0.9,
+  "request_rate": 1.0,
+  "threshold": 0.7714285714285714,
+  "busy_extinction": 0.7334918000217048,
+  "ever_lock": 0.6500749824476463,
+  "first_passage_lower": 0.6500749824476459,
+  "first_passage_upper": 0.6500749824476459
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 0.5,
+  "request_rate": 0.2,
+  "threshold": 0.42857142857142855,
+  "busy_extinction": 1.0,
+  "ever_lock": 1.0,
+  "first_passage_lower": 0.9999999999999977,
+  "first_passage_upper": 1.0
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 0.5,
+  "request_rate": 0.5,
+  "threshold": 0.42857142857142855,
+  "busy_extinction": 0.8445633903419959,
+  "ever_lock": 0.6995769068756248,
+  "first_passage_lower": 0.6995769068756309,
+  "first_passage_upper": 0.6995769068756309
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 0.5,
+  "request_rate": 0.75,
+  "threshold": 0.42857142857142855,
+  "busy_extinction": 0.535051872228623,
+  "ever_lock": 0.3152143732174788,
+  "first_passage_lower": 0.31521437321747786,
+  "first_passage_upper": 0.31521437321747786
+ },
+ {
+  "link_rates": [
+   1,
+   2
+  ],
+  "swap_success": 0.5,
+  "request_rate": 1.0,
+  "threshold": 0.42857142857142855,
+  "busy_extinction": 0.3819660112501052,
+  "ever_lock": 0.18815534612895077,
+  "first_passage_lower": 0.18815534612895085,
+  "first_passage_upper": 0.18815534612895085
+ }
+]

@@ -1,0 +1,64 @@
+{
+  "archive_manifest_sha256": "80fe73667b2c701af3cb03bced88cc2b7461ac5efd40398c76ec3b0b34103e5b",
+  "groups": {
+    "archived": [
+      7271,
+      7272,
+      7273,
+      7274,
+      7275,
+      7276,
+      7277,
+      7278,
+      7279,
+      7280
+    ],
+    "fresh": [
+      8271,
+      8272,
+      8273,
+      8274,
+      8275,
+      8276,
+      8277,
+      8278,
+      8279,
+      8280
+    ]
+  },
+  "conditions": [
+    [
+      2,
+      0.5
+    ],
+    [
+      4,
+      0.5
+    ],
+    [
+      4,
+      1.0
+    ]
+  ],
+  "cutoffs": [
+    null,
+    10
+  ],
+  "policies": [
+    "pressure_relaxed",
+    "pressure_oriented"
+  ],
+  "horizon": 400,
+  "warmup": 100,
+  "trajectory_count": 240,
+  "source_hashes": {
+    "scripts/qcast_guarded_diamond.py": "3c9a38dbed2daeeca9a28bf36fa97ab3f222dfcf99c3df23c1876cefcbca0712",
+    "scripts/qcast_concurrent.py": "dfc080489fd6ce9cdf19586dbe270eb1a649a102ff5fff8a4dcdfbd17f2d9dc8",
+    "scripts/qcast_pilot.py": "89daa15b66b580220ad848ac29999979bad72aa10827f9dec745b1af58f59a0d",
+    "scripts/qcast_concurrent_audit.py": "73af810f18ba51aac3e55a641be34ac47b0c0a547117f65f2e949e615de718cb",
+    "scripts/qcast_pilot_audit.py": "8f4eec20d1f2839e46a03ffad8164b78799923222539fec170fcfbc9a143779e",
+    "scripts/qcast_poqi.py": "a353b010ead7c2af89b6818a5d38da6a6a0eb9433fd4d544055c054960175861",
+    "src/poqi/simulation/inventory.py": "e14ac15efc25d292bf2aa1384276c98d3f4fa000772d8250843367cbf0832a04",
+    "src/poqi/simulation/sequence_adapter.py": "488728a62b444ac2e8892d698c62e5178ec03261a15b661e89760777c2a61d1f"
+  }
+}
